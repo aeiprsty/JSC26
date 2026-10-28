@@ -4,13 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistem Pelaporan TPS Liar & Kebersihan Lingkungan</title>
+    
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+   
     <!-- Font Inter & Font Awesome Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+
 
     <style>
         body {
@@ -68,12 +71,13 @@
     <!-- ==========================================
          NAVBAR / HEADER UTAMA
          ========================================== -->
+
     <header class="sticky top-0 z-50 bg-[#1F3D2E] text-white shadow-md transition-all duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-20">
                 
                 <!-- Logo & Branding -->
-                <a href="#" class="flex items-center gap-3 group">
+                <a href="{{ url('/') }}" class="flex items-center gap-3 group">
                     <div class="w-10 h-10 rounded-xl bg-[#6B7F4E] flex items-center justify-center text-white shadow-lg group-hover:bg-[#4C6A73] transition-colors duration-200">
                         <i class="fa-solid font-bold fa-leaf text-xl"></i>
                     </div>
@@ -85,15 +89,15 @@
 
                 <!-- Desktop Navigation Menu -->
                 <nav class="hidden md:flex items-center gap-8 ml-auto">
-                    <a href="#" class="px-3 py-2 rounded-lg text-sm font-semibold text-white bg-white/10 transition-colors">
+                    <a href="{{ url('/') }}" class="px-3 py-2 rounded-lg text-sm font-semibold text-white bg-white/10 transition-colors">
                         Beranda
                     </a>
                     
-                    <a href="{{ route('lapor.index') }}" class="px-3 py-2 rounded-lg text-sm font-medium text-emerald-100 hover:text-white hover:bg-white/10 transition-colors">
+                    <a href="{{ url('/lapor') }}" class="px-3 py-2 rounded-lg text-sm font-medium text-emerald-100 hover:text-white hover:bg-white/10 transition-colors">
                         Lapor TPS
                     </a>
 
-                    <a href="{{ route('lacak.index') }}" class="px-3 py-2 rounded-lg text-sm font-medium text-emerald-100 hover:text-white hover:bg-white/10 transition-colors">
+                    <a href="{{ url('/lacak') }}" class="px-3 py-2 rounded-lg text-sm font-medium text-emerald-100 hover:text-white hover:bg-white/10 transition-colors">
                         Cek Penanganan TPS
                     </a>
 
@@ -104,10 +108,9 @@
                             <i class="fa-solid fa-chevron-down text-xs transition-transform duration-200 group-hover:rotate-180"></i>
                         </button>
                         
-                        <!-- Submenu Dropdown -->
                         <div id="desktop-menu" class="hidden group-hover:block absolute right-0 mt-1 w-64 bg-white rounded-xl shadow-xl border border-[#5A4A3A]/10 py-2 text-[#5A4A3A] z-50 animate-fadeIn">
-                            <a href="{{ route('jadwal.index') }}" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium hover:bg-[#DCC8A3]/30 hover:text-[#1F3D2E] transition-colors">
-                                <div class="w-8 h-8 rounded-lg bg-[#6B7F4E]/10 flex items-center justify-center text-[#6B7F4E]">
+                            <a href="{{ url('/jadwal') }}" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium hover:bg-[#DCC8A3]/30 hover:text-[#1F3D2E] transition-colors">
+                                <div class="w-8 h-8 rounded-lg bg-[#4C6A73]/10 flex items-center justify-center text-[#4C6A73]">
                                     <i class="fa-solid fa-calendar-alt text-xs"></i>
                                 </div>
                                 <div>
@@ -115,7 +118,7 @@
                                     <div class="text-[11px] text-[#5A4A3A]/70">Operasi Pembersihan Bersama</div>
                                 </div>
                             </a>
-                            <a href="{{ route('transparansi.index') }}" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium hover:bg-[#DCC8A3]/30 hover:text-[#1F3D2E] transition-colors">
+                            <a href="{{ url('/transparansi') }}" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium hover:bg-[#DCC8A3]/30 hover:text-[#1F3D2E] transition-colors">
                                 <div class="w-8 h-8 rounded-lg bg-[#4C6A73]/10 flex items-center justify-center text-[#4C6A73]">
                                     <i class="fa-solid fa-chart-pie text-xs"></i>
                                 </div>
@@ -124,14 +127,13 @@
                                     <div class="text-[11px] text-[#5A4A3A]/70">Rincian Komponen Alokasi</div>
                                 </div>
                             </a>
-                            <div class="border-t border-gray-100 my-1"></div>
-                            <a href="{{ route('edukasi.index') }}" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium hover:bg-[#DCC8A3]/30 hover:text-[#1F3D2E] transition-colors">
-                                <div class="w-8 h-8 rounded-lg bg-[#1F3D2E]/10 flex items-center justify-center text-[#1F3D2E]">
+                            <a href="{{ url('/edukasi') }}" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium hover:bg-[#DCC8A3]/30 hover:text-[#1F3D2E] transition-colors">
+                                <div class="w-8 h-8 rounded-lg bg-[#4C6A73]/10 flex items-center justify-center text-[#4C6A73]">
                                     <i class="fa-solid fa-book-open text-xs"></i>
                                 </div>
                                 <div>
                                     <div class="font-semibold">Edukasi & Media</div>
-                                    <div class="text-[11px] text-[#5A4A3A]/70">Artikel, Tip & Video Pembelajaran</div>
+                                    <div class="text-[11px] text-[#5A4A3A]/70">Artikel, Tips & Video Edukasi</div>
                                 </div>
                             </a>
                         </div>
@@ -149,37 +151,30 @@
 
         <!-- Mobile Menu Navigation Panel -->
         <div id="mobile-menu" class="hidden md:hidden bg-[#1F3D2E] border-t border-white/10 px-4 pt-3 pb-6 space-y-2">
-            <a href="#" class="block px-3 py-2 rounded-lg text-base font-semibold text-white bg-white/10">
+            <a href="{{ url('/') }}" class="block px-3 py-2 rounded-lg text-base font-medium text-emerald-100 hover:text-white hover:bg-white/10">
                 Beranda
             </a>
-            <a href="#lapor" class="block px-3 py-2 rounded-lg text-base font-medium text-emerald-100 hover:text-white hover:bg-white/10">
+            <a href="{{ url('/lapor') }}" class="block px-3 py-2 rounded-lg text-base font-semibold text-white bg-white/10">
                 Lapor TPS
             </a>
-            <a href="#lacak" class="block px-3 py-2 rounded-lg text-base font-medium text-emerald-100 hover:text-white hover:bg-white/10">
+            <a href="{{ url('/lacak') }}" class="block px-3 py-2 rounded-lg text-base font-medium text-emerald-100 hover:text-white hover:bg-white/10">
                 Cek Penanganan TPS
             </a>
             
             <!-- Mobile Submenu Accordion -->
             <div class="pt-2 border-t border-white/10">
                 <div class="px-3 py-1 text-xs font-semibold text-[#DCC8A3] uppercase tracking-wider">Informasi & Edukasi</div>
-                <a href="#jadwal-opbm" class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-emerald-100 hover:text-white hover:bg-white/10 rounded-lg">
-                    <i class="fa-solid fa-calendar-alt text-[#6B7F4E]"></i>
+                <a href="{{ url('/jadwal') }}" class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-emerald-100 hover:text-white hover:bg-white/10 rounded-lg">
+                    <i class="text-[#6B7F4E]"></i>
                     <span>Jadwal OPBM</span>
                 </a>
-                <a href="#transparansi" class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-emerald-100 hover:text-white hover:bg-white/10 rounded-lg">
-                    <i class="fa-solid fa-chart-pie text-[#4C6A73]"></i>
+                <a href="{{ url('/transparansi') }}" class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-emerald-100 hover:text-white hover:bg-white/10 rounded-lg">
+                    <i class="ext-[#4C6A73]"></i>
                     <span>Transparansi Alokasi Dana</span>
                 </a>
-                <a href="#edukasi" class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-emerald-100 hover:text-white hover:bg-white/10 rounded-lg">
-                    <i class="fa-solid fa-book-open text-[#DCC8A3]"></i>
+                <a href="{{ url('/edukasi') }}" class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-emerald-100 hover:text-white hover:bg-white/10 rounded-lg">
+                    <i class="text-[#DCC8A3]"></i>
                     <span>Edukasi</span>
-                </a>
-            </div>
-
-            <div class="pt-4">
-                <a href="#lapor-form" class="w-full bg-[#6B7F4E] hover:bg-[#4C6A73] text-white font-bold text-center py-3 rounded-xl shadow-md flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-bullhorn"></i>
-                    <span>Lapor TPS Liar Sekarang</span>
                 </a>
             </div>
         </div>
@@ -223,12 +218,11 @@
                     </p>
 
                     <div class="flex flex-wrap gap-4 pt-2">
-                        <a href="{{ route('lapor.index') }}" class="bg-[#6B7F4E] hover:scale-105 transition-all text-white font-bold px-6 py-3.5 rounded-xl shadow-lg transition-all flex items-center gap-2 text-sm">
-                            <i class="fa-solid fa-bullhorn"></i>
+                        <a href="{{ url('/lapor') }}" class="bg-[#6B7F4E] hover:scale-105 transition-all text-white font-bold px-6 py-3.5 rounded-xl shadow-lg transition-all flex items-center gap-2 text-sm"
                             <span>Lapor TPS Liar Sekarang</span>
                         </a>
 
-                        <a href="#lacak" class="bg-white/10 hover:bg-white/20 text-white font-bold px-6 py-3.5 rounded-xl border border-white/20 backdrop-blur-md transition-all text-sm">
+                        <a href="{{ url('/lacak') }}" class="bg-white/10 hover:bg-white/20 text-white font-bold px-6 py-3.5 rounded-xl border border-white/20 backdrop-blur-md transition-all text-sm">
                             <span>Lacak Laporan</span>
                         </a>
                     </div>
@@ -243,7 +237,7 @@
              ========================================== -->
 
         <!-- SECTION ALUR JALAN BERGELOMBANG (ROADMAP PROCESS) -->
-        <section class="py-20 bg-[#FFFAE8] relative overflow-hidden">
+        <section class="py-12 bg-[#FFFAE8] relative overflow-hidden">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 
                 <!-- Judul Section -->
@@ -394,129 +388,111 @@
         <!-- ==========================================
              SECTION: PREVIEW JADWAL OPBM TERDEKAT
              ========================================== -->
-        <section id="jadwal-opbm" class="py-16 bg-[#1F3D2E]/5 border-y border-[#5A4A3A]/10">
+        <section id="jadwal-opbm" class="py-20 bg-[#1F3D2E]/5 border-y border-[#5A4A3A]/10">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 
+                <!-- HEADER SECTION -->
                 <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
                     <div>
-                        <div class="flex items-center gap-2 text-[#6B7F4E] font-bold text-xs uppercase tracking-wider mb-1">
-                            <i class="fa-solid fa-calendar-check"></i>
-                            <span>Kegiatan Gotong Royong</span>
-                        </div>
-                        <h3 class="text-2xl sm:text-3xl font-extrabold text-[#1F3D2E]">Jadwal OPBM Terdekat</h3>
-                        <p class="text-sm text-[#5A4A3A] mt-1">Operasi Pembersihan Bersama Masyarakat di wilayah kecamatan minggu ini.</p>
+                        <span class="bg-[#6B7F4E]/20 text-[#1F3D2E] text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider inline-flex items-center gap-1.5">
+                            <i class="fa-solid fa-calendar-alt text-[#6B7F4E]"></i> Operasi Pembersihan Bersama
+                        </span>
+                        <h2 class="text-2xl sm:text-3xl font-extrabold text-[#1F3D2E] mt-3">Jadwal Penjemputan OPBM Terdekat</h2>
+                        <p class="text-sm text-[#5A4A3A] mt-1">Pantau hari dan jam keliling armada pembersihan sampah di wilayahmu.</p>
                     </div>
-
-                    <a href="#jadwal-lengkap" class="inline-flex items-center gap-2 text-[#1F3D2E] hover:text-[#4C6A73] font-bold text-sm bg-white border border-[#5A4A3A]/20 hover:border-[#4C6A73] px-5 py-2.5 rounded-xl transition-all shadow-sm self-start md:self-auto">
+                    
+                    <!-- Tombol Ke Halaman Jadwal Lengkap -->
+                    <a href="{{ url('/jadwal') }}" class="inline-flex items-center gap-2 bg-[#1F3D2E] hover:bg-[#4C6A73] text-white text-xs font-bold px-5 py-3 rounded-xl shadow-md transition-all shrink-0">
                         <span>Lihat Jadwal Selengkapnya</span>
-                        <i class="fa-solid fa-arrow-right text-xs"></i>
+                        <i class="fa-solid fa-arrow-right text-[10px]"></i>
                     </a>
                 </div>
 
-                <!-- 3 Card Grid OPBM -->
-                <div class="grid md:grid-cols-3 gap-6">
-                    
-                    <!-- OPBM Card 1 -->
-                    <div class="bg-white rounded-2xl p-6 border border-[#5A4A3A]/15 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
-                        <div>
-                            <div class="flex items-center justify-between mb-4">
-                                <span class="bg-[#6B7F4E]/15 text-[#6B7F4E] font-bold text-xs px-3 py-1 rounded-full uppercase">
-                                    Kec. Sukajadi
-                                </span>
-                                <span class="text-xs text-[#5A4A3A]/70 font-medium">Sabtu Ini</span>
-                            </div>
-                            <h4 class="text-lg font-bold text-[#1F3D2E] mb-3">OPBM Titik Rawan Sungai Kelurahan Dahlan</h4>
-                            <div class="space-y-2 text-xs text-[#5A4A3A] mb-6">
-                                <div class="flex items-center gap-2">
-                                    <i class="fa-solid fa-clock text-[#4C6A73] w-4"></i>
-                                    <span>07.00 - 10.30 WIB</span>
-                                </div>
-                                <div class="flex items-center gap-2">
-                                    <i class="fa-solid fa-location-dot text-[#4C6A73] w-4"></i>
-                                    <span>Bantaran Sungai Melati RW 04</span>
-                                </div>
-                                <div class="flex items-center gap-2">
-                                    <i class="fa-solid fa-users text-[#4C6A73] w-4"></i>
-                                    <span>Target: 50 Relawan & Petugas</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="pt-4 border-t border-gray-100 flex items-center justify-between text-xs">
-                            <span class="text-[#5A4A3A]/80 font-medium">Status: Open Relawan</span>
-                            <span class="text-[#6B7F4E] font-bold">Terjadwal &rarr;</span>
-                        </div>
-                    </div>
+                <!-- TABEL PREVIEW JADWAL -->
+                <div class="bg-white rounded-3xl shadow-lg border border-[#5A4A3A]/15 overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            
+                            <thead>
+                                <tr class="bg-[#1F3D2E] text-white text-xs uppercase tracking-wider font-semibold">
+                                    <th class="py-4 px-6">Wilayah / Kelurahan</th>
+                                    <th class="py-4 px-6">Cakupan Area (RT)</th>
+                                    <th class="py-4 px-6">Hari Penjemputan</th>
+                                    <th class="py-4 px-6">Jam Operasional</th>
+                                </tr>
+                            </thead>
 
-                    <!-- OPBM Card 2 -->
-                    <div class="bg-white rounded-2xl p-6 border border-[#5A4A3A]/15 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
-                        <div>
-                            <div class="flex items-center justify-between mb-4">
-                                <span class="bg-[#4C6A73]/15 text-[#4C6A73] font-bold text-xs px-3 py-1 rounded-full uppercase">
-                                    Kec. Senapelan
-                                </span>
-                                <span class="text-xs text-[#5A4A3A]/70 font-medium">Minggu Ini</span>
-                            </div>
-                            <h4 class="text-lg font-bold text-[#1F3D2E] mb-3">Pembersihan TPS Liar Lahan Kosong</h4>
-                            <div class="space-y-2 text-xs text-[#5A4A3A] mb-6">
-                                <div class="flex items-center gap-2">
-                                    <i class="fa-solid fa-clock text-[#4C6A73] w-4"></i>
-                                    <span>06.30 - 09.30 WIB</span>
-                                </div>
-                                <div class="flex items-center gap-[#4C6A73] gap-2">
-                                    <i class="fa-solid fa-location-dot text-[#4C6A73] w-4"></i>
-                                    <span>Area Pasar Minggu Lama</span>
-                                </div>
-                                <div class="flex items-center gap-2">
-                                    <i class="fa-solid fa-users text-[#4C6A73] w-4"></i>
-                                    <span>Armada: 2 Alat Berat & Truk</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="pt-4 border-t border-gray-100 flex items-center justify-between text-xs">
-                            <span class="text-[#5A4A3A]/80 font-medium">Status: Persiapan Peralatan</span>
-                            <span class="text-[#6B7F4E] font-bold">Terjadwal &rarr;</span>
-                        </div>
-                    </div>
+                            <tbody class="divide-y divide-gray-100 text-sm font-medium text-[#5A4A3A]">
+                                
+                                <!-- BARIS 1 -->
+                                <tr class="hover:bg-[#DCC8A3]/10 transition-colors">
+                                    <td class="py-4 px-6">
+                                        <div class="font-bold text-[#1F3D2E]">Kel. Dahlan</div>
+                                        <div class="text-xs text-[#5A4A3A]/70">Kec. Sukajadi</div>
+                                    </td>
+                                    <td class="py-4 px-6">
+                                        <span class="bg-[#6B7F4E]/10 text-[#1F3D2E] text-xs px-2.5 py-1 rounded-md font-semibold">RT 01 s/d RT 08</span>
+                                    </td>
+                                    <td class="py-4 px-6 whitespace-nowrap">
+                                        <div class="font-bold text-[#1F3D2E]">Senin & Kamis</div>
+                                    </td>
+                                    <td class="py-4 px-6 whitespace-nowrap">
+                                        <span class="text-xs bg-amber-50 text-amber-800 border border-amber-200 px-3 py-1 rounded-lg font-bold inline-flex items-center gap-1.5">
+                                            <i class="fa-regular fa-clock"></i> 06.30 - 09.00 WIB
+                                        </span>
+                                    </td>
+                                </tr>
 
-                    <!-- OPBM Card 3 -->
-                    <div class="bg-white rounded-2xl p-6 border border-[#5A4A3A]/15 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
-                        <div>
-                            <div class="flex items-center justify-between mb-4">
-                                <span class="bg-[#5A4A3A]/15 text-[#5A4A3A] font-bold text-xs px-3 py-1 rounded-full uppercase">
-                                    Kec. Tampan
-                                </span>
-                                <span class="text-xs text-[#5A4A3A]/70 font-medium">Pekan Depan</span>
-                            </div>
-                            <h4 class="text-lg font-bold text-[#1F3D2E] mb-3">Aksi Bersih Kanal & Penghijauan Pohon</h4>
-                            <div class="space-y-2 text-xs text-[#5A4A3A] mb-6">
-                                <div class="flex items-center gap-2">
-                                    <i class="fa-solid fa-clock text-[#4C6A73] w-4"></i>
-                                    <span>07.30 - 11.00 WIB</span>
-                                </div>
-                                <div class="flex items-center gap-2">
-                                    <i class="fa-solid fa-location-dot text-[#4C6A73] w-4"></i>
-                                    <span>Kanal Utama Perumahan Asri</span>
-                                </div>
-                                <div class="flex items-center gap-2">
-                                    <i class="fa-solid fa-users text-[#4C6A73] w-4"></i>
-                                    <span>Target: Warga RT 01-05</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="pt-4 border-t border-gray-100 flex items-center justify-between text-xs">
-                            <span class="text-[#5A4A3A]/80 font-medium">Status: Koordinasi RT</span>
-                            <span class="text-[#6B7F4E] font-bold">Terjadwal &rarr;</span>
-                        </div>
-                    </div>
+                                <!-- BARIS 2 -->
+                                <tr class="hover:bg-[#DCC8A3]/10 transition-colors">
+                                    <td class="py-4 px-6">
+                                        <div class="font-bold text-[#1F3D2E]">Kel. Kebun Handil</div>
+                                        <div class="text-xs text-[#5A4A3A]/70">Kec. Jelutung</div>
+                                    </td>
+                                    <td class="py-4 px-6">
+                                        <span class="bg-[#6B7F4E]/10 text-[#1F3D2E] text-xs px-2.5 py-1 rounded-md font-semibold">RT 01 s/d RT 15</span>
+                                    </td>
+                                    <td class="py-4 px-6 whitespace-nowrap">
+                                        <div class="font-bold text-[#1F3D2E]">Selasa & Jumat</div>
+                                    </td>
+                                    <td class="py-4 px-6 whitespace-nowrap">
+                                        <span class="text-xs bg-amber-50 text-amber-800 border border-amber-200 px-3 py-1 rounded-lg font-bold inline-flex items-center gap-1.5">
+                                            <i class="fa-regular fa-clock"></i> 07.00 - 10.00 WIB
+                                        </span>
+                                    </td>
+                                </tr>
 
+                                <!-- BARIS 3 -->
+                                <tr class="hover:bg-[#DCC8A3]/10 transition-colors">
+                                    <td class="py-4 px-6">
+                                        <div class="font-bold text-[#1F3D2E]">Kel. Lingkar Selatan</div>
+                                        <div class="text-xs text-[#5A4A3A]/70">Kec. Paal Merah</div>
+                                    </td>
+                                    <td class="py-4 px-6">
+                                        <span class="bg-[#6B7F4E]/10 text-[#1F3D2E] text-xs px-2.5 py-1 rounded-md font-semibold">RT 05 s/d RT 18</span>
+                                    </td>
+                                    <td class="py-4 px-6 whitespace-nowrap">
+                                        <div class="font-bold text-[#1F3D2E]">Rabu & Sabtu</div>
+                                    </td>
+                                    <td class="py-4 px-6 whitespace-nowrap">
+                                        <span class="text-xs bg-amber-50 text-amber-800 border border-amber-200 px-3 py-1 rounded-lg font-bold inline-flex items-center gap-1.5">
+                                            <i class="fa-regular fa-clock"></i> 06.30 - 09.30 WIB
+                                        </span>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
+
             </div>
         </section>
 
         <!-- ==========================================
              SECTION: PREVIEW EDUKASI (ARTIKEL & VIDEO)
              ========================================== -->
-        <section id="edukasi" class="py-16 bg-[#FFFAE8] max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section id="edukasi" class="py-12 bg-[#FFFAE8] max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
                 <div>
                     <div class="flex items-center gap-2 text-[#4C6A73] font-bold text-xs uppercase tracking-wider mb-1">
@@ -669,7 +645,7 @@
 
                     <!-- CTA Right -->
                     <div class="md:col-span-4 flex flex-col items-center md:items-end justify-center pt-4 md:pt-0 border-t md:border-t-0 border-white/10">
-                        <a href="#transparansi-detail" class="w-full sm:w-auto bg-[#DCC8A3] hover:bg-white text-[#1F3D2E] font-bold px-6 py-3.5 rounded-xl shadow-md transition-all text-center flex items-center justify-center gap-2">
+                        <a href="{{ url('/transparansi-detail') }}" class="w-full sm:w-auto bg-[#DCC8A3] hover:bg-white text-[#1F3D2E] font-bold px-6 py-3.5 rounded-xl shadow-md transition-all text-center flex items-center justify-center gap-2">
                             <span>Lihat Komponen Alokasi</span>
                             <i class="fa-solid fa-arrow-right-long text-sm"></i>
                         </a>
@@ -704,11 +680,12 @@
 
                 <!-- Footer Quick Links -->
                 <div class="flex flex-wrap justify-center gap-6 text-xs text-emerald-200 font-medium">
-                    <a href="#" class="hover:text-white transition-colors">Beranda</a>
-                    <a href="#lapor" class="hover:text-white transition-colors">Lapor TPS</a>
-                    <a href="#lacak" class="hover:text-white transition-colors">Lacak Status</a>
-                    <a href="#jadwal-opbm" class="hover:text-white transition-colors">Jadwal OPBM</a>
-                    <a href="#transparansi" class="hover:text-white transition-colors">Transparansi Dana</a>
+                    <a href="{{ url('/') }}" class="hover:text-white transition-colors">Beranda</a>
+                    <a href="{{ url('/lapor') }}" class="hover:text-white transition-colors">Lapor TPS</a>
+                    <a href="{{ url('/lacak') }}" class="hover:text-white transition-colors">Lacak Status</a>
+                    <a href="{{ url('/jadwal-opbm') }}" class="hover:text-white transition-colors">Jadwal OPBM</a>
+                    <a href="{{ url('/transparansi') }}" class="hover:text-white transition-colors">Transparansi Dana</a>
+                    <a href="{{ url('/edukasi') }}" class="hover:text-white transition-colors">Edukasi & Media</a>
                 </div>
 
             </div>
