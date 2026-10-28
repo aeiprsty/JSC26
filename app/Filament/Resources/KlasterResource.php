@@ -24,18 +24,46 @@ class KlasterResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('anchor_lat')
-                    ->required()
-                    ->numeric(),
+                    ->label('Latitude')
+                    ->disabled(),
+
                 Forms\Components\TextInput::make('anchor_lng')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('status')
+                    ->label('Longitude')
+                    ->disabled(),
+
+                Forms\Components\Select::make('status')
+                    ->label('Status Klaster')
+                    ->options([
+                        'menunggu_verifikasi' => 'Menunggu Verifikasi',
+                        'terverifikasi' => 'Terverifikasi',
+                        'disposisi' => 'Disposisi',
+                        'ditugaskan' => 'Ditugaskan',
+                        'dalam_proses' => 'Dalam Proses',
+                        'selesai' => 'Selesai',
+                        'ditolak' => 'Ditolak',
+                    ])
                     ->required(),
-                Forms\Components\TextInput::make('assigned_to')
-                    ->numeric(),
+
+                Forms\Components\Select::make('assigned_to')
+                    ->label('Petugas')
+                    ->relationship('petugas', 'name')
+                    ->searchable()
+                    ->preload(),
+
                 Forms\Components\Textarea::make('alasan_tolak')
-                    ->columnSpanFull(),
-                Forms\Components\TextInput::make('foto_bukti'),
+                    ->label('Alasan Penolakan')
+                    ->visible(fn (Forms\Get $get): bool =>
+                        $get('status') === 'ditolak'
+                    )
+                    ->required(fn (Forms\Get $get): bool =>
+                        $get('status') === 'ditolak'
+                    ),
+
+                Forms\Components\FileUpload::make('foto_bukti')
+                    ->label('Foto Bukti Pembersihan')
+                    ->image()
+                    ->disk('public')
+                    ->directory('bukti-klaster'),
             ]);
     }
 
@@ -70,11 +98,6 @@ class KlasterResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
             ]);
     }
 
@@ -89,8 +112,17 @@ class KlasterResource extends Resource
     {
         return [
             'index' => Pages\ListKlasters::route('/'),
-            'create' => Pages\CreateKlaster::route('/create'),
             'edit' => Pages\EditKlaster::route('/{record}/edit'),
         ];
+    }
+
+    public static function canCreate(): bool
+    {
+        return false;
+    }
+
+    public static function canDelete(\Illuminate\Database\Eloquent\Model $record): bool
+    {
+        return false;
     }
 }
