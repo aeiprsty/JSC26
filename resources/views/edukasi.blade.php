@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edukasi & Media Kebersihan - SIPAS-LIAR</title>
+    <title>Edukasi & Media Kebersihan - JambiBersih</title>
     
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -34,7 +34,7 @@
                         <i class="fa-solid font-bold fa-leaf text-xl"></i>
                     </div>
                     <div class="flex flex-col">
-                        <span class="font-extrabold text-lg tracking-tight leading-none text-white group-hover:text-[#DCC8A3] transition-colors">SIPAS</span>
+                        <span class="font-extrabold text-lg tracking-tight leading-none text-white group-hover:text-[#DCC8A3] transition-colors">JambiBersih</span>
                         <span class="text-[10px] text-[#DCC8A3] font-medium tracking-wider uppercase">Dinas Lingkungan Hidup Kota Jambi</span>
                     </div>
                 </a>
@@ -86,7 +86,7 @@
                                 </div>
                                 <div>
                                     <div class="font-bold">Edukasi & Media</div>
-                                    <div class="text-[11px] text-[#5A4A3A]/70">Artikel, Tip & Video Pembelajaran</div>
+                                    <div class="text-[11px] text-[#5A4A3A]/70">Artikel, Tips & Video Edukasi</div>
                                 </div>
                             </a>
                         </div>
@@ -103,7 +103,7 @@
         </div>
 
         <!-- Mobile Menu Navigation Panel -->
-        <div id="mobile-menu" class="hidden md:hidden bg-[#1F3D2E] border-t border-white/10 px-4 pt-3 pb-6 space-y-2">
+        <div id="mobile-menu" class="hidden md:hidden absolute top-full left-0 w-full bg-[#1F3D2E] border-t border-b border-white/10 px-4 pt-3 pb-6 space-y-2 shadow-2xl z-50">
             <a href="{{ url('/') }}" class="block px-3 py-2 rounded-lg text-base font-medium text-emerald-100 hover:text-white hover:bg-white/10">
                 Beranda
             </a>
@@ -117,15 +117,15 @@
             <div class="pt-2 border-t border-white/10">
                 <div class="px-3 py-1 text-xs font-semibold text-[#DCC8A3] uppercase tracking-wider">Informasi & Edukasi</div>
                 <a href="{{ url('/jadwal') }}" class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-emerald-100 hover:text-white hover:bg-white/10 rounded-lg">
-                    <i class="fa-solid fa-calendar-alt text-[#6B7F4E]"></i>
+                    <i class="text-[#6B7F4E]"></i>
                     <span>Jadwal OPBM</span>
                 </a>
                 <a href="{{ url('/transparansi') }}" class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-emerald-100 hover:text-white hover:bg-white/10 rounded-lg">
-                    <i class="fa-solid fa-chart-pie text-[#4C6A73]"></i>
+                    <i class="text-[#4C6A73]"></i>
                     <span>Transparansi Alokasi Dana</span>
                 </a>
                 <a href="{{ url('/edukasi') }}" class="flex items-center gap-3 px-3 py-2.5 text-sm font-bold text-white bg-white/10 rounded-lg">
-                    <i class="fa-solid fa-book-open text-[#DCC8A3]"></i>
+                    <i class="text-[#DCC8A3]"></i>
                     <span>Edukasi</span>
                 </a>
             </div>
@@ -219,7 +219,7 @@
                     <div class="p-5">
                         <span class="text-[10px] bg-blue-100 text-blue-800 font-bold px-2.5 py-0.5 rounded-md">Operasional OPBM</span>
                         <h3 class="text-sm font-bold text-[#1F3D2E] mt-2 line-clamp-2">Mengenal Cara Kerja Armada Motor Bentor Hijau</h3>
-                        <p class="text-xs text-[#5A4A3A]/80 mt-1 line-clamp-2">Melihat langsung rute kerja petugas kebersihan menjemput sampah ke lorong warga.</p>
+                        <p class="text-xs text-[#5A4A3A]/80 mt-1 line-clamp-2">Melihat langsung rute kerja petugas kebersihan menjemput sampah ke lorong Masyarakat.</p>
                     </div>
                 </div>
 
@@ -312,7 +312,7 @@
                             Peran Aktif Bank Sampah Kelurahan Dalam Menjaga Lingkungan
                         </h3>
                         <p class="text-xs sm:text-sm text-[#5A4A3A] line-clamp-2">
-                            Simak cerita sukses partisipasi warga di tingkat RT yang berhasil menukar limbah plastik bernilai ekonomis melalui program Bank Sampah.
+                            Simak cerita sukses partisipasi masyarakat di tingkat RT yang berhasil menukar limbah plastik bernilai ekonomis melalui program Bank Sampah.
                         </p>
                         <a href="#" class="inline-flex items-center gap-1.5 text-xs font-bold text-[#1F3D2E] hover:text-[#6B7F4E] pt-1">
                             <span>Baca Selengkapnya</span>
@@ -346,7 +346,7 @@
                 <div class="flex flex-wrap justify-center gap-6 text-xs text-emerald-200 font-medium">
                     <a href="{{ url('/') }}" class="hover:text-white transition-colors">Beranda</a>
                     <a href="{{ url('/lapor') }}" class="hover:text-white transition-colors">Lapor TPS</a>
-                    <a href="{{ url('/lacak') }}" class="hover:text-white transition-colors">Lacak Status</a>
+                    <a href="{{ url('/lacak') }}" class="hover:text-white transition-colors">Cek Penanganan TPS</a>
                     <a href="{{ url('/jadwal') }}" class="hover:text-white transition-colors">Jadwal OPBM</a>
                     <a href="{{ url('/transparansi') }}" class="hover:text-white transition-colors">Transparansi Dana</a>
                     <a href="{{ url('/edukasi') }}" class="hover:text-white transition-colors">Edukasi & Media</a>

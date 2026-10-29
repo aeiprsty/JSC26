@@ -35,35 +35,7 @@
         }
     </style>
 
-    <!-- CDN FontAwesome (Memastikan Ikon Muncul) -->
-    <style>
-        .truck-container {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 25;
-        }
 
-        /* Tanpa lingkaran putih, murni gambar truk yang berjalan */
-        .truck-moving {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 200px; /* Sesuaikan ukuran truk */
-            height: auto;
-            filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3)); /* Efek bayangan tipis agar terlihat hidup */
-            offset-path: path('M 50 100 C 200 100, 250 280, 400 280 C 550 280, 600 70, 750 70 C 900 70, 950 280, 1150 280');
-            animation: jalanJalur 12s infinite linear;
-        }
-
-        @keyframes jalanJalur {
-            0% { offset-distance: 0%; }
-            100% { offset-distance: 100%; }
-        }
-    </style>
 
 </head>
 <body class="bg-[#DCC8A3] text-[#5A4A3A] antialiased selection:bg-[#6B7F4E] selection:text-white overflow-x-hidden min-h-screen flex flex-col">
@@ -82,7 +54,7 @@
                         <i class="fa-solid font-bold fa-leaf text-xl"></i>
                     </div>
                     <div class="flex flex-col">
-                        <span class="font-extrabold text-lg tracking-tight leading-none text-white group-hover:text-[#DCC8A3] transition-colors">SIPAS</span>
+                        <span class="font-extrabold text-lg tracking-tight leading-none text-white group-hover:text-[#DCC8A3] transition-colors">JambiBersih</span>
                         <span class="text-[10px] text-[#DCC8A3] font-medium tracking-wider uppercase">Dinas Lingkungan Hidup Kota Jambi</span>
                     </div>
                 </a>
@@ -110,7 +82,7 @@
                         
                         <div id="desktop-menu" class="hidden group-hover:block absolute right-0 mt-1 w-64 bg-white rounded-xl shadow-xl border border-[#5A4A3A]/10 py-2 text-[#5A4A3A] z-50 animate-fadeIn">
                             <a href="{{ url('/jadwal') }}" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium hover:bg-[#DCC8A3]/30 hover:text-[#1F3D2E] transition-colors">
-                                <div class="w-8 h-8 rounded-lg bg-[#4C6A73]/10 flex items-center justify-center text-[#4C6A73]">
+                                <div class="w-8 h-8 rounded-lg bg-[#6B7F4E]/10 flex items-center justify-center text-[#6B7F4E]">
                                     <i class="fa-solid fa-calendar-alt text-xs"></i>
                                 </div>
                                 <div>
@@ -128,7 +100,7 @@
                                 </div>
                             </a>
                             <a href="{{ url('/edukasi') }}" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium hover:bg-[#DCC8A3]/30 hover:text-[#1F3D2E] transition-colors">
-                                <div class="w-8 h-8 rounded-lg bg-[#4C6A73]/10 flex items-center justify-center text-[#4C6A73]">
+                                <div class="w-8 h-8 rounded-lg bg-[#1F3D2E]/10 flex items-center justify-center text-[#1F3D2E]">
                                     <i class="fa-solid fa-book-open text-xs"></i>
                                 </div>
                                 <div>
@@ -150,11 +122,11 @@
         </div>
 
         <!-- Mobile Menu Navigation Panel -->
-        <div id="mobile-menu" class="hidden md:hidden bg-[#1F3D2E] border-t border-white/10 px-4 pt-3 pb-6 space-y-2">
-            <a href="{{ url('/') }}" class="block px-3 py-2 rounded-lg text-base font-medium text-emerald-100 hover:text-white hover:bg-white/10">
+        <div id="mobile-menu" class="hidden md:hidden absolute top-full left-0 w-full bg-[#1F3D2E] border-t border-b border-white/10 px-4 pt-3 pb-6 space-y-2 shadow-2xl z-50">
+            <a href="{{ url('/') }}" class="block px-3 py-2 rounded-lg text-base font-semibold text-white bg-white/10">
                 Beranda
             </a>
-            <a href="{{ url('/lapor') }}" class="block px-3 py-2 rounded-lg text-base font-semibold text-white bg-white/10">
+            <a href="{{ url('/lapor') }}" class="block px-3 py-2 rounded-lg text-base font-medium text-emerald-100 hover:text-white hover:bg-white/10">
                 Lapor TPS
             </a>
             <a href="{{ url('/lacak') }}" class="block px-3 py-2 rounded-lg text-base font-medium text-emerald-100 hover:text-white hover:bg-white/10">
@@ -201,7 +173,7 @@
 
             <!-- 2. KONTEN UTAMA (DI ATAS OVERLAY) -->
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
-                <div class="max-w-xl space-y-6">
+                <div class="max-w-xl space-y-6 reveal opacity-0 translate-y-10 transition-all duration-700 ease-out">
                     
                     <span class="inline-flex items-center gap-2 bg-[#6B7F4E]/30 text-[#DCC8A3] border border-[#6B7F4E]/50 text-xs font-bold px-3.5 py-1.5 rounded-full uppercase tracking-wider backdrop-blur-sm">
                         <i class="fa-solid fa-leaf text-[#6B7F4E]"></i>
@@ -237,11 +209,13 @@
              ========================================== -->
 
         <!-- SECTION ALUR JALAN BERGELOMBANG (ROADMAP PROCESS) -->
-        <section class="py-12 bg-[#FFFAE8] relative overflow-hidden">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- SECTION ALUR JALAN BERGELOMBANG (ROADMAP PROCESS) -->
+        <section id="alur" class="relative py-20 bg-[#FFFAE8]">
+            <!-- Isi Konten Alur Operasional -->
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                 
                 <!-- Judul Section -->
-                <div class="text-center max-w-2xl mx-auto mb-1 space-y-2">
+                <div class="text-center max-w-2xl mx-auto mb-1 space-y-2 reveal opacity-0 translate-y-10 transition-all duration-700 ease-out">
                     <span class="text-[#6B7F4E] font-bold text-xs uppercase tracking-widest bg-[#6B7F4E]/10 px-3.5 py-1.5 rounded-full">
                         Alur Operasional
                     </span>
@@ -249,14 +223,14 @@
                         Proses Penanganan TPS Liar
                     </h2>
                     <p class="text-sm text-[#5A4A3A]">
-                        Perjalanan laporan warga dari pengaduan awal hingga penanganan bersih di lapangan.
+                        Perjalanan laporan masyarakat dari pengaduan awal hingga penanganan bersih di lapangan.
                     </p>
                 </div>
 
                 <!-- CONTAINER JALAN SVG & TITIK ALUR -->
                 <div class="relative w-full aspect-[12/4] min-h-[450px] md:min-h-[380px]">
 
-                    <!-- 1. SVG JALAN RAYA BERGELOMBANG -->
+                    <!-- 1. SVG JALAN RAYA BERGELOMBANG & ANIMASI TRUK -->
                     <div class="absolute inset-0 w-full h-full pointer-events-none hidden md:block z-0">
                         <svg viewBox="0 0 1200 350" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
                             <!-- Aspal Jalan -->
@@ -266,40 +240,42 @@
                             <!-- Markah Putus-Putus -->
                             <path d="M 50 100 C 200 100, 250 280, 400 280 C 550 280, 600 70, 750 70 C 900 70, 950 280, 1150 280" 
                                 stroke="#FFFFFF" stroke-width="4" stroke-dasharray="14 14" stroke-linecap="round"/>
+
+                            <!-- ANIMASI TRUK SAMPAH (TERKUNCI DI DALAM SVG & OTOMATIS MIRING) -->
+                            <g>
+                                <image href="{{ asset('images/truk-hijau.png') }}" x="-120" y="-90" width="240" height="144" />
+                                <animateMotion 
+                                    path="M 50 100 C 200 100, 250 280, 400 280 C 550 280, 600 70, 750 70 C 900 70, 950 280, 1150 280" 
+                                    dur="12s" 
+                                    repeatCount="indefinite" 
+                                    rotate="auto" />
+                            </g>
                         </svg>
                     </div>
 
-                    <!-- 2. ANIMASI MOBIL SAMPAH BERJALAN -->
-                    <div class="truck-container hidden md:block">
-                        <img src="{{ asset('images/truk-hijau.png') }}" 
-                            alt="Truk Sampah Berjalan" 
-                            class="truck-moving object-contain">
-                    </div>
-
-                    <!-- 3. TITIK-TITIK ALUR (DESKTOP ABSOLUTE POSITIONING) -->
+                    <!-- 2. TITIK-TITIK ALUR (KEMBALI KE POSISI ASLI REFA YANG RAPI) -->
+                    <!-- 2. TITIK-TITIK ALUR (DENGAN ANIMASI SCROLL BERURUTAN DESKTOP) -->
                     <div class="hidden md:block absolute inset-0 z-20">
                         
-                        <!-- Titik 1: Foto & Lokasi (Teks di Atas Jalan) -->
-                        <div class="absolute" style="left: 6%; top: 45%;">
+                        <!-- Titik 1: Foto & Lokasi (Tanpa Delay) -->
+                        <div class="absolute reveal opacity-0 translate-y-10 transition-all duration-700 ease-out" style="left: 6%; top: 45%;">
                             <div class="relative flex flex-col items-center">
                                 <div class="w-16 h-16 rounded-full bg-[#1F3D2E] text-white flex items-center justify-center text-2xl shadow-xl border-4 border-white z-10">
                                     <i class="fa-solid fa-camera"></i>
                                 </div>
-                                <!-- Box Teks di Atas Lingkaran -->
                                 <div class="absolute top-[115%] w-52 text-center bg-white/90 backdrop-blur-sm p-3 rounded-2xl border border-slate-200 shadow-md">
                                     <h3 class="font-bold text-[#1F3D2E] text-sm">1. Foto & Lokasi</h3>
-                                    <p class="text-[11px] text-[#5A4A3A] mt-0.5 leading-snug">Warga mengambil foto tumpukan sampah & patokan titik lokasi.</p>
+                                    <p class="text-[11px] text-[#5A4A3A] mt-0.5 leading-snug">Masyarakat mengambil foto tumpukan sampah & patokan titik lokasi.</p>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Titik 2: Terbit Kode Tiket (Teks di Bawah Jalan) -->
-                        <div class="absolute" style="left: 31%; top: 45%;">
+                        <!-- Titik 2: Terbit Kode Tiket (Delay 150ms) -->
+                        <div class="absolute reveal opacity-0 translate-y-10 transition-all duration-700 delay-150 ease-out" style="left: 31%; top: 45%;">
                             <div class="relative flex flex-col items-center">
                                 <div class="w-16 h-16 rounded-full bg-[#4C6A73] text-white flex items-center justify-center text-2xl shadow-xl border-4 border-white z-10">
                                     <i class="fa-solid fa-ticket"></i>
                                 </div>
-                                <!-- Box Teks di Bawah Lingkaran -->
                                 <div class="absolute bottom-[115%] w-52 text-center bg-white/90 backdrop-blur-sm p-3 rounded-2xl border border-slate-200 shadow-md">
                                     <h3 class="font-bold text-[#1F3D2E] text-sm">2. Terbit Kode Tiket</h3>
                                     <p class="text-[11px] text-[#5A4A3A] mt-0.5 leading-snug">Sistem memberikan kode lacak unik untuk memantau status.</p>
@@ -307,13 +283,12 @@
                             </div>
                         </div>
 
-                        <!-- Titik 3: Pembersihan OPBM (Teks di Atas Jalan) -->
-                        <div class="absolute" style="left: 60%; top: 45%;">
+                        <!-- Titik 3: Pembersihan OPBM (Delay 300ms) -->
+                        <div class="absolute reveal opacity-0 translate-y-10 transition-all duration-700 delay-300 ease-out" style="left: 60%; top: 45%;">
                             <div class="relative flex flex-col items-center">
                                 <div class="w-16 h-16 rounded-full bg-[#6B7F4E] text-white flex items-center justify-center text-2xl shadow-xl border-4 border-white z-10">
                                     <i class="fa-solid fa-people-carry-box"></i>
                                 </div>
-                                <!-- Box Teks di Atas Lingkaran -->
                                 <div class="absolute top-[115%] w-52 text-center bg-white/90 backdrop-blur-sm p-3 rounded-2xl border border-slate-200 shadow-md">
                                     <h3 class="font-bold text-[#1F3D2E] text-sm">3. Pembersihan OPBM</h3>
                                     <p class="text-[11px] text-[#5A4A3A] mt-0.5 leading-snug">Armada bentor/truk dan tim bergerak membersihkan lokasi.</p>
@@ -321,13 +296,12 @@
                             </div>
                         </div>
 
-                        <!-- Titik 4: Wilayah Bersih (Teks di Bawah Jalan) -->
-                        <div class="absolute" style="left: 88%; top: 45%;">
+                        <!-- Titik 4: Wilayah Bersih (Delay 500ms) -->
+                        <div class="absolute reveal opacity-0 translate-y-10 transition-all duration-700 delay-500 ease-out" style="left: 88%; top: 45%;">
                             <div class="relative flex flex-col items-center">
                                 <div class="w-16 h-16 rounded-full bg-[#5A4A3A] text-white flex items-center justify-center text-2xl shadow-xl border-4 border-white z-10">
                                     <i class="fa-solid fa-circle-check"></i>
                                 </div>
-                                <!-- Box Teks di Bawah Lingkaran -->
                                 <div class="absolute bottom-[115%] w-52 text-center bg-white/90 backdrop-blur-sm p-3 rounded-2xl border border-slate-200 shadow-md">
                                     <h3 class="font-bold text-[#1F3D2E] text-sm">4. Wilayah Bersih</h3>
                                     <p class="text-[11px] text-[#5A4A3A] mt-0.5 leading-snug">Lokasi bersih kembali dan status laporan diperbarui jadi Selesai.</p>
@@ -337,19 +311,19 @@
 
                     </div>
 
-                    <!-- TAMPILAN RESPONSIVENESS KHUSUS MOBILE (HP) -->
+                    <!-- TAMPILAN RESPONSIVENESS KHUSUS MOBILE (HP) DENGAN ANIMASI SCROLL -->
                     <div class="grid grid-cols-1 gap-6 md:hidden relative z-20">
-                        <div class="flex items-center gap-4 bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+                        <div class="flex items-center gap-4 bg-white p-4 rounded-2xl border border-slate-200 shadow-sm reveal opacity-0 translate-y-10 transition-all duration-700 ease-out">
                             <div class="w-12 h-12 rounded-full bg-[#1F3D2E] text-white flex items-center justify-center text-xl shrink-0">
                                 <i class="fa-solid fa-camera"></i>
                             </div>
                             <div>
                                 <h3 class="font-bold text-[#1F3D2E] text-sm">1. Foto & Lokasi</h3>
-                                <p class="text-xs text-[#5A4A3A]">Warga mengambil foto tumpukan sampah & patokan titik lokasi.</p>
+                                <p class="text-xs text-[#5A4A3A]">Masyarakat mengambil foto tumpukan sampah & patokan titik lokasi.</p>
                             </div>
                         </div>
 
-                        <div class="flex items-center gap-4 bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+                        <div class="flex items-center gap-4 bg-white p-4 rounded-2xl border border-slate-200 shadow-sm reveal opacity-0 translate-y-10 transition-all duration-700 delay-150 ease-out">
                             <div class="w-12 h-12 rounded-full bg-[#4C6A73] text-white flex items-center justify-center text-xl shrink-0">
                                 <i class="fa-solid fa-ticket"></i>
                             </div>
@@ -359,7 +333,7 @@
                             </div>
                         </div>
 
-                        <div class="flex items-center gap-4 bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+                        <div class="flex items-center gap-4 bg-white p-4 rounded-2xl border border-slate-200 shadow-sm reveal opacity-0 translate-y-10 transition-all duration-700 delay-300 ease-out">
                             <div class="w-12 h-12 rounded-full bg-[#6B7F4E] text-white flex items-center justify-center text-xl shrink-0">
                                 <i class="fa-solid fa-people-carry-box"></i>
                             </div>
@@ -369,7 +343,7 @@
                             </div>
                         </div>
 
-                        <div class="flex items-center gap-4 bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+                        <div class="flex items-center gap-4 bg-white p-4 rounded-2xl border border-slate-200 shadow-sm reveal opacity-0 translate-y-10 transition-all duration-700 delay-500 ease-out">
                             <div class="w-12 h-12 rounded-full bg-[#5A4A3A] text-white flex items-center justify-center text-xl shrink-0">
                                 <i class="fa-solid fa-circle-check"></i>
                             </div>
@@ -388,11 +362,14 @@
         <!-- ==========================================
              SECTION: PREVIEW JADWAL OPBM TERDEKAT
              ========================================== -->
-        <section id="jadwal-opbm" class="py-20 bg-[#1F3D2E]/5 border-y border-[#5A4A3A]/10">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section id="jadwal-opbm" class="relative py-20 bg-[#DCC8A3]/40">
+            <!-- Overlay Gradasi Mulus dari Alur (#FFFAE8) ke Jadwal -->
+            <div class="absolute top-0 inset-x-0 h-24 bg-gradient-to-b from-[#FFFAE8] to-transparent pointer-events-none"></div>
+
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                 
                 <!-- HEADER SECTION -->
-                <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
+                <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4 reveal opacity-0 translate-y-10 transition-all duration-700 ease-out">
                     <div>
                         <span class="bg-[#6B7F4E]/20 text-[#1F3D2E] text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider inline-flex items-center gap-1.5">
                             <i class="fa-solid fa-calendar-alt text-[#6B7F4E]"></i> Operasi Pembersihan Bersama
@@ -402,14 +379,14 @@
                     </div>
                     
                     <!-- Tombol Ke Halaman Jadwal Lengkap -->
-                    <a href="{{ url('/jadwal') }}" class="inline-flex items-center gap-2 bg-[#1F3D2E] hover:bg-[#4C6A73] text-white text-xs font-bold px-5 py-3 rounded-xl shadow-md transition-all shrink-0">
+                    <a href="{{ url('/jadwal') }}" class="inline-flex items-center gap-2 text-xs font-extrabold text-[#1F3D2E] hover:text-[#6B7F4E] transition-colors shrink-0">
                         <span>Lihat Jadwal Selengkapnya</span>
                         <i class="fa-solid fa-arrow-right text-[10px]"></i>
                     </a>
                 </div>
 
                 <!-- TABEL PREVIEW JADWAL -->
-                <div class="bg-white rounded-3xl shadow-lg border border-[#5A4A3A]/15 overflow-hidden">
+                <div class="bg-white rounded-3xl shadow-lg border border-[#5A4A3A]/15 overflow-hidden reveal opacity-0 translate-y-10 transition-all duration-700 delay-150 ease-out">
                     <div class="overflow-x-auto">
                         <table class="w-full text-left border-collapse">
                             
@@ -492,123 +469,176 @@
         <!-- ==========================================
              SECTION: PREVIEW EDUKASI (ARTIKEL & VIDEO)
              ========================================== -->
-        <section id="edukasi" class="py-12 bg-[#FFFAE8] max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
-                <div>
-                    <div class="flex items-center gap-2 text-[#4C6A73] font-bold text-xs uppercase tracking-wider mb-1">
-                        <i class="fa-solid fa-graduation-cap"></i>
-                        <span>Pusat Pengetahuan</span>
+        <section id="edukasi" class="relative py-20 bg-[#FFFAE8]">
+            <!-- Overlay Gradasi Mulus dari Cokelat Jadwal (#DCC8A3) Memudar ke Krem Edukasi -->
+            <div class="absolute top-0 inset-x-0 h-24 bg-gradient-to-b from-[#DCC8A3] to-transparent pointer-events-none"></div>
+
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                
+                <!-- HEADER SECTION -->
+                <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-4 reveal opacity-0 translate-y-10 transition-all duration-700 ease-out">
+                    <div>
+                        <span class="bg-[#6B7F4E]/20 text-[#1F3D2E] text-xs font-bold px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-flex items-center gap-1.5">
+                            <i class="fa-solid fa-graduation-cap text-[#6B7F4E]"></i> Literasi Kebersihan
+                        </span>
+                        <h2 class="text-2xl sm:text-3xl font-extrabold text-[#1F3D2E] mt-3">Edukasi & Media Kebersihan</h2>
+                        <p class="text-sm text-[#5A4A3A] mt-1">Tingkatkan kepedulian lingkungan melalui video edukatif dan artikel panduan.</p>
                     </div>
-                    <h3 class="text-2xl sm:text-3xl font-extrabold text-[#1F3D2E]">Edukasi Kebersihan & Sampah</h3>
-                    <p class="text-sm text-[#5A4A3A] mt-1">Artikel ringkas dan video panduan pengelolaan sampah mandiri dari rumah.</p>
+                    <a href="{{ url('/edukasi') }}" class="inline-flex items-center gap-2 text-xs font-extrabold text-[#1F3D2E] hover:text-[#6B7F4E] transition-colors shrink-0">
+                        <span>Lihat Semua Media</span>
+                        <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                    </a>
                 </div>
 
-                <a href="#edukasi-lainnya" class="inline-flex items-center gap-2 text-[#1F3D2E] hover:text-[#4C6A73] font-bold text-sm bg-white border border-[#5A4A3A]/20 hover:border-[#4C6A73] px-5 py-2.5 rounded-xl transition-all shadow-sm self-start md:self-auto">
-                    <span>Lihat Edukasi Lainnya</span>
-                    <i class="fa-solid fa-arrow-right text-xs"></i>
-                </a>
-            </div>
+                <!-- GRID 2 KOLOM -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                    
+                    <!-- KOLOM KIRI: SLIDER VIDEO 3D TANPA BINGKAI KOTAK -->
+                    <div class="lg:col-span-7 space-y-3 reveal opacity-0 translate-y-10 transition-all duration-700 ease-out">
+                        <div class="flex items-center justify-between px-1">
+                            <h3 class="text-base font-bold text-[#1F3D2E] flex items-center gap-2">
+                                <i class="fa-solid fa-circle-play text-[#6B7F4E]"></i> Video Edukasi
+                            </h3>
+                            
+                            <!-- Tombol Navigasi Panah -->
+                            <div class="flex items-center gap-2">
+                                <button type="button" onclick="prevVideoStack()" class="w-8 h-8 rounded-full bg-white border border-[#5A4A3A]/20 text-[#1F3D2E] hover:bg-[#1F3D2E] hover:text-white transition-all flex items-center justify-center shadow-sm">
+                                    <i class="fa-solid fa-chevron-left text-xs"></i>
+                                </button>
+                                <button type="button" onclick="nextVideoStack()" class="w-8 h-8 rounded-full bg-white border border-[#5A4A3A]/20 text-[#1F3D2E] hover:bg-[#1F3D2E] hover:text-white transition-all flex items-center justify-center shadow-sm">
+                                    <i class="fa-solid fa-chevron-right text-xs"></i>
+                                </button>
+                            </div>
+                        </div>
 
-            <!-- 3 Card Grid Edukasi -->
-            <div class="grid md:grid-cols-3 gap-8">
-                
-                <!-- Card Edukasi 1 (Artikel) -->
-                <article class="bg-white rounded-2xl overflow-hidden border border-[#5A4A3A]/15 shadow-sm hover:shadow-md transition-all flex flex-col">
-                    <div class="relative h-48 bg-[#1F3D2E]/20 flex items-center justify-center">
-                        <!-- Icon Placeholder Image -->
-                        <div class="text-[#1F3D2E]/40 text-5xl">
-                            <i class="fa-solid fa-recycle"></i>
+                        <!-- WADAH TRANSPARAN (OVERFLOW-VISIBLE AGAR KARTU MEKAR FULL) -->
+                        <div class="relative w-full h-[280px] sm:h-[340px] flex items-center justify-center overflow-visible my-2">
+                            
+                            <!-- KARTU 1 -->
+                            <div class="v-card absolute w-[65%] sm:w-[60%] aspect-[16/10] bg-black rounded-2xl overflow-hidden shadow-xl border border-white/30 transition-all duration-500 ease-in-out cursor-pointer group"
+                                onclick="goToVideoStack(0)">
+                                <img src="https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?w=800&auto=format&fit=crop&q=80" alt="Video 1" class="w-full h-full object-cover">
+                                <div class="absolute inset-0 bg-black/20 flex items-center justify-center">
+                                    <div class="w-12 h-12 rounded-full bg-[#1F3D2E]/90 text-white flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:bg-[#6B7F4E] transition-all">
+                                        <i class="fa-solid fa-play ml-0.5"></i>
+                                    </div>
+                                </div>
+                                <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent p-4 text-white">
+                                    <span class="text-[9px] bg-[#6B7F4E] font-bold px-2.5 py-0.5 rounded-full uppercase">Panduan</span>
+                                    <h4 class="text-xs sm:text-sm font-bold mt-1 line-clamp-1">Tata Cara Melaporkan TPS Liar</h4>
+                                </div>
+                            </div>
+
+                            <!-- KARTU 2 -->
+                            <div class="v-card absolute w-[65%] sm:w-[60%] aspect-[16/10] bg-black rounded-2xl overflow-hidden shadow-xl border border-white/30 transition-all duration-500 ease-in-out cursor-pointer group"
+                                onclick="goToVideoStack(1)">
+                                <img src="https://images.unsplash.com/photo-1611284446314-60a58ac0deb9?w=800&auto=format&fit=crop&q=80" alt="Video 2" class="w-full h-full object-cover">
+                                <div class="absolute inset-0 bg-black/20 flex items-center justify-center">
+                                    <div class="w-12 h-12 rounded-full bg-[#1F3D2E]/90 text-white flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:bg-[#6B7F4E] transition-all">
+                                        <i class="fa-solid fa-play ml-0.5"></i>
+                                    </div>
+                                </div>
+                                <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent p-4 text-white">
+                                    <span class="text-[9px] bg-[#4C6A73] font-bold px-2.5 py-0.5 rounded-full uppercase">Pemilahan</span>
+                                    <h4 class="text-xs sm:text-sm font-bold mt-1 line-clamp-1">Pilah Sampah Organik & Anorganik</h4>
+                                </div>
+                            </div>
+
+                            <!-- KARTU 3 -->
+                            <div class="v-card absolute w-[65%] sm:w-[60%] aspect-[16/10] bg-black rounded-2xl overflow-hidden shadow-xl border border-white/30 transition-all duration-500 ease-in-out cursor-pointer group"
+                                onclick="goToVideoStack(2)">
+                                <img src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=800&auto=format&fit=crop&q=80" alt="Video 3" class="w-full h-full object-cover">
+                                <div class="absolute inset-0 bg-black/20 flex items-center justify-center">
+                                    <div class="w-12 h-12 rounded-full bg-[#1F3D2E]/90 text-white flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:bg-[#6B7F4E] transition-all">
+                                        <i class="fa-solid fa-play ml-0.5"></i>
+                                    </div>
+                                </div>
+                                <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent p-4 text-white">
+                                    <span class="text-[9px] bg-[#DCC8A3] text-[#1F3D2E] font-bold px-2.5 py-0.5 rounded-full uppercase">Operasional</span>
+                                    <h4 class="text-xs sm:text-sm font-bold mt-1 line-clamp-1">Mengenal Armada Bentor Hijau</h4>
+                                </div>
+                            </div>
+
+                            <!-- KARTU 4 -->
+                            <div class="v-card absolute w-[65%] sm:w-[60%] aspect-[16/10] bg-black rounded-2xl overflow-hidden shadow-xl border border-white/30 transition-all duration-500 ease-in-out cursor-pointer group"
+                                onclick="goToVideoStack(3)">
+                                <img src="https://images.unsplash.com/photo-1530587191325-3db32d826c18?w=800&auto=format&fit=crop&q=80" alt="Video 4" class="w-full h-full object-cover">
+                                <div class="absolute inset-0 bg-black/20 flex items-center justify-center">
+                                    <div class="w-12 h-12 rounded-full bg-[#1F3D2E]/90 text-white flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:bg-[#6B7F4E] transition-all">
+                                        <i class="fa-solid fa-play ml-0.5"></i>
+                                    </div>
+                                </div>
+                                <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent p-4 text-white">
+                                    <span class="text-[9px] bg-red-800 font-bold px-2.5 py-0.5 rounded-full uppercase">Dampak Lingkungan</span>
+                                    <h4 class="text-xs sm:text-sm font-bold mt-1 line-clamp-1">Bahaya Penumpukan TPS Liar</h4>
+                                </div>
+                            </div>
+
                         </div>
-                        <span class="absolute top-4 left-4 bg-[#6B7F4E] text-white text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
-                            Artikel
-                        </span>
                     </div>
-                    <div class="p-6 flex-grow flex flex-col justify-between">
-                        <div>
-                            <span class="text-xs text-[#5A4A3A]/60 font-medium">5 Menit Baca • Kebersihan</span>
-                            <h4 class="text-lg font-bold text-[#1F3D2E] mt-2 mb-3 hover:text-[#4C6A73] transition-colors">
-                                Memilah Sampah Organic & Anorganik dari Dapur
-                            </h4>
-                            <p class="text-sm text-[#5A4A3A]/80 line-clamp-2 leading-relaxed">
-                                Panduan sederhana mengolah sisa makanan menjadi kompos skala rumah tangga tanpa menimbulkan bau menyengat.
-                            </p>
-                        </div>
-                        <div class="pt-6">
-                            <a href="#" class="text-xs font-bold text-[#1F3D2E] hover:text-[#6B7F4E] inline-flex items-center gap-1">
-                                Baca Selengkapnya <i class="fa-solid fa-chevron-right text-[10px]"></i>
+
+                    <!-- KOLOM KANAN: DAFTAR ARTIKEL TERBARU -->
+                    <div class="lg:col-span-5 space-y-3 reveal opacity-0 translate-y-10 transition-all duration-700 delay-200 ease-out">
+                        <h3 class="text-base font-bold text-[#1F3D2E] mb-3 flex items-center gap-2">
+                            <i class="fa-solid fa-newspaper text-[#4C6A73]"></i> Artikel Terbaru
+                        </h3>
+
+                        <div class="space-y-3">
+                            <!-- ARTIKEL 1 -->
+                            <a href="{{ url('/edukasi') }}" class="flex items-center gap-4 p-3 bg-white hover:bg-white rounded-2xl border border-[#5A4A3A]/10 transition-all shadow-sm group">
+                                <img src="https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?w=200&auto=format&fit=crop&q=80" alt="Artikel 1" class="w-16 h-16 rounded-xl object-cover shrink-0 border border-gray-200">
+                                <div class="flex-grow min-w-0">
+                                    <h4 class="text-xs font-bold text-[#1F3D2E] group-hover:text-[#4C6A73] transition-colors line-clamp-2 leading-snug">
+                                        Sanksi & Denda Bagi Pelaku Pembuang Sampah Liar
+                                    </h4>
+                                    <span class="text-[10px] text-[#5A4A3A]/70 mt-1 block">25 Okt 2026 • 3 min read</span>
+                                </div>
+                            </a>
+
+                            <!-- ARTIKEL 2 -->
+                            <a href="{{ url('/edukasi') }}" class="flex items-center gap-4 p-3 bg-white hover:bg-white rounded-2xl border border-[#5A4A3A]/10 transition-all shadow-sm group">
+                                <img src="https://images.unsplash.com/photo-1611284446314-60a58ac0deb9?w=200&auto=format&fit=crop&q=80" alt="Artikel 2" class="w-16 h-16 rounded-xl object-cover shrink-0 border border-gray-200">
+                                <div class="flex-grow min-w-0">
+                                    <h4 class="text-xs font-bold text-[#1F3D2E] group-hover:text-[#4C6A73] transition-colors line-clamp-2 leading-snug">
+                                        5 Langkah Mengolah Sisa Dapur Menjadi Kompos
+                                    </h4>
+                                    <span class="text-[10px] text-[#5A4A3A]/70 mt-1 block">20 Okt 2026 • 5 min read</span>
+                                </div>
+                            </a>
+
+                            <!-- ARTIKEL 3 -->
+                            <a href="{{ url('/edukasi') }}" class="flex items-center gap-4 p-3 bg-white hover:bg-white rounded-2xl border border-[#5A4A3A]/10 transition-all shadow-sm group">
+                                <img src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=200&auto=format&fit=crop&q=80" alt="Artikel 3" class="w-16 h-16 rounded-xl object-cover shrink-0 border border-gray-200">
+                                <div class="flex-grow min-w-0">
+                                    <h4 class="text-xs font-bold text-[#1F3D2E] group-hover:text-[#4C6A73] transition-colors line-clamp-2 leading-snug">
+                                        Peran Bank Sampah Kelurahan Dalam Kebersihan
+                                    </h4>
+                                    <span class="text-[10px] text-[#5A4A3A]/70 mt-1 block">14 Okt 2026 • 4 min read</span>
+                                </div>
                             </a>
                         </div>
                     </div>
-                </article>
 
-                <!-- Card Edukasi 2 (Video) -->
-                <article class="bg-white rounded-2xl overflow-hidden border border-[#5A4A3A]/15 shadow-sm hover:shadow-md transition-all flex flex-col">
-                    <div class="relative h-48 bg-[#4C6A73]/20 flex items-center justify-center group cursor-pointer">
-                        <div class="w-12 h-12 rounded-full bg-[#1F3D2E] text-white flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
-                            <i class="fa-solid fa-play text-sm ml-0.5"></i>
-                        </div>
-                        <span class="absolute top-4 left-4 bg-[#4C6A73] text-white text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
-                            Video Tutorial
-                        </span>
-                        <span class="absolute bottom-3 right-3 bg-black/70 text-white text-[10px] font-medium px-2 py-0.5 rounded">
-                            03:45
-                        </span>
-                    </div>
-                    <div class="p-6 flex-grow flex flex-col justify-between">
-                        <div>
-                            <span class="text-xs text-[#5A4A3A]/60 font-medium">Video Panduan • Hukum & Sanksi</span>
-                            <h4 class="text-lg font-bold text-[#1F3D2E] mt-2 mb-3 hover:text-[#4C6A73] transition-colors">
-                                Sanksi Pidana & Denda Bagi Pembuang Sampah Liar
-                            </h4>
-                            <p class="text-sm text-[#5A4A3A]/80 line-clamp-2 leading-relaxed">
-                                Penjelasan Peraturan Daerah (Perda) tentang larangan membuang sampah sembarangan dan tata cara pelaporan.
-                            </p>
-                        </div>
-                        <div class="pt-6">
-                            <a href="#" class="text-xs font-bold text-[#1F3D2E] hover:text-[#4C6A73] inline-flex items-center gap-1">
-                                Tonton Video <i class="fa-solid fa-chevron-right text-[10px]"></i>
-                            </a>
-                        </div>
-                    </div>
-                </article>
-
-                <!-- Card Edukasi 3 (Artikel) -->
-                <article class="bg-white rounded-2xl overflow-hidden border border-[#5A4A3A]/15 shadow-sm hover:shadow-md transition-all flex flex-col">
-                    <div class="relative h-48 bg-[#6B7F4E]/20 flex items-center justify-center">
-                        <div class="text-[#6B7F4E]/40 text-5xl">
-                            <i class="fa-solid fa-box-archive"></i>
-                        </div>
-                        <span class="absolute top-4 left-4 bg-[#6B7F4E] text-white text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
-                            Artikel
-                        </span>
-                    </div>
-                    <div class="p-6 flex-grow flex flex-col justify-between">
-                        <div>
-                            <span class="text-xs text-[#5A4A3A]/60 font-medium">4 Menit Baca • Bank Sampah</span>
-                            <h4 class="text-lg font-bold text-[#1F3D2E] mt-2 mb-3 hover:text-[#4C6A73] transition-colors">
-                                Mengubah Sampah Plastik Menjadi Nilai Ekonomis
-                            </h4>
-                            <p class="text-sm text-[#5A4A3A]/80 line-clamp-2 leading-relaxed">
-                                Langkah menyetor botol dan plastik bekas ke Bank Sampah terdekat untuk ditukar dengan saldo bernilai.
-                            </p>
-                        </div>
-                        <div class="pt-6">
-                            <a href="#" class="text-xs font-bold text-[#1F3D2E] hover:text-[#6B7F4E] inline-flex items-center gap-1">
-                                Baca Selengkapnya <i class="fa-solid fa-chevron-right text-[10px]"></i>
-                            </a>
-                        </div>
-                    </div>
-                </article>
+                </div>
 
             </div>
         </section>
+
+
 
         <!-- ==========================================
              BANNER TRANSPARANSI ALOKASI DANA IURAN
              (1 Card Horizontal Tanpa Nominal Uang)
              ========================================== -->
-        <section id="transparansi" class="py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
-            <div class="bg-gradient-to-r from-[#1F3D2E] to-[#4C6A73] rounded-3xl p-6 sm:p-10 text-white shadow-xl relative overflow-hidden">
+
+        <section id="transparansi" class="relative py-20 bg-[#DCC8A3]/30">
+            <!-- Overlay Gradasi dari Edukasi (#FFFAE8) ke Transparansi -->
+            <div class="absolute top-0 inset-x-0 h-16 bg-gradient-to-b from-[#FFFAE8] to-transparent pointer-events-none"></div>
+
+            <!-- Isi Konten Transparansi Dana -->
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+
+            <div class="bg-[#1F3D2E] rounded-3xl p-6 sm:p-10 text-white shadow-xl relative overflow-hidden">
                 <!-- Background Accent Circle -->
                 <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-[#6B7F4E]/20 rounded-full blur-3xl pointer-events-none"></div>
 
@@ -645,7 +675,7 @@
 
                     <!-- CTA Right -->
                     <div class="md:col-span-4 flex flex-col items-center md:items-end justify-center pt-4 md:pt-0 border-t md:border-t-0 border-white/10">
-                        <a href="{{ url('/transparansi-detail') }}" class="w-full sm:w-auto bg-[#DCC8A3] hover:bg-white text-[#1F3D2E] font-bold px-6 py-3.5 rounded-xl shadow-md transition-all text-center flex items-center justify-center gap-2">
+                        <a href="{{ url('/transparansi') }}" class="w-full sm:w-auto bg-[#DCC8A3] hover:bg-white text-[#1F3D2E] font-bold px-6 py-3.5 rounded-xl shadow-md transition-all text-center flex items-center justify-center gap-2">
                             <span>Lihat Komponen Alokasi</span>
                             <i class="fa-solid fa-arrow-right-long text-sm"></i>
                         </a>
@@ -682,8 +712,8 @@
                 <div class="flex flex-wrap justify-center gap-6 text-xs text-emerald-200 font-medium">
                     <a href="{{ url('/') }}" class="hover:text-white transition-colors">Beranda</a>
                     <a href="{{ url('/lapor') }}" class="hover:text-white transition-colors">Lapor TPS</a>
-                    <a href="{{ url('/lacak') }}" class="hover:text-white transition-colors">Lacak Status</a>
-                    <a href="{{ url('/jadwal-opbm') }}" class="hover:text-white transition-colors">Jadwal OPBM</a>
+                    <a href="{{ url('/lacak') }}" class="hover:text-white transition-colors">Cek Penanganan TPS</a>
+                    <a href="{{ url('/jadwal') }}" class="hover:text-white transition-colors">Jadwal OPBM</a>
                     <a href="{{ url('/transparansi') }}" class="hover:text-white transition-colors">Transparansi Dana</a>
                     <a href="{{ url('/edukasi') }}" class="hover:text-white transition-colors">Edukasi & Media</a>
                 </div>
@@ -735,6 +765,85 @@
                 }
             }
         }
+
+        let vStackIndex = 0;
+        const vCards = document.querySelectorAll('.v-card');
+        const vTotal = vCards.length;
+
+        function renderVideoStack() {
+            vCards.forEach((card, i) => {
+                let diff = i - vStackIndex;
+                
+                if (diff > vTotal / 2) diff -= vTotal;
+                if (diff < -vTotal / 2) diff += vTotal;
+
+                if (diff === 0) {
+                    // KARTU UTAMA (TENGAH - BESAR)
+                    card.style.transform = 'translateX(0%) scale(1)';
+                    card.style.zIndex = '30';
+                    card.style.opacity = '1';
+                    card.style.filter = 'brightness(1)';
+                } else if (diff === -1) {
+                    // KARTU KIRI (MENGINTIP LEBIH LEBAR DENGAN ROTASI TIPIS)
+                    card.style.transform = 'translateX(-45%) scale(0.85) rotate(-3deg)';
+                    card.style.zIndex = '20';
+                    card.style.opacity = '0.75';
+                    card.style.filter = 'brightness(0.75)';
+                } else if (diff === 1) {
+                    // KARTU KANAN (MENGINTIP LEBIH LEBAR DENGAN ROTASI TIPIS)
+                    card.style.transform = 'translateX(45%) scale(0.85) rotate(3deg)';
+                    card.style.zIndex = '20';
+                    card.style.opacity = '0.75';
+                    card.style.filter = 'brightness(0.75)';
+                } else {
+                    // KARTU CADANGAN DIBELAKANG
+                    card.style.transform = 'translateX(0%) scale(0.6)';
+                    card.style.zIndex = '10';
+                    card.style.opacity = '0';
+                }
+            });
+        }
+
+        function nextVideoStack() {
+            vStackIndex = (vStackIndex + 1) % vTotal;
+            renderVideoStack();
+        }
+
+        function prevVideoStack() {
+            vStackIndex = (vStackIndex - 1 + vTotal) % vTotal;
+            renderVideoStack();
+        }
+
+        function goToVideoStack(idx) {
+            vStackIndex = idx;
+            renderVideoStack();
+        }
+
+        document.addEventListener('DOMContentLoaded', renderVideoStack);
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const observerOptions = {
+                root: null,
+                threshold: 0.15 // Animasi berjalan saat 15% elemen terlihat di layar
+            };
+
+            const scrollObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // Saat elemen MASUK ke layar: Munculkan secara halus
+                        entry.target.classList.remove('opacity-0', 'translate-y-10', '-translate-x-10');
+                        entry.target.classList.add('opacity-100', 'translate-y-0', 'translate-x-0');
+                    } else {
+                        // Saat elemen KELUAR dari layar: Sembunyikan kembali
+                        entry.target.classList.remove('opacity-100', 'translate-y-0', 'translate-x-0');
+                        entry.target.classList.add('opacity-0', 'translate-y-10');
+                    }
+                });
+            }, observerOptions);
+
+            // Tempelkan pemantau ke semua elemen ber-class 'reveal'
+            document.querySelectorAll('.reveal').forEach(el => scrollObserver.observe(el));
+        });
     </script>
 </body>
 </html>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cek Penanganan TPS - SIPAS-LIAR</title>
+    <title>Cek Penanganan TPS - JambiBersih</title>
     
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -31,7 +31,7 @@
                         <i class="fa-solid font-bold fa-leaf text-xl"></i>
                     </div>
                     <div class="flex flex-col">
-                        <span class="font-extrabold text-lg tracking-tight leading-none text-white group-hover:text-[#DCC8A3] transition-colors">SIPAS</span>
+                        <span class="font-extrabold text-lg tracking-tight leading-none text-white group-hover:text-[#DCC8A3] transition-colors">JambiBersih</span>
                         <span class="text-[10px] text-[#DCC8A3] font-medium tracking-wider uppercase">Dinas Lingkungan Hidup Kota Jambi</span>
                     </div>
                 </a>
@@ -83,7 +83,7 @@
                                 </div>
                                 <div>
                                     <div class="font-semibold">Edukasi & Media</div>
-                                    <div class="text-[11px] text-[#5A4A3A]/70">Artikel, Tip & Video Pembelajaran</div>
+                                    <div class="text-[11px] text-[#5A4A3A]/70">Artikel, Tips & Video Edukasi</div>
                                 </div>
                             </a>
                         </div>
@@ -100,7 +100,7 @@
         </div>
 
         <!-- Mobile Menu Navigation Panel -->
-        <div id="mobile-menu" class="hidden md:hidden bg-[#1F3D2E] border-t border-white/10 px-4 pt-3 pb-6 space-y-2">
+        <div id="mobile-menu" class="hidden md:hidden absolute top-full left-0 w-full bg-[#1F3D2E] border-t border-b border-white/10 px-4 pt-3 pb-6 space-y-2 shadow-2xl z-50">
             <a href="{{ url('/') }}" class="block px-3 py-2 rounded-lg text-base font-medium text-emerald-100 hover:text-white hover:bg-white/10">
                 Beranda
             </a>
@@ -134,7 +134,7 @@
         
         <!-- HEADER HALAMAN -->
         <div class="text-center mb-8">
-            <span class="bg-[#4C6A73]/20 text-[#1F3D2E] text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Pemantauan Laporan Warga</span>
+            <span class="bg-[#4C6A73]/20 text-[#1F3D2E] text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Pemantauan Laporan Masyarakat</span>
             <h1 class="text-3xl sm:text-4xl font-extrabold text-[#1F3D2E] mt-3">Cek Penanganan TPS Liar</h1>
             <p class="text-sm text-[#5A4A3A] mt-2 max-w-lg mx-auto">Cari kode tiket pelaporan Anda atau klik tanda panah pada tabel untuk melihat riwayat penanganan lokasi secara detail.</p>
         </div>
@@ -208,7 +208,7 @@
                                             <div class="absolute -left-[7px] top-1 w-3 h-3 rounded-full bg-[#6B7F4E]"></div>
                                             <p class="text-[11px] text-[#5A4A3A]/70 font-semibold">28 Okt 2026, 08:30 WIB</p>
                                             <h5 class="text-xs font-bold text-[#1F3D2E]">Laporan Masuk</h5>
-                                            <p class="text-xs text-[#5A4A3A] mt-0.5">Laporan berhasil dikirim oleh warga dan tercatat di sistem.</p>
+                                            <p class="text-xs text-[#5A4A3A] mt-0.5">Laporan berhasil dikirim oleh Masyarakat dan tercatat di sistem.</p>
                                         </div>
 
                                         <!-- 2. Menunggu -->
@@ -436,8 +436,8 @@
                 <div class="flex flex-wrap justify-center gap-6 text-xs text-emerald-200 font-medium">
                     <a href="{{ url('/') }}" class="hover:text-white transition-colors">Beranda</a>
                     <a href="{{ url('/lapor') }}" class="hover:text-white transition-colors">Lapor TPS</a>
-                    <a href="{{ url('/lacak') }}" class="hover:text-white transition-colors">Lacak Status</a>
-                    <a href="{{ url('/jadwal-opbm') }}" class="hover:text-white transition-colors">Jadwal OPBM</a>
+                    <a href="{{ url('/lacak') }}" class="hover:text-white transition-colors">Cek Penanganan TPS</a>
+                    <a href="{{ url('/jadwal') }}" class="hover:text-white transition-colors">Jadwal OPBM</a>
                     <a href="{{ url('/transparansi') }}" class="hover:text-white transition-colors">Transparansi Dana</a>
                     <a href="{{ url('/edukasi') }}" class="hover:text-white transition-colors">Edukasi & Media</a>
                 </div>

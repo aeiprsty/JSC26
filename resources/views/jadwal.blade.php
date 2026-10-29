@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jadwal Penjemputan OPBM - SIPAS-LIAR</title>
+    <title>Jadwal Penjemputan OPBM - JambiBersih</title>
     
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -33,7 +33,7 @@
                         <i class="fa-solid font-bold fa-leaf text-xl"></i>
                     </div>
                     <div class="flex flex-col">
-                        <span class="font-extrabold text-lg tracking-tight leading-none text-white group-hover:text-[#DCC8A3] transition-colors">SIPAS</span>
+                        <span class="font-extrabold text-lg tracking-tight leading-none text-white group-hover:text-[#DCC8A3] transition-colors">JambiBersih</span>
                         <span class="text-[10px] text-[#DCC8A3] font-medium tracking-wider uppercase">Dinas Lingkungan Hidup Kota Jambi</span>
                     </div>
                 </a>
@@ -79,13 +79,13 @@
                                 </div>
                             </a>
                             <div class="border-t border-gray-100 my-1"></div>
-                            <a href="{{ url('/#edukasi') }}" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium hover:bg-[#DCC8A3]/30 hover:text-[#1F3D2E] transition-colors">
+                            <a href="{{ url('/edukasi') }}" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium hover:bg-[#DCC8A3]/30 hover:text-[#1F3D2E] transition-colors">
                                 <div class="w-8 h-8 rounded-lg bg-[#1F3D2E]/10 flex items-center justify-center text-[#1F3D2E]">
                                     <i class="fa-solid fa-book-open text-xs"></i>
                                 </div>
                                 <div>
                                     <div class="font-semibold">Edukasi & Media</div>
-                                    <div class="text-[11px] text-[#5A4A3A]/70">Artikel, Tip & Video Pembelajaran</div>
+                                    <div class="text-[11px] text-[#5A4A3A]/70">Artikel, Tips & Video Edukasi</div>
                                 </div>
                             </a>
                         </div>
@@ -102,7 +102,7 @@
         </div>
 
         <!-- Mobile Menu Navigation Panel -->
-        <div id="mobile-menu" class="hidden md:hidden bg-[#1F3D2E] border-t border-white/10 px-4 pt-3 pb-6 space-y-2">
+        <div id="mobile-menu" class="hidden md:hidden absolute top-full left-0 w-full bg-[#1F3D2E] border-t border-b border-white/10 px-4 pt-3 pb-6 space-y-2 shadow-2xl z-50">
             <a href="{{ url('/') }}" class="block px-3 py-2 rounded-lg text-base font-medium text-emerald-100 hover:text-white hover:bg-white/10">
                 Beranda
             </a>
@@ -116,15 +116,15 @@
             <div class="pt-2 border-t border-white/10">
                 <div class="px-3 py-1 text-xs font-semibold text-[#DCC8A3] uppercase tracking-wider">Informasi & Edukasi</div>
                 <a href="{{ url('/jadwal') }}" class="flex items-center gap-3 px-3 py-2.5 text-sm font-bold text-white bg-white/10 rounded-lg">
-                    <i class="fa-solid fa-calendar-alt text-[#6B7F4E]"></i>
+                    <i class="text-[#6B7F4E]"></i>
                     <span>Jadwal OPBM</span>
                 </a>
                 <a href="{{ url('/transparansi') }}" class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-emerald-100 hover:text-white hover:bg-white/10 rounded-lg">
-                    <i class="fa-solid fa-chart-pie text-[#4C6A73]"></i>
+                    <i class="text-[#4C6A73]"></i>
                     <span>Transparansi Alokasi Dana</span>
                 </a>
-                <a href="{{ url('/#edukasi') }}" class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-emerald-100 hover:text-white hover:bg-white/10 rounded-lg">
-                    <i class="fa-solid fa-book-open text-[#DCC8A3]"></i>
+                <a href="{{ url('/edukasi') }}" class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-emerald-100 hover:text-white hover:bg-white/10 rounded-lg">
+                    <i class="text-[#DCC8A3]"></i>
                     <span>Edukasi</span>
                 </a>
             </div>
@@ -268,7 +268,7 @@
                 <div class="flex flex-wrap justify-center gap-6 text-xs text-emerald-200 font-medium">
                     <a href="{{ url('/') }}" class="hover:text-white transition-colors">Beranda</a>
                     <a href="{{ url('/lapor') }}" class="hover:text-white transition-colors">Lapor TPS</a>
-                    <a href="{{ url('/lacak') }}" class="hover:text-white transition-colors">Lacak Status</a>
+                    <a href="{{ url('/lacak') }}" class="hover:text-white transition-colors">Cek Penanganan TPS</a>
                     <a href="{{ url('/jadwal') }}" class="hover:text-white transition-colors">Jadwal OPBM</a>
                     <a href="{{ url('/transparansi') }}" class="hover:text-white transition-colors">Transparansi Dana</a>
                     <a href="{{ url('/edukasi') }}" class="hover:text-white transition-colors">Edukasi & Media</a>
