@@ -10,6 +10,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Notifications\Notification;
 
 class LaporanResource extends Resource
 {
@@ -27,6 +28,16 @@ class LaporanResource extends Resource
     public static function canEdit(\Illuminate\Database\Eloquent\Model $record): bool
     {
         return false;
+    }
+
+    public static function isOperator(): bool
+    {
+        return auth()->user()?->role === 'operator';
+    }
+
+    public static function isKomandoLapangan(): bool
+    {
+        return auth()->user()?->role === 'komando_lapangan';
     }
 
     public static function form(Form $form): Form
@@ -133,11 +144,36 @@ class LaporanResource extends Resource
                     ->color('success')
                     ->requiresConfirmation()
                     ->visible(fn (Laporan $record): bool =>
-                        $record->status === 'menunggu'
+                        self::isOperator()
+                        && $record->status === 'menunggu'
                     )
                     ->action(function (Laporan $record): void {
                         $record->update([
                             'status' => 'terverifikasi',
+                        ]);
+                    }),
+
+                Tables\Actions\Action::make('mulai_proses')
+                    ->label('Mulai Proses')
+                    ->icon('heroicon-o-arrow-path')
+                    ->color('primary')
+                    ->requiresConfirmation()
+                    ->visible(fn (Laporan $record): bool => false)
+                    ->action(function (Laporan $record): void {
+                        $record->update([
+                            'status' => 'dalam_proses',
+                        ]);
+                    }),
+
+                Tables\Actions\Action::make('selesaikan')
+                    ->label('Selesaikan')
+                    ->icon('heroicon-o-check-badge')
+                    ->color('success')
+                    ->requiresConfirmation()
+                    ->visible(fn (Laporan $record): bool => false)
+                    ->action(function (Laporan $record): void {
+                        $record->update([
+                            'status' => 'selesai',
                         ]);
                     }),
 
@@ -153,22 +189,32 @@ class LaporanResource extends Resource
                             ->maxLength(1000),
                     ])
                     ->visible(fn (Laporan $record): bool =>
-                        ! in_array(
+                        self::isOperator()
+                        && ! in_array(
                             $record->status,
                             ['ditolak', 'selesai'],
                             true
                         )
                     )
-                    ->action(function (
-                        Laporan $record,
-                        array $data
-                    ): void {
+                    ->form([
+                        Forms\Components\Textarea::make('alasan_tolak')
+                            ->label('Alasan Penolakan')
+                            ->placeholder('Masukkan alasan mengapa laporan ditolak...')
+                            ->required()
+                            ->maxLength(1000),
+                    ])
+                    ->action(function (Laporan $record, array $data): void {
                         $record->update([
                             'status' => 'ditolak',
                             'alasan_tolak' => $data['alasan_tolak'],
                             'klaster_id' => null,
                         ]);
-                    }),
+
+                        Notification::make()
+                            ->title('Laporan berhasil ditolak')
+                            ->success()
+                            ->send();
+                    })
             ])
             ->defaultSort('created_at', 'desc');
     }

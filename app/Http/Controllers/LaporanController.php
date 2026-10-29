@@ -96,4 +96,32 @@ class LaporanController extends Controller
             throw $exception;
         }
     }
+
+    public function search(string $kodeTiket): JsonResponse
+    {
+        $laporan = Laporan::where('kode_tiket', $kodeTiket)->first();
+
+        if (!$laporan) {
+            return response()->json([
+                'message' => 'Tiket laporan tidak ditemukan.',
+            ], 404);
+        }
+
+        return response()->json([
+            'message' => 'Laporan ditemukan.',
+            'data' => [
+                'kode_tiket' => $laporan->kode_tiket,
+                'status' => $laporan->status,
+                'deskripsi' => $laporan->deskripsi,
+                'lat' => $laporan->lat,
+                'lng' => $laporan->lng,
+                'foto' => $laporan->foto
+                    ? asset('storage/' . $laporan->foto)
+                    : null,
+                'created_at' => $laporan->created_at?->toIso8601String(),
+                'alasan_tolak' => $laporan->alasan_tolak,
+            ],
+        ]);
+    }
+
 }
