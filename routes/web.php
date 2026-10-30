@@ -27,6 +27,8 @@ Route::get('/transparansi', function () {
     return view('transparansi');
 })->name('transparansi.index');
 
+
+
 Route::post('/laporan', [LaporanController::class, 'store'])
     ->name('laporan.store');
 
