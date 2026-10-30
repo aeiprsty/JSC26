@@ -99,7 +99,9 @@ class LaporanController extends Controller
 
     public function search(string $kodeTiket): JsonResponse
     {
-        $laporan = Laporan::where('kode_tiket', $kodeTiket)->first();
+        $laporan = Laporan::with('klaster')
+            ->where('kode_tiket', $kodeTiket)
+            ->first();
 
         if (!$laporan) {
             return response()->json([
@@ -120,6 +122,17 @@ class LaporanController extends Controller
                     : null,
                 'created_at' => $laporan->created_at?->toIso8601String(),
                 'alasan_tolak' => $laporan->alasan_tolak,
+                'foto_bukti' => (
+                    $laporan->status !== 'ditolak' &&
+                    $laporan->klaster &&
+                    $laporan->klaster->status === \App\Enums\StatusKlaster::Selesai
+                )
+                    ? (
+                        $laporan->klaster->foto_bukti
+                            ? asset('storage/' . $laporan->klaster->foto_bukti)
+                            : null
+                    )
+                    : null,
             ],
         ]);
     }

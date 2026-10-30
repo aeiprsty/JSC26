@@ -245,6 +245,10 @@
                         </div>
                     </div>
 
+                    <!-- Alasan Penolakan -->
+                    <div id="hasil-alasan-tolak"
+                        class="hidden mt-4 rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-800"></div>
+
                     <!-- Foto Bukti -->
                     <div id="bagian-foto" class="hidden mt-6">
                         <h5 class="text-sm font-bold text-[#1F3D2E] mb-3 flex items-center gap-2">
@@ -256,9 +260,17 @@
                             alt="Foto laporan TPS liar">
                     </div>
 
-                    <!-- Alasan Penolakan -->
-                    <div id="hasil-alasan-tolak"
-                        class="hidden mt-4 rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-800"></div>
+                    <!-- Foto Bukti Hasil Pembersihan Petugas -->
+                    <div id="bagian-foto-bukti" class="hidden mt-6">
+                        <h5 class="text-sm font-bold text-[#1F3D2E] mb-3 flex items-center gap-2">
+                            <i class="fa-solid fa-camera text-[#6B7F4E]"></i>
+                            Foto Hasil Pembersihan Petugas
+                        </h5>
+
+                        <img id="hasil-foto-bukti"
+                            class="hidden h-auto w-auto max-w-full max-h-[600px] rounded-2xl border border-[#5A4A3A]/15"
+                            alt="Foto bukti hasil pembersihan petugas">
+                    </div>
                 </div>
             </div>
         </div>
@@ -607,6 +619,8 @@
             const submitButton = document.querySelector(
                 '#search-form button[type="submit"]'
             );
+            const fotoBukti = document.getElementById('hasil-foto-bukti');
+            const bagianFotoBukti = document.getElementById('bagian-foto-bukti');
 
             if (!query) {
                 alert('Masukkan kode tiket laporan terlebih dahulu.');
@@ -730,6 +744,21 @@
                     foto.src = data.foto;
                 }
 
+                // Foto bukti hasil pembersihan petugas.
+                if (data.foto_bukti) {
+                    fotoBukti.onload = () => {
+                        fotoBukti.classList.remove('hidden');
+                        bagianFotoBukti.classList.remove('hidden');
+                    };
+
+                    fotoBukti.onerror = () => {
+                        fotoBukti.classList.add('hidden');
+                        bagianFotoBukti.classList.add('hidden');
+                    };
+
+                    fotoBukti.src = data.foto_bukti;
+                }
+
                 // Alasan penolakan, jika tersedia.
                 if (data.alasan_tolak) {
                     alasanTolak.textContent =
@@ -748,6 +777,10 @@
                 submitButton.disabled = false;
             }
         }
+
+        fotoBukti.classList.add('hidden');
+        bagianFotoBukti.classList.add('hidden');
+        fotoBukti.removeAttribute('src');
 
         function toggleMobileMenu() {
             const menu = document.getElementById('mobile-menu');

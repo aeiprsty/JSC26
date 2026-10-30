@@ -11,6 +11,8 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Notifications\Notification;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class LaporanResource extends Resource
 {
@@ -89,7 +91,13 @@ class LaporanResource extends Resource
                 Tables\Columns\ImageColumn::make('foto')
                     ->label('Foto')
                     ->disk('public')
-                    ->square(),
+                    ->square()
+                    ->url(fn (Laporan $record): ?string =>
+                        $record->foto
+                            ? Storage::disk('public')->url($record->foto)
+                            : null
+                    )
+                    ->openUrlInNewTab(),
 
                 Tables\Columns\TextColumn::make('deskripsi')
                     ->label('Deskripsi')
@@ -148,32 +156,11 @@ class LaporanResource extends Resource
                         && $record->status === 'menunggu'
                     )
                     ->action(function (Laporan $record): void {
+                        abort_unless(self::isOperator(), 403);
+                        abort_unless($record->status === 'menunggu', 409);
+
                         $record->update([
                             'status' => 'terverifikasi',
-                        ]);
-                    }),
-
-                Tables\Actions\Action::make('mulai_proses')
-                    ->label('Mulai Proses')
-                    ->icon('heroicon-o-arrow-path')
-                    ->color('primary')
-                    ->requiresConfirmation()
-                    ->visible(fn (Laporan $record): bool => false)
-                    ->action(function (Laporan $record): void {
-                        $record->update([
-                            'status' => 'dalam_proses',
-                        ]);
-                    }),
-
-                Tables\Actions\Action::make('selesaikan')
-                    ->label('Selesaikan')
-                    ->icon('heroicon-o-check-badge')
-                    ->color('success')
-                    ->requiresConfirmation()
-                    ->visible(fn (Laporan $record): bool => false)
-                    ->action(function (Laporan $record): void {
-                        $record->update([
-                            'status' => 'selesai',
                         ]);
                     }),
 
@@ -184,37 +171,43 @@ class LaporanResource extends Resource
                     ->form([
                         Forms\Components\Textarea::make('alasan_tolak')
                             ->label('Alasan Penolakan')
+                            ->placeholder('Masukkan alasan mengapa laporan ditolak...')
                             ->required()
                             ->minLength(5)
                             ->maxLength(1000),
                     ])
                     ->visible(fn (Laporan $record): bool =>
                         self::isOperator()
-                        && ! in_array(
-                            $record->status,
-                            ['ditolak', 'selesai'],
-                            true
-                        )
+                        && $record->status === 'menunggu'
                     )
-                    ->form([
-                        Forms\Components\Textarea::make('alasan_tolak')
-                            ->label('Alasan Penolakan')
-                            ->placeholder('Masukkan alasan mengapa laporan ditolak...')
-                            ->required()
-                            ->maxLength(1000),
-                    ])
                     ->action(function (Laporan $record, array $data): void {
-                        $record->update([
-                            'status' => 'ditolak',
-                            'alasan_tolak' => $data['alasan_tolak'],
-                            'klaster_id' => null,
-                        ]);
+                        abort_unless(self::isOperator(), 403);
+                        abort_unless($record->status === 'menunggu', 409);
+
+                        $alasan = trim($data['alasan_tolak'] ?? '');
+
+                        abort_unless(mb_strlen($alasan) >= 5, 422);
+
+                        DB::transaction(function () use ($record, $alasan): void {
+                            $laporan = Laporan::query()
+                                ->whereKey($record->getKey())
+                                ->lockForUpdate()
+                                ->firstOrFail();
+
+                            abort_unless($laporan->status === 'menunggu', 409);
+
+                            $laporan->update([
+                                'status' => 'ditolak',
+                                'alasan_tolak' => $alasan,
+                                'klaster_id' => null,
+                            ]);
+                        });
 
                         Notification::make()
                             ->title('Laporan berhasil ditolak')
                             ->success()
                             ->send();
-                    })
+                    }),
             ])
             ->defaultSort('created_at', 'desc');
     }
@@ -230,4 +223,11 @@ class LaporanResource extends Resource
             'index' => Pages\ListLaporans::route('/'),
         ];
     }
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        return auth()->user()?->role === 'operator';
+    }
+
+    protected static ?int $navigationSort = 2;
 }

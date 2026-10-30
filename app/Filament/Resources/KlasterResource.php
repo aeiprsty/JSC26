@@ -16,6 +16,10 @@ use App\Enums\StatusKlaster;
 use Illuminate\Database\Eloquent\Model;
 use Filament\Notifications\Notification;
 use Illuminate\Support\Facades\DB;
+use Filament\Infolists\Infolist;
+use Filament\Infolists\Components\Section;
+use Filament\Infolists\Components\Grid;
+use Filament\Infolists\Components\TextEntry;
 
 class KlasterResource extends Resource
 {
@@ -36,23 +40,46 @@ class KlasterResource extends Resource
                     ->disabled(),
 
                 Forms\Components\Select::make('status')
-                    ->label('Status Klaster')
-                    ->options([
+                ->label('Status Klaster')
+                ->options(fn (): array => match (auth()->user()?->role) {
+                    'kabid' => [
                         StatusKlaster::Terverifikasi->value => 'Terverifikasi',
                         StatusKlaster::Disposisi->value => 'Disposisi',
+                    ],
+
+                    'subkoordinator' => [
+                        StatusKlaster::Disposisi->value => 'Disposisi',
                         StatusKlaster::Ditugaskan->value => 'Ditugaskan',
-                    ])
-                    ->disabled(fn (): bool => ! self::isKabid())
-                    ->dehydrated(fn (): bool => self::isKabid())
-                    ->required(),
+                    ],
+
+                    'komando_lapangan' => [
+                        StatusKlaster::Ditugaskan->value => 'Ditugaskan',
+                        StatusKlaster::DalamProses->value => 'Dalam Proses',
+                        StatusKlaster::Selesai->value => 'Selesai',
+                    ],
+
+                    default => [],
+                })
+                ->visible(fn (): bool => in_array(
+                    auth()->user()?->role,
+                    ['kabid', 'subkoordinator', 'komando_lapangan'],
+                    true
+                ))
+                ->required(),
 
                 Forms\Components\Select::make('assigned_to')
-                    ->label('Petugas')
-                    ->relationship('petugas', 'name')
+                    ->label('Pilih Petugas Komando Lapangan')
+                    ->relationship(
+                        name: 'petugas',
+                        titleAttribute: 'name',
+                        modifyQueryUsing: fn (Builder $query) =>
+                            $query->where('role', 'komando_lapangan')
+                                ->orderBy('name')
+                    )
                     ->searchable()
                     ->preload()
-                    ->disabled(fn (): bool => ! self::isSubkoordinator())
-                    ->dehydrated(fn (): bool => self::isSubkoordinator()),
+                    ->visible(fn (): bool => self::isSubkoordinator())
+                    ->required(),
 
                 Forms\Components\Textarea::make('alasan_tolak')
                     ->label('Alasan Penolakan')
@@ -67,7 +94,13 @@ class KlasterResource extends Resource
                     ->label('Foto Bukti Pembersihan')
                     ->image()
                     ->disk('public')
-                    ->directory('bukti-klaster'),
+                    ->directory('bukti-klaster')
+                    ->visible(fn (): bool =>
+                        auth()->user()?->role === 'komando_lapangan'
+                    )
+                    ->required(fn (Forms\Get $get): bool =>
+                        $get('status') === StatusKlaster::Selesai->value
+                    ),
             ]);
     }
 
@@ -115,7 +148,18 @@ class KlasterResource extends Resource
                 //
             ])
             ->actions([
-                
+            Tables\Actions\ViewAction::make()
+                ->label('Lihat Detail')
+                ->icon('heroicon-o-eye')
+                ->color('info'),
+            
+            Tables\Actions\EditAction::make()
+            ->label('Kelola Klaster')
+            ->icon('heroicon-o-pencil-square')
+            ->visible(fn (Klaster $record): bool =>
+                self::canEdit($record)
+            ),
+
             Tables\Actions\Action::make('verifikasi')
                 ->label('Verifikasi Klaster')
                 ->icon('heroicon-o-check-circle')
@@ -198,7 +242,7 @@ class KlasterResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\LaporanRelationManager::class,
         ];
     }
 
@@ -206,6 +250,8 @@ class KlasterResource extends Resource
     {
         return [
             'index' => Pages\ListKlasters::route('/'),
+            'view' => Pages\ViewKlaster::route('/{record}'),
+            'edit' => Pages\EditKlaster::route('/{record}/edit'),
         ];
     }
 
@@ -228,4 +274,95 @@ class KlasterResource extends Resource
     {
         return auth()->user()?->role === 'subkoordinator';
     }
+
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist
+            ->schema([
+                Section::make('Informasi Klaster')
+                    ->schema([
+                        Grid::make(2)
+                            ->schema([
+                                TextEntry::make('id')
+                                    ->label('ID Klaster'),
+
+                                TextEntry::make('status')
+                                    ->label('Status Klaster')
+                                    ->badge(),
+
+                                TextEntry::make('anchor_lat')
+                                    ->label('Latitude Anchor')
+                                    ->numeric(decimalPlaces: 7),
+
+                                TextEntry::make('anchor_lng')
+                                    ->label('Longitude Anchor')
+                                    ->numeric(decimalPlaces: 7),
+
+                                TextEntry::make('total_laporan')
+                                    ->label('Total Laporan')
+                                    ->state(fn (Klaster $record): int =>
+                                        $record->laporan()->count()
+                                    ),
+
+                                TextEntry::make('laporan_terverifikasi')
+                                    ->label('Laporan Terverifikasi')
+                                    ->state(fn (Klaster $record): int =>
+                                        $record->laporan()
+                                            ->where('status', 'terverifikasi')
+                                            ->count()
+                                    ),
+
+                                TextEntry::make('laporan_menunggu')
+                                    ->label('Laporan Menunggu')
+                                    ->state(fn (Klaster $record): int =>
+                                        $record->laporan()
+                                            ->where('status', 'menunggu')
+                                            ->count()
+                                    ),
+
+                                TextEntry::make('radius_clustering')
+                                    ->label('Radius Clustering')
+                                    ->state('50 meter'),
+                            ]),
+                    ]),
+            ]);
+    }
+
+    public static function canEdit(Model $record): bool
+    {
+        $user = auth()->user();
+
+        if (! $user) {
+            return false;
+        }
+
+        return match ($user->role) {
+            'kabid' => $record->status === StatusKlaster::Terverifikasi,
+
+            'subkoordinator' => $record->status === StatusKlaster::Disposisi,
+
+            'komando_lapangan' =>
+                $record->assigned_to === $user->id
+                && in_array($record->status, [
+                    StatusKlaster::Ditugaskan,
+                    StatusKlaster::DalamProses,
+                ], true),
+
+            default => false,
+        };
+    }
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        return in_array(auth()->user()?->role, [
+            'operator',
+            'kabid',
+            'subkoordinator',
+            'komando_lapangan',
+        ], true);
+    }
+
+    protected static ?string $navigationLabel = 'Klaster';
+
+    protected static ?int $navigationSort = 3;
 }

@@ -55,10 +55,6 @@ class ClusterService
 
         $activeStatuses = [
             StatusKlaster::MenungguVerifikasi->value,
-            StatusKlaster::Terverifikasi->value,
-            StatusKlaster::Disposisi->value,
-            StatusKlaster::Ditugaskan->value,
-            StatusKlaster::DalamProses->value,
         ];
 
         $candidates = Klaster::query()
@@ -112,7 +108,7 @@ class ClusterService
         return $nearest;
     }
 
-    private function distanceInMeters(
+    public function distanceInMeters(
         float $lat1,
         float $lng1,
         float $lat2,
