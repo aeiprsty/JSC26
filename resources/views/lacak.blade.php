@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cek Penanganan TPS - JambiBersih</title>
-    
+
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
+
     <!-- Font Inter & Font Awesome Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -24,7 +24,7 @@
     <header class="sticky top-0 z-50 bg-[#1F3D2E] text-white shadow-md transition-all duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-20">
-                
+
                 <!-- Logo & Branding -->
                 <a href="{{ url('/') }}" class="flex items-center gap-3 group">
                     <div class="w-10 h-10 rounded-xl bg-[#6B7F4E] flex items-center justify-center text-white shadow-lg group-hover:bg-[#4C6A73] transition-colors duration-200">
@@ -41,7 +41,7 @@
                     <a href="{{ url('/') }}" class="px-3 py-2 rounded-lg text-sm font-medium text-emerald-100 hover:text-white hover:bg-white/10 transition-colors">
                         Beranda
                     </a>
-                    
+
                     <a href="{{ url('/lapor') }}" class="px-3 py-2 rounded-lg text-sm font-medium text-emerald-100 hover:text-white hover:bg-white/10 transition-colors">
                         Lapor TPS
                     </a>
@@ -56,7 +56,7 @@
                             <span>Informasi & Edukasi</span>
                             <i class="fa-solid fa-chevron-down text-xs transition-transform duration-200 group-hover:rotate-180"></i>
                         </button>
-                        
+
                         <div id="desktop-menu" class="hidden group-hover:block absolute right-0 mt-1 w-64 bg-white rounded-xl shadow-xl border border-[#5A4A3A]/10 py-2 text-[#5A4A3A] z-50 animate-fadeIn">
                             <a href="{{ url('/jadwal') }}" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium hover:bg-[#DCC8A3]/30 hover:text-[#1F3D2E] transition-colors">
                                 <div class="w-8 h-8 rounded-lg bg-[#6B7F4E]/10 flex items-center justify-center text-[#6B7F4E]">
@@ -110,7 +110,7 @@
             <a href="{{ url('/lacak') }}" class="block px-3 py-2 rounded-lg text-base font-semibold text-white bg-white/10">
                 Cek Penanganan TPS
             </a>
-            
+
             <div class="pt-2 border-t border-white/10">
                 <div class="px-3 py-1 text-xs font-semibold text-[#DCC8A3] uppercase tracking-wider">Informasi & Edukasi</div>
                 <a href="{{ url('/jadwal') }}" class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-emerald-100 hover:text-white hover:bg-white/10 rounded-lg">
@@ -131,7 +131,7 @@
 
     <!-- MAIN CONTENT HALAMAN LACAK -->
     <main class="flex-grow py-12 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto w-full">
-        
+
         <!-- HEADER HALAMAN -->
         <div class="text-center mb-8">
             <span class="bg-[#4C6A73]/20 text-[#1F3D2E] text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Pemantauan Laporan Masyarakat</span>
@@ -156,11 +156,106 @@
             </form>
         </div>
 
+        <!-- HASIL PENCARIAN TIKET DARI DATABASE -->
+        <div id="hasil-pencarian" class="hidden bg-white rounded-3xl shadow-xl border border-[#5A4A3A]/15 overflow-hidden mb-8">
+
+            <!-- Header Hasil -->
+            <div class="bg-[#1F3D2E] px-6 py-5 text-white">
+                <div class="flex items-center gap-3">
+                    <div class="w-11 h-11 rounded-xl bg-white/10 flex items-center justify-center">
+                        <i class="fa-solid fa-ticket text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-lg">Hasil Pelacakan Laporan</h3>
+                        <p class="text-xs text-white/75 mt-1">
+                            Informasi laporan berdasarkan kode tiket
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-6 sm:p-8">
+                <p id="pesan-pencarian" role="status" aria-live="polite" class="text-sm text-[#5A4A3A]"></p>
+
+                <div id="detail-pencarian" class="hidden mt-5">
+
+                    <!-- Kode Tiket dan Status -->
+                    <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-6">
+                        <div>
+                            <p class="text-xs font-semibold uppercase tracking-wider text-[#5A4A3A]/60 mb-2">
+                                Kode Tiket
+                            </p>
+                            <h4 id="hasil-kode-tiket" class="text-xl sm:text-2xl font-black tracking-wide text-[#1F3D2E] break-all"></h4>
+                        </div>
+
+                        <div>
+                            <p class="text-xs font-semibold uppercase tracking-wider text-[#5A4A3A]/60 mb-2">
+                                Status Laporan
+                            </p>
+                            <span id="hasil-status" class="inline-flex items-center rounded-full px-4 py-2 text-sm font-bold"></span>
+                        </div>
+                    </div>
+
+                    <!-- Tanggal dan Koordinat -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="rounded-2xl border border-[#5A4A3A]/10 bg-[#FFFAE8]/60 p-4">
+                            <div class="flex items-start gap-3">
+                                <i class="fa-regular fa-calendar text-[#6B7F4E] mt-1"></i>
+                                <div>
+                                    <p class="text-xs font-semibold text-[#5A4A3A]/65 mb-1">
+                                        Tanggal Laporan
+                                    </p>
+                                    <p id="hasil-tanggal" class="text-sm font-semibold text-[#1F3D2E]"></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="rounded-2xl border border-[#5A4A3A]/10 bg-[#FFFAE8]/60 p-4">
+                            <div class="flex items-start gap-3">
+                                <i class="fa-solid fa-location-dot text-[#6B7F4E] mt-1"></i>
+                                <div class="min-w-0">
+                                    <p class="text-xs font-semibold text-[#5A4A3A]/65 mb-1">
+                                        Koordinat Lokasi
+                                    </p>
+                                    <p id="hasil-koordinat" class="text-sm font-semibold text-[#1F3D2E] break-all"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Deskripsi -->
+                    <div class="mt-4 rounded-2xl border border-[#5A4A3A]/10 p-4">
+                        <div class="flex items-start gap-3">
+                            <i class="fa-regular fa-clipboard text-[#6B7F4E] mt-1"></i>
+                            <div>
+                                <p class="text-xs font-semibold text-[#5A4A3A]/65 mb-1">
+                                    Deskripsi Laporan
+                                </p>
+                                <p id="hasil-deskripsi" class="text-sm text-[#1F3D2E] leading-relaxed whitespace-pre-line"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Foto Bukti -->
+                    <div id="bagian-foto" class="hidden mt-6">
+                        <h5 class="text-sm font-bold text-[#1F3D2E] mb-3 flex items-center gap-2">
+                            <i class="fa-solid fa-camera text-[#6B7F4E]"></i>
+                            Foto Bukti Laporan
+                        </h5>
+                        <img id="hasil-foto" class="hidden h-auto w-auto max-w-full max-h-[600px] rounded-2xl border border-[#5A4A3A]/15" alt="Foto laporan TPS liar">
+                    </div>
+
+                    <!-- Alasan Penolakan -->
+                    <div id="hasil-alasan-tolak" class="hidden mt-4 rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-800"></div>
+                </div>
+            </div>
+        </div>
+
         <!-- TABEL DAFTAR PELAPORAN (ACCORDION STYLED) -->
-        <div class="bg-white rounded-3xl shadow-xl border border-[#5A4A3A]/15 overflow-hidden">
+        <div id="daftar-pelaporan" class="bg-white rounded-3xl shadow-xl border border-[#5A4A3A]/15 overflow-hidden">
             <div class="overflow-x-auto">
                 <table class="w-full text-left border-collapse">
-                    
+
                     <thead>
                         <tr class="bg-[#1F3D2E] text-white text-xs uppercase tracking-wider font-semibold">
                             <th class="py-4 px-6">Tanggal Lapor</th>
@@ -265,13 +360,13 @@
                         <tr id="detail-2" class="hidden bg-[#FFFAE8]/40 border-b border-gray-200">
                             <td colspan="4" class="p-6">
                                 <div class="bg-white p-6 rounded-2xl border border-[#5A4A3A]/10 shadow-inner">
-                                    
+
                                     <div class="flex items-center justify-between border-b border-gray-100 pb-3 mb-4">
                                         <h4 class="text-xs font-extrabold text-[#1F3D2E] uppercase tracking-wider flex items-center gap-2">
                                             <i class="fa-solid fa-route text-[#6B7F4E]"></i> Riwayat Penanganan Laporan
                                         </h4>
                                         <span class="text-[11px] bg-emerald-50 text-emerald-700 border border-emerald-200 px-2.5 py-0.5 rounded-full font-bold">
-                                            <i class="fa-solid fa-[#6B7F4E] fa-[#6B7F4E]"></i> Penanganan Tuntas
+                                            Penanganan Tuntas
                                         </span>
                                     </div>
 
@@ -300,7 +395,7 @@
                                         </div>
                                     </div>
 
-                                    <!-- SECTION BUKTI FOTO HASIL LAPANGAN (MARKETPLACE STYLE) -->
+                                    <!-- SECTION BUKTI FOTO HASIL LAPANGAN -->
                                     <div class="bg-gray-50 border border-gray-200/80 rounded-2xl p-4">
                                         <div class="flex items-center justify-between mb-3">
                                             <h5 class="text-xs font-bold text-[#1F3D2E] uppercase tracking-wider flex items-center gap-2">
@@ -309,10 +404,7 @@
                                             <span class="text-[10px] text-gray-500 font-medium">*Klik gambar untuk memperbesar</span>
                                         </div>
 
-                                        <!-- GALLERY THUMBNAIL -->
-                                        <div class="flex gap-3 overflow-x-auto pb-1">         
-                                
-                                            <!-- FOTO 1: LOKASI SESUDAH (BERSIH) -->
+                                        <div class="flex gap-3 overflow-x-auto pb-1">        
                                             <div class="relative group shrink-0 cursor-pointer overflow-hidden rounded-xl border-2 border-emerald-300 shadow-sm hover:shadow-md transition-all"
                                                 onclick="openPhotoModal('https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=800&auto=format&fit=crop&q=80', 'Foto Kanan: Lokasi Telah Bersih Rapi Tuntas (Sesudah Pembersihan)')">
                                                 <img src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=300&auto=format&fit=crop&q=80" alt="Sesudah" class="w-24 h-24 sm:w-28 sm:h-28 object-cover group-hover:scale-105 transition-transform duration-300">
@@ -324,7 +416,6 @@
                                                     Sesudah (Bersih)
                                                 </span>
                                             </div>
-
                                         </div>
                                     </div>
 
@@ -332,7 +423,7 @@
                             </td>
                         </tr>
 
-                        <!-- CONTOH 3: STATUS DITOLAK (DENGAN ALASAN) -->
+                        <!-- CONTOH 3: STATUS DITOLAK -->
                         <tr class="report-row hover:bg-[#DCC8A3]/10 cursor-pointer transition-colors" data-ticket="TPS-20261026-REJ" onclick="toggleAccordion('detail-3', 'arrow-3')">
                             <td class="py-4 px-6 whitespace-nowrap">
                                 <div class="font-bold text-[#1F3D2E]">26 Okt 2026</div>
@@ -414,13 +505,11 @@
         </div>
     </div>
 
-    <!-- ==========================================
-         FOOTER SEDERHANA
-         ========================================== -->
+    <!-- FOOTER SEDERHANA -->
     <footer class="bg-[#1F3D2E] text-white border-t border-white/10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
             <div class="flex flex-col md:flex-row items-center justify-between gap-6">
-                
+
                 <!-- Branding Left -->
                 <div class="flex items-center gap-3">
                     <div class="w-8 h-8 rounded-lg bg-[#6B7F4E] flex items-center justify-center text-white font-bold text-sm">
@@ -453,7 +542,6 @@
 
     <!-- SCRIPT AKSI INTERAKSI ACCORDION EXCLUSIVE & SEARCH -->
     <script>
-
         // Fungsi Buka Modal Foto Bukti
         function openPhotoModal(imgSrc, caption) {
             document.getElementById('modal-img').src = imgSrc;
@@ -465,53 +553,134 @@
         function closePhotoModal() {
             document.getElementById('photo-modal').classList.add('hidden');
         }
-        // Toggle Buka/Tutup Baris Detail Accordion (Hanya 1 Terbuka dalam Satu Waktu)
+
+        // Toggle Buka/Tutup Baris Detail Accordion
         function toggleAccordion(detailId, arrowId) {
             const targetDetail = document.getElementById(detailId);
             const targetArrow = document.getElementById(arrowId);
             const isHidden = targetDetail.classList.contains('hidden');
 
-            // 1. Tutup semua detail row lain dan reset semua ikon panah
             document.querySelectorAll('[id^="detail-"]').forEach(el => el.classList.add('hidden'));
             document.querySelectorAll('[id^="arrow-"]').forEach(arrow => arrow.classList.remove('rotate-180'));
 
-            // 2. Jika baris yang diklik tadi statusnya tertutup, buka baris tersebut
             if (isHidden) {
                 targetDetail.classList.remove('hidden');
                 targetArrow.classList.add('rotate-180');
             }
         }
 
-        // Cari Tiket Berdasarkan Kode Tiket Tersembunyi di Attribute data-ticket
-        function searchTicket(e) {
+        // Pencarian Tiket dari Database Backend API
+        async function searchTicket(e) {
             e.preventDefault();
-            const query = document.getElementById('ticket-search-input').value.trim().toLowerCase();
-            const rows = document.querySelectorAll('.report-row');
 
-            // Reset & tutup semua accordion saat pencarian baru
-            document.querySelectorAll('[id^="detail-"]').forEach(el => el.classList.add('hidden'));
-            document.querySelectorAll('[id^="arrow-"]').forEach(arrow => arrow.classList.remove('rotate-180'));
+            const input = document.getElementById('ticket-search-input');
+            const query = input.value.trim().toUpperCase();
 
-            rows.forEach(row => {
-                const ticketCode = row.getAttribute('data-ticket').toLowerCase();
-                const matches = row.getAttribute('onclick').match(/'([^']+)',\s*'([^']+)'/);
-                const detailId = matches[1];
-                const arrowId = matches[2];
-                
-                const detailRow = document.getElementById(detailId);
-                const arrowIcon = document.getElementById(arrowId);
+            const hasil = document.getElementById('hasil-pencarian');
+            const pesan = document.getElementById('pesan-pencarian');
+            const detail = document.getElementById('detail-pencarian');
+            const daftar = document.getElementById('daftar-pelaporan');
+            const statusEl = document.getElementById('hasil-status');
+            const foto = document.getElementById('hasil-foto');
+            const bagianFoto = document.getElementById('bagian-foto');
+            const alasanTolak = document.getElementById('hasil-alasan-tolak');
+            const submitButton = document.querySelector('#search-form button[type="submit"]');
 
-                if (ticketCode.includes(query)) {
-                    row.style.display = '';
-                    // Otomatis buka accordion jika kode tiket pas/cocok persis
-                    if (query !== '' && ticketCode === query) {
-                        detailRow.classList.remove('hidden');
-                        arrowIcon.classList.add('rotate-180');
+            if (!query) {
+                alert('Masukkan kode tiket laporan terlebih dahulu.');
+                return;
+            }
+
+            hasil.classList.remove('hidden');
+            daftar.classList.add('hidden');
+
+            detail.classList.add('hidden');
+            foto.classList.add('hidden');
+            bagianFoto.classList.add('hidden');
+            foto.removeAttribute('src');
+            alasanTolak.classList.add('hidden');
+
+            pesan.textContent = 'Sedang mencari tiket...';
+            submitButton.disabled = true;
+
+            try {
+                const response = await fetch(`/laporan/${encodeURIComponent(query)}`, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json'
                     }
-                } else {
-                    row.style.display = 'none';
+                });
+
+                const result = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(
+                        response.status === 404
+                            ? 'Tiket tidak ditemukan. Periksa kembali kode tiket kamu.'
+                            : result.message || 'Gagal mencari tiket.'
+                    );
                 }
-            });
+
+                const data = result.data;
+
+                document.getElementById('hasil-kode-tiket').textContent = data.kode_tiket;
+
+                const status = String(data.status || 'menunggu').trim().toLowerCase();
+
+                const statusConfig = {
+                    menunggu: { label: 'Menunggu', color: 'bg-amber-100 text-amber-800' },
+                    terverifikasi: { label: 'Terverifikasi', color: 'bg-cyan-100 text-cyan-800' },
+                    diproses: { label: 'Dalam Proses', color: 'bg-blue-100 text-blue-800' },
+                    dalam_proses: { label: 'Dalam Proses', color: 'bg-blue-100 text-blue-800' },
+                    selesai: { label: 'Selesai', color: 'bg-emerald-100 text-emerald-800' },
+                    ditolak: { label: 'Ditolak', color: 'bg-red-100 text-red-800' }
+                };
+
+                const statusInfo = statusConfig[status] || {
+                    label: data.status || 'Belum tersedia',
+                    color: 'bg-gray-100 text-gray-800'
+                };
+
+                statusEl.textContent = statusInfo.label;
+                statusEl.className = 'inline-flex items-center rounded-full px-4 py-2 text-sm font-bold ' + statusInfo.color;
+
+                const tanggal = data.created_at
+                    ? new Date(data.created_at).toLocaleString('id-ID', {
+                        dateStyle: 'long',
+                        timeStyle: 'short',
+                        timeZone: 'Asia/Jakarta'
+                    }) + ' WIB'
+                    : 'Tanggal laporan tidak tersedia';
+
+                document.getElementById('hasil-tanggal').textContent = tanggal;
+                document.getElementById('hasil-deskripsi').textContent = data.deskripsi || 'Tidak ada deskripsi.';
+                document.getElementById('hasil-koordinat').textContent = `${data.lat}, ${data.lng}`;
+
+                if (data.foto) {
+                    foto.onload = () => {
+                        foto.classList.remove('hidden');
+                        bagianFoto.classList.remove('hidden');
+                    };
+                    foto.onerror = () => {
+                        foto.classList.add('hidden');
+                        bagianFoto.classList.add('hidden');
+                    };
+                    foto.src = data.foto;
+                }
+
+                if (data.alasan_tolak) {
+                    alasanTolak.textContent = 'Alasan penolakan: ' + data.alasan_tolak;
+                    alasanTolak.classList.remove('hidden');
+                }
+
+                pesan.textContent = 'Laporan ditemukan';
+                detail.classList.remove('hidden');
+
+            } catch (error) {
+                pesan.textContent = error.message || 'Terjadi kesalahan saat mencari tiket.';
+            } finally {
+                submitButton.disabled = false;
+            }
         }
 
         function toggleMobileMenu() {

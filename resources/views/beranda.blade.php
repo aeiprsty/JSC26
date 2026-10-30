@@ -34,9 +34,7 @@
             background: #1F3D2E;
         }
     </style>
-
-
-
+    
 </head>
 <body class="bg-[#DCC8A3] text-[#5A4A3A] antialiased selection:bg-[#6B7F4E] selection:text-white overflow-x-hidden min-h-screen flex flex-col">
 

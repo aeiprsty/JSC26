@@ -26,17 +26,10 @@ return new class extends Migration
     /**
      * Reverse the migrations.
      */
+
     public function down(): void
     {
-        Schema::create('laporan', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('klaster_id')->constrained('klaster')->cascadeOnDelete();
-            $table->string('kode_tiket')->unique();
-            $table->string('foto');
-            $table->text('deskripsi')->nullable();
-            $table->decimal('lat', 10, 7);
-            $table->decimal('lng', 10, 7);
-            $table->timestamps();
-        });
+        Schema::dropIfExists('klaster');
     }
+
 };

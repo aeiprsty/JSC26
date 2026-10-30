@@ -147,7 +147,6 @@
             @csrf
 
             <!-- 1. UNGGAH FOTO BUKTI -->
-            <!-- 1. UNGGAH FOTO BUKTI -->
             <div>
                 <label class="block text-sm font-bold text-[#1F3D2E] mb-2">
                     Foto Bukti Sampah Liar <span class="text-red-500">*</span>
@@ -329,12 +328,74 @@
             dropdown.classList.toggle('hidden');
         }
 
-        // Simulasi Submit Form & Popup Modal Sukses
-        function submitLaporan(e) {
+        async function submitLaporan(e) {
             e.preventDefault();
-            const randomCode = 'TPS-' + new Date().toISOString().slice(0,10).replace(/-/g,'') + '-' + Math.random().toString(36).substring(2, 5).toUpperCase();
-            document.getElementById('output-kode-tiket').innerText = randomCode;
-            document.getElementById('modal-sukses').classList.remove('hidden');
+
+            const form = document.getElementById('form-lapor');
+            const submitButton = form.querySelector('button[type="submit"]');
+            const submitText = submitButton.querySelector('span');
+            const koordinat = document.getElementById('input-koordinat').value.trim();
+
+            if (!koordinat) {
+                alert('Tentukan lokasi TPS liar terlebih dahulu melalui peta atau GPS.');
+                return;
+            }
+
+            const parts = koordinat.split(',').map(value => value.trim());
+            const lat = Number(parts[0]);
+            const lng = Number(parts[1]);
+
+            if (
+                parts.length !== 2 ||
+                parts.some(value => value === '') ||
+                !Number.isFinite(lat) ||
+                !Number.isFinite(lng) ||
+                lat < -90 || lat > 90 ||
+                lng < -180 || lng > 180
+            ) {
+                alert('Koordinat lokasi tidak valid. Silakan tentukan ulang lokasi pada peta.');
+                return;
+            }
+
+            const formData = new FormData(form);
+            formData.delete('koordinat');
+            formData.delete('alamat_detail');
+            formData.set('lat', String(lat));
+            formData.set('lng', String(lng));
+
+            submitButton.disabled = true;
+            submitText.textContent = 'Mengirim laporan...';
+
+            try {
+                const response = await fetch('/laporan', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': form.querySelector('input[name="_token"]').value
+                    },
+                    body: formData
+                });
+
+                const result = await response.json();
+
+                if (!response.ok) {
+                    const errors = result.errors
+                        ? Object.values(result.errors).flat().join('\n')
+                        : result.message || 'Laporan gagal dikirim.';
+
+                    throw new Error(errors);
+                }
+
+                document.getElementById('output-kode-tiket').innerText =
+                    result.data.kode_tiket;
+
+                document.getElementById('modal-sukses').classList.remove('hidden');
+            } catch (error) {
+                alert(error.message || 'Terjadi kesalahan saat mengirim laporan. Silakan coba lagi.');
+            } finally {
+                submitButton.disabled = false;
+                submitText.textContent = 'Kirim Laporan TPS Liar';
+            }
         }
 
         function copyTicketCode() {
