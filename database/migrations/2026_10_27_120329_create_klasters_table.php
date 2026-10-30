@@ -6,12 +6,9 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        Schema::create('klaster', function (Blueprint $table) {
+        Schema::create('klasters', function (Blueprint $table) { // <-- Ubah jadi 'klasters'
             $table->id();
             $table->decimal('anchor_lat', 10, 7);
             $table->decimal('anchor_lng', 10, 7);
@@ -23,20 +20,8 @@ return new class extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::create('laporan', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('klaster_id')->constrained('klaster')->cascadeOnDelete();
-            $table->string('kode_tiket')->unique();
-            $table->string('foto');
-            $table->text('deskripsi')->nullable();
-            $table->decimal('lat', 10, 7);
-            $table->decimal('lng', 10, 7);
-            $table->timestamps();
-        });
+        Schema::dropIfExists('klasters');
     }
 };

@@ -2,24 +2,26 @@
 
 namespace App\Models;
 
-use App\Enums\StatusKlaster;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Klaster extends Model
 {
-    protected $table = 'klaster';
-    protected $guarded = [];
-    protected $casts = ['status' => StatusKlaster::class];
+    use HasFactory;
 
-    public function laporan(): HasMany
-    {
-        return $this->hasMany(Laporan::class);
-    }
+    protected $table = 'klasters'; // <--- Wajib ditambahkan agar tidak mencari tabel 'klaster'
 
-    public function petugas(): BelongsTo
+    protected $fillable = [
+        'anchor_lat',
+        'anchor_lng',
+        'status',
+        'assigned_to',
+        'alasan_tolak',
+        'foto_bukti',
+    ];
+
+    public function laporans()
     {
-        return $this->belongsTo(User::class, 'assigned_to');
+        return $this->hasMany(Laporan::class, 'klaster_id');
     }
 }

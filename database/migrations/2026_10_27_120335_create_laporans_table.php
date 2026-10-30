@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('laporans', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('klaster_id')->constrained('klasters')->onDelete('cascade');
+            $table->decimal('lat', 10, 7);
+            $table->decimal('lng', 10, 7);
+            $table->text('deskripsi');
             $table->timestamps();
         });
     }
