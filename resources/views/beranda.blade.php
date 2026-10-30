@@ -156,8 +156,9 @@
              HERO SECTION
              ========================================== -->
         <!-- HERO SECTION (BACKGROUND FADE & KONTEN KIRI) -->
-        <section class="relative bg-[#1F3D2E] text-white overflow-hidden py-20 lg:py-28 min-h-[500px] flex items-center">
-            
+        <!-- HERO SECTION -->
+        <section class="relative bg-[#FFFAE8] text-white overflow-hidden pt-16 pb-28 sm:pb-36 lg:pb-44 min-h-[520px] flex items-center">
+                    
             <!-- 1. GAMBAR BACKGROUND DENGAN OVERLAY GRADIENT -->
             <div class="absolute inset-0 z-0">
                 <!-- Gambar Lingkungan/Armada di Sebelah Kanan -->
@@ -169,8 +170,8 @@
                 <div class="absolute inset-0 bg-gradient-to-r from-[#1F3D2E] via-[#1F3D2E]/90 sm:via-[#1F3D2E]/80 to-transparent"></div>
             </div>
 
-            <!-- 2. KONTEN UTAMA (DI ATAS OVERLAY) -->
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
+            <!-- 2. KONTEN UTAMA HERO (DI ATAS OVERLAY) -->
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full py-8">
                 <div class="max-w-xl space-y-6 reveal opacity-0 translate-y-10 transition-all duration-700 ease-out">
                     
                     <span class="inline-flex items-center gap-2 bg-[#6B7F4E]/30 text-[#DCC8A3] border border-[#6B7F4E]/50 text-xs font-bold px-3.5 py-1.5 rounded-full uppercase tracking-wider backdrop-blur-sm">
@@ -188,7 +189,7 @@
                     </p>
 
                     <div class="flex flex-wrap gap-4 pt-2">
-                        <a href="{{ url('/lapor') }}" class="bg-[#6B7F4E] hover:scale-105 transition-all text-white font-bold px-6 py-3.5 rounded-xl shadow-lg transition-all flex items-center gap-2 text-sm"
+                        <a href="{{ url('/lapor') }}" class="bg-[#6B7F4E] hover:scale-105 transition-all text-white font-bold px-6 py-3.5 rounded-xl shadow-lg flex items-center gap-2 text-sm">
                             <span>Lapor TPS Liar Sekarang</span>
                         </a>
 
@@ -200,13 +201,18 @@
                 </div>
             </div>
 
+            <!-- 3. SVG GELOMBANG (LENGKUNGAN MENTOK KE BAWAH) -->
+            <div class="absolute bottom-0 left-0 right-0 w-full overflow-hidden leading-none z-20 pointer-events-none">
+                <svg class="relative block w-full h-12 sm:h-20 lg:h-28" viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+                    <path d="M0,60 C320,110 420,30 720,70 C1020,110 1120,30 1440,60 L1440,120 L0,120 Z" style="fill: #FFFAE8;"></path>
+                </svg>
+            </div>
+
         </section>
 
         <!-- ==========================================
              SECTION: 3 LANGKAH MUDAH LAPOR
              ========================================== -->
-
-        <!-- SECTION ALUR JALAN BERGELOMBANG (ROADMAP PROCESS) -->
         <!-- SECTION ALUR JALAN BERGELOMBANG (ROADMAP PROCESS) -->
         <section id="alur" class="relative py-20 bg-[#FFFAE8]">
             <!-- Isi Konten Alur Operasional -->
