@@ -102,19 +102,24 @@ Ikuti langkah berikut untuk menjalankan JambiBersih secara lokal.
    php artisan migrate
    ```
 
-6. Build frontend assets:
+6. Isi data awal aplikasi:
+   ```bash
+   php artisan db:seed
+   ```
+
+7. Build frontend assets:
 
    ```bash
    npm run build
    ```
 
-7. Start the development server:
+8. Start the development server:
 
    ```bash
    php artisan serve
    ```
 
-8. Buka aplikasi melalui:
+9. Buka aplikasi melalui:
 
    ```text
    http://127.0.0.1:8000
