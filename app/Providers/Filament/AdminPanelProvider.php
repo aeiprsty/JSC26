@@ -18,6 +18,8 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use App\Filament\Widgets\DashboardOverview;
+use Filament\View\PanelsRenderHook;
+use Illuminate\Support\Facades\Blade;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -27,10 +29,17 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
+            ->brandName('JambiBersih')
             ->login()
+            ->sidebarFullyCollapsibleOnDesktop()
+            ->renderHook(
+                PanelsRenderHook::TOPBAR_START,
+                fn (): string => Blade::render("@include('filament.components.internal-header')")
+            )
             ->colors([
                 'primary' => Color::Amber,
             ])
+            ->theme(asset('css/filament/admin/theme.css'))
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([

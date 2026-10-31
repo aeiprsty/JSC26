@@ -17,7 +17,7 @@ class InformasiResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-information-circle';
 
-    protected static ?string $navigationLabel = 'Transparansi';
+    protected static ?string $navigationLabel = 'Informasi';
 
     protected static ?string $navigationGroup = 'Konten Publik';
 
@@ -110,13 +110,9 @@ class InformasiResource extends Resource
 
                 Tables\Columns\TextColumn::make('rincian')
                     ->label('Jumlah Rincian')
-                    ->formatStateUsing(function ($state): string {
-                        if (is_string($state)) {
-                            $state = json_decode($state, true);
-                        }
-
-        return count(is_array($state) ? $state : []) . ' poin';
-    }),
+                    ->getStateUsing(function (\App\Models\Informasi $record): string {
+                        return count($record->rincian ?? []) . ' poin';
+                    }),
 
                 Tables\Columns\TextColumn::make('ikon')
                     ->label('Ikon')

@@ -1,0 +1,40 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@tailwind variants;
+@import '../../../../vendor/filament/filament/resources/css/base.css';
+
+@config 'tailwind.config.js';
+
+/* Sidebar overlay desktop */
+@media (min-width: 1024px) {
+    .fi-sidebar {
+        position: fixed !important;
+        inset-block: 0 !important;
+        inset-inline-start: 0 !important;
+        z-index: 50 !important;
+        height: 100vh !important;
+        transition: transform 300ms ease !important;
+    }
+
+    /* Konten utama tidak bergeser */
+    .fi-main {
+        margin-inline-start: 0 !important;
+    }
+}
+
+@media (min-width: 1024px) {
+    .fi-sidebar.fi-main-sidebar {
+        background-color: #ffffff !important;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.12) !important;
+    }
+
+    .dark .fi-sidebar.fi-main-sidebar {
+        background-color: rgb(17, 24, 39) !important;
+    }
+}
+
+/* Dashboard: gunakan satu kolom penuh untuk widget */
+.fi-dashboard-page .fi-wi {
+    grid-template-columns: minmax(0, 1fr) !important;
+}

@@ -1,4 +1,4 @@
-<div class="space-y-6">
+<div class="w-full min-w-0 space-y-6">
 
     {{-- RINGKASAN --}}
     <div>
@@ -27,17 +27,6 @@
                 </div>
             @endforeach
         </div>
-    </div>
-
-    {{-- PETA --}}
-    <div class="rounded-xl bg-white dark:bg-gray-900 shadow-sm ring-1 ring-gray-950/5 dark:ring-white/10 p-4">
-        <h2 class="text-lg font-bold mb-3">{{ $mapTitle }}</h2>
-
-        <div
-            id="dashboard-map-{{ $this->getId() }}"
-            wire:ignore
-            style="height: 420px; width: 100%; border-radius: 12px; z-index: 1;"
-        ></div>
     </div>
 
     {{-- DAFTAR LAPORAN OPERATOR --}}
@@ -144,77 +133,84 @@
             </div>
         </div>
     @endif
+    
+    {{-- PETA --}}
+    <div class="rounded-xl bg-white dark:bg-gray-900 shadow-sm ring-1 ring-gray-950/5 dark:ring-white/10 p-4">
+        <h2 class="text-lg font-bold mb-3">{{ $mapTitle }}</h2>
 
+        <div
+            id="dashboard-map-{{ $this->getId() }}"
+            wire:ignore
+            x-data="{
+                initMap(element, points) {
+                    const drawMap = () => {
+                        if (!window.L) {
+                            setTimeout(drawMap, 200);
+                            return;
+                        }
+
+                        if (element._leaflet_id) return;
+
+                        const map = L.map(element).setView([-1.6101, 103.6131], 13);
+
+                        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                            maxZoom: 19,
+                            attribution: '&copy; OpenStreetMap contributors'
+                        }).addTo(map);
+
+                        points.forEach(point => {
+                            const marker = L.marker([point.lat, point.lng]).addTo(map);
+
+                            const popup = document.createElement('div');
+
+                            const title = document.createElement('strong');
+                            title.textContent = point.title;
+
+                            const description = document.createElement('p');
+                            description.textContent = point.description;
+
+                            const status = document.createElement('p');
+                            status.textContent = 'Status: ' + point.status.replaceAll('_', ' ');
+
+                            popup.append(title, description, status);
+
+                            if (point.url) {
+                                const link = document.createElement('a');
+                                link.href = point.url;
+                                link.textContent = 'Lihat Detail Klaster';
+                                popup.append(link);
+                            }
+
+                            marker.bindPopup(popup);
+                        });
+
+                        if (points.length > 0) {
+                            map.fitBounds(
+                                L.latLngBounds(points.map(point => [point.lat, point.lng])),
+                                { padding: [30, 30], maxZoom: 16 }
+                            );
+                        }
+
+                        setTimeout(() => map.invalidateSize(), 300);
+
+                        console.log('Peta berhasil diinisialisasi:', points);
+                    };
+
+                    drawMap();
+                }
+            }"
+            x-init="$nextTick(() => initMap($el, @js($mapPoints)))"
+            style="height: 420px; width: 100%; border-radius: 12px; z-index: 1;"
+        ></div>
+    </div>
+    
     {{-- LEAFLET --}}
     @assets
         <link
             rel="stylesheet"
             href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
         />
-
         <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     @endassets
-
-    @script
-        <script>
-           const mapElement = document.getElementById(
-                'dashboard-map-' + @js($this->getId())
-            );
-
-            if (mapElement && !mapElement.dataset.initialized) {
-                mapElement.dataset.initialized = 'true';
-
-                const points = @js($mapPoints);
-
-                if (!window.L) {
-                    console.error('Leaflet belum berhasil dimuat.');
-                    return;
-                }
-
-                const map = window.L.map(mapElement).setView([-1.6101, 103.6131], 13);
-
-                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                    maxZoom: 19,
-                    attribution: '&copy; OpenStreetMap contributors'
-                }).addTo(map);
-
-                points.forEach(point => {
-                    const marker = L.marker([point.lat, point.lng]).addTo(map);
-
-                    const popup = document.createElement('div');
-
-                    const title = document.createElement('strong');
-                    title.textContent = point.title;
-
-                    const description = document.createElement('p');
-                    description.textContent = point.description;
-
-                    const status = document.createElement('p');
-                    status.textContent = 'Status: ' + point.status.replaceAll('_', ' ');
-
-                    popup.append(title, description, status);
-
-                    if (point.url) {
-                        const link = document.createElement('a');
-                        link.href = point.url;
-                        link.textContent = 'Lihat Detail Klaster';
-                        popup.append(link);
-                    }
-
-                    marker.bindPopup(popup);
-                });
-
-                if (points.length > 0) {
-                    const bounds = L.latLngBounds(
-                        points.map(point => [point.lat, point.lng])
-                    );
-
-                    map.fitBounds(bounds, { padding: [30, 30], maxZoom: 16 });
-                }
-
-                setTimeout(() => map.invalidateSize(), 300);
-            }
-        </script>
-    @endscript
 
 </div>

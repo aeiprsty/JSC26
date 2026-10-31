@@ -146,10 +146,6 @@ class UserResource extends Resource
                     })
                     ->badge(),
 
-                Tables\Columns\TextColumn::make('tim_komando')
-                    ->label('Tim')
-                    ->formatStateUsing(fn ($state) => $state ? "Komando {$state}" : '-'),
-
                 Tables\Columns\IconColumn::make('is_active')
                     ->label('Status Akun')
                     ->boolean(),
@@ -193,7 +189,10 @@ class UserResource extends Resource
                         'is_active' => ! $record->is_active,
                     ])),
             ])
-            ->bulkActions([]);
+            ->bulkActions([])
+            ->searchPlaceholder('Cari nama atau email...')
+            ->emptyStateHeading('Belum ada akun')
+            ->emptyStateDescription('Belum ada data akun yang tersedia.');
     }
 
     public static function getPages(): array

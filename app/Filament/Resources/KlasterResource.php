@@ -127,17 +127,20 @@ class KlasterResource extends Resource
 
                 Tables\Columns\TextColumn::make('status')
                     ->label('Status Klaster')
-                    ->badge(),
+                    ->formatStateUsing(fn ($state): string => match ($state?->value ?? $state) {
+                        'menunggu_verifikasi' => 'Menunggu Verifikasi',
+                        'terverifikasi' => 'Terverifikasi',
+                        'dalam_proses' => 'Dalam Proses',
+                        'selesai' => 'Selesai',
+                        'ditolak' => 'Ditolak',
+                        default => ucfirst(str_replace('_', ' ', $state?->value ?? $state ?? '-')),
+                    })
+                    ->badge()
+                    ->sortable(),
 
                 Tables\Columns\TextColumn::make('petugas.name')
                     ->label('Petugas')
                     ->placeholder('Belum ditugaskan'),
-
-                Tables\Columns\ImageColumn::make('foto_bukti')
-                    ->label('Foto Bukti')
-                    ->disk('public')
-                    ->height(60)
-                    ->width(60),
 
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Waktu Dibuat')

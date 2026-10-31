@@ -17,16 +17,16 @@ class DashboardOverview extends Widget
     {
         $role = auth()->user()?->role;
 
-        // Ringkasan jumlah laporan berdasarkan status.
-        $stats = [
-            'menunggu' => Laporan::where('status', 'menunggu')->count(),
-            'terverifikasi' => Laporan::where('status', 'terverifikasi')->count(),
-            'dalam_proses' => Laporan::where('status', 'dalam_proses')->count(),
-            'selesai' => Laporan::where('status', 'selesai')->count(),
-            'ditolak' => Laporan::where('status', 'ditolak')->count(),
-        ];
-
+        // Operator: ringkasan berdasarkan status laporan.
         if ($role === 'operator') {
+            $stats = [
+                'menunggu' => Laporan::where('status', 'menunggu')->count(),
+                'terverifikasi' => Laporan::where('status', 'terverifikasi')->count(),
+                'dalam_proses' => Laporan::where('status', 'dalam_proses')->count(),
+                'selesai' => Laporan::where('status', 'selesai')->count(),
+                'ditolak' => Laporan::where('status', 'ditolak')->count(),
+            ];
+
             $reports = Laporan::query()
                 ->latest()
                 ->limit(10)
@@ -45,7 +45,8 @@ class DashboardOverview extends Widget
                     'description' => $report->deskripsi ?? 'Tidak ada deskripsi',
                     'status' => $report->status,
                 ])
-                ->values();
+                ->values()
+                ->all();
 
             return [
                 'role' => $role,
@@ -57,7 +58,45 @@ class DashboardOverview extends Widget
             ];
         }
 
-        // Batasi klaster sesuai kewenangan pengguna.
+        // Ringkasan seluruh klaster berdasarkan status.
+        $stats = [
+            'menunggu_verifikasi' => Klaster::where(
+                'status',
+                StatusKlaster::MenungguVerifikasi
+            )->count(),
+
+            'terverifikasi' => Klaster::where(
+                'status',
+                StatusKlaster::Terverifikasi
+            )->count(),
+
+            'disposisi' => Klaster::where(
+                'status',
+                StatusKlaster::Disposisi
+            )->count(),
+
+            'ditugaskan' => Klaster::where(
+                'status',
+                StatusKlaster::Ditugaskan
+            )->count(),
+
+            'dalam_proses' => Klaster::where(
+                'status',
+                StatusKlaster::DalamProses
+            )->count(),
+
+            'selesai' => Klaster::where(
+                'status',
+                StatusKlaster::Selesai
+            )->count(),
+
+            'ditolak' => Klaster::where(
+                'status',
+                StatusKlaster::Ditolak
+            )->count(),
+        ];
+
+        // Daftar klaster sesuai kewenangan role.
         $clusterQuery = Klaster::query()
             ->with('petugas')
             ->withCount('laporan');
@@ -65,19 +104,19 @@ class DashboardOverview extends Widget
         if ($role === 'kabid') {
             $clusterQuery->where(
                 'status',
-                StatusKlaster::Terverifikasi->value
+                StatusKlaster::Terverifikasi
             );
         } elseif ($role === 'subkoordinator') {
             $clusterQuery->where(
                 'status',
-                StatusKlaster::Disposisi->value
+                StatusKlaster::Disposisi
             );
         } elseif ($role === 'komando_lapangan') {
             $clusterQuery
                 ->where('assigned_to', auth()->id())
                 ->whereIn('status', [
-                    StatusKlaster::Ditugaskan->value,
-                    StatusKlaster::DalamProses->value,
+                    StatusKlaster::Ditugaskan,
+                    StatusKlaster::DalamProses,
                 ]);
         }
 
@@ -87,6 +126,10 @@ class DashboardOverview extends Widget
             ->get();
 
         $mapPoints = $clusters
+            ->filter(fn ($cluster) =>
+                $cluster->anchor_lat !== null
+                && $cluster->anchor_lng !== null
+            )
             ->map(fn ($cluster) => [
                 'lat' => (float) $cluster->anchor_lat,
                 'lng' => (float) $cluster->anchor_lng,
@@ -98,7 +141,8 @@ class DashboardOverview extends Widget
                     ['record' => $cluster]
                 ),
             ])
-            ->values();
+            ->values()
+            ->all();
 
         return [
             'role' => $role,

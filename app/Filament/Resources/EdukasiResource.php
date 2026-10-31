@@ -124,7 +124,17 @@ class EdukasiResource extends Resource
 
                 Tables\Columns\TextColumn::make('jenis')
                     ->label('Jenis')
-                    ->badge(),
+                    ->formatStateUsing(fn ($state): string => match ($state?->value ?? $state) {
+                        'video' => 'Video',
+                        'artikel' => 'Artikel',
+                        default => ucfirst(str_replace('_', ' ', $state?->value ?? $state ?? '-')),
+                    })
+                    ->badge()
+                    ->color(fn ($state): string => match ($state?->value ?? $state) {
+                        'video' => 'info',
+                        'artikel' => 'success',
+                        default => 'gray',
+                    }),
 
                 Tables\Columns\TextColumn::make('kategori')
                     ->label('Kategori')
@@ -132,10 +142,11 @@ class EdukasiResource extends Resource
 
                 Tables\Columns\TextColumn::make('status')
                     ->label('Status')
-                    ->badge()
-                    ->color(fn (string $state): string =>
-                        $state === 'published' ? 'success' : 'gray'
-                    ),
+                    ->formatStateUsing(fn ($state): string => match ($state?->value ?? $state) {
+                        'published' => 'Dipublikasikan',
+                        'draft' => 'Draf',
+                        default => ucfirst(str_replace('_', ' ', $state?->value ?? $state ?? '-')),
+                    }),
 
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Tanggal Dibuat')

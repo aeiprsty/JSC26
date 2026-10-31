@@ -92,12 +92,21 @@ class LaporanResource extends Resource
                     ->label('Foto')
                     ->disk('public')
                     ->square()
-                    ->url(fn (Laporan $record): ?string =>
-                        $record->foto
-                            ? Storage::disk('public')->url($record->foto)
-                            : null
-                    )
-                    ->openUrlInNewTab(),
+                    ->extraAttributes([
+                        'class' => 'cursor-zoom-in',
+                    ])
+                    ->action(
+                        Tables\Actions\Action::make('lihat_foto')
+                            ->modalHeading('Foto Bukti Laporan')
+                            ->modalSubmitAction(false)
+                            ->modalCancelActionLabel('Tutup')
+                            ->modalWidth('4xl')
+                            ->modalContent(fn (Laporan $record) =>
+                                view('filament.modals.preview-foto', [
+                                    'record' => $record,
+                                ])
+                            )
+                    ),
 
                 Tables\Columns\TextColumn::make('deskripsi')
                     ->label('Deskripsi')
@@ -106,8 +115,16 @@ class LaporanResource extends Resource
 
                 Tables\Columns\TextColumn::make('status')
                     ->label('Status')
+                    ->formatStateUsing(fn (?string $state): string => match ($state) {
+                        'menunggu' => 'Menunggu',
+                        'terverifikasi' => 'Terverifikasi',
+                        'dalam_proses' => 'Dalam Proses',
+                        'selesai' => 'Selesai',
+                        'ditolak' => 'Ditolak',
+                        default => ucfirst(str_replace('_', ' ', $state ?? '-')),
+                    })
                     ->badge()
-                    ->color(fn (string $state): string => match ($state) {
+                    ->color(fn (?string $state): string => match ($state) {
                         'menunggu' => 'warning',
                         'terverifikasi' => 'info',
                         'dalam_proses' => 'primary',

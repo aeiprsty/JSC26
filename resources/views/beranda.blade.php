@@ -42,7 +42,7 @@
          NAVBAR / HEADER UTAMA
          ========================================== -->
 
-    <header class="sticky top-0 z-50 bg-[#1F3D2E] text-white shadow-md transition-all duration-300">
+    <header id="main-header" class="fixed top-0 left-0 w-full z-50 bg-[#1F3D2E] md:bg-transparent text-white transition-all duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-20">
 
@@ -157,7 +157,7 @@
              ========================================== -->
         <!-- HERO SECTION (BACKGROUND FADE & KONTEN KIRI) -->
         <!-- HERO SECTION -->
-        <section class="relative bg-[#FFFAE8] text-white overflow-hidden pt-16 pb-28 sm:pb-36 lg:pb-44 min-h-[520px] flex items-center">
+        <section class="relative bg-[#FFFAE8] text-white overflow-hidden pt-24 pb-36 sm:pb-44 lg:pb-52 min-h-[680px] flex items-center">
 
             <!-- 1. GAMBAR BACKGROUND DENGAN OVERLAY GRADIENT -->
             <div class="absolute inset-0 z-0">
@@ -820,6 +820,21 @@
 
             // Tempelkan pemantau ke semua elemen ber-class 'reveal'
             document.querySelectorAll('.reveal').forEach(el => scrollObserver.observe(el));
+        });
+
+        // Efek Navbar Transparan -> Berwarna saat di-scroll (Hanya Desktop)
+        window.addEventListener('scroll', function() {
+            const header = document.getElementById('main-header');
+            
+            if (header && window.innerWidth >= 768) { // 768px = breakpoint desktop md: di Tailwind
+                if (window.scrollY > 50) {
+                    header.classList.add('md:bg-[#1F3D2E]', 'shadow-md');
+                    header.classList.remove('md:bg-transparent');
+                } else {
+                    header.classList.remove('md:bg-[#1F3D2E]', 'shadow-md');
+                    header.classList.add('md:bg-transparent');
+                }
+            }
         });
     </script>
 </body>
