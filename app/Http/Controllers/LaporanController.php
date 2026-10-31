@@ -100,11 +100,17 @@ class LaporanController extends Controller
     public function index()
     {
         $laporans = Laporan::query()
-            ->whereIn('status', [
-                'terverifikasi',
-                'dalam_proses',
-                'selesai',
-            ])
+            ->with('klaster')
+            ->whereHas('klaster', function ($query) {
+                $query->whereIn('status', [
+                    \App\Enums\StatusKlaster::Terverifikasi,
+                    \App\Enums\StatusKlaster::Disposisi,
+                    \App\Enums\StatusKlaster::Ditugaskan,
+                    \App\Enums\StatusKlaster::DalamProses,
+                    \App\Enums\StatusKlaster::Selesai,
+                ]);
+            })
+            ->where('status', '!=', 'ditolak')
             ->latest()
             ->paginate(10);
 
@@ -123,11 +129,29 @@ class LaporanController extends Controller
             ], 404);
         }
 
+        // Status awal menggunakan status laporan.
+        $status = $laporan->status;
+
+        // Jika laporan memiliki klaster, gunakan status klaster
+        // sebagai perkembangan penanganan.
+        if ($laporan->klaster && $status !== 'ditolak') {
+            $status = match ($laporan->klaster->status) {
+                \App\Enums\StatusKlaster::MenungguVerifikasi => 'menunggu',
+                \App\Enums\StatusKlaster::Terverifikasi => 'terverifikasi',
+                \App\Enums\StatusKlaster::Disposisi => 'terverifikasi',
+                \App\Enums\StatusKlaster::Ditugaskan => 'terverifikasi',
+                \App\Enums\StatusKlaster::DalamProses => 'dalam_proses',
+                \App\Enums\StatusKlaster::Selesai => 'selesai',
+                \App\Enums\StatusKlaster::Ditolak => 'ditolak',
+                default => $status,
+            };
+        }
+
         return response()->json([
             'message' => 'Laporan ditemukan.',
             'data' => [
                 'kode_tiket' => $laporan->kode_tiket,
-                'status' => $laporan->status,
+                'status' => $status,
                 'deskripsi' => $laporan->deskripsi,
                 'lat' => $laporan->lat,
                 'lng' => $laporan->lng,
@@ -137,15 +161,10 @@ class LaporanController extends Controller
                 'created_at' => $laporan->created_at?->toIso8601String(),
                 'alasan_tolak' => $laporan->alasan_tolak,
                 'foto_bukti' => (
-                    $laporan->status !== 'ditolak' &&
-                    $laporan->klaster &&
-                    $laporan->klaster->status === \App\Enums\StatusKlaster::Selesai
+                    $status === 'selesai' &&
+                    $laporan->klaster?->foto_bukti
                 )
-                    ? (
-                        $laporan->klaster->foto_bukti
-                            ? asset('storage/' . $laporan->klaster->foto_bukti)
-                            : null
-                    )
+                    ? asset('storage/' . $laporan->klaster->foto_bukti)
                     : null,
             ],
         ]);

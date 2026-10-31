@@ -297,27 +297,40 @@
                                 <!-- LOKASI KEJADIAN -->
                                 <td class="py-4 px-6">
                                     <div class="font-semibold text-[#1F3D2E]">
-                                        {{ $laporan->deskripsi ?: 'Lokasi pelaporan' }}
-                                    </div>
-                                    <div class="text-[11px] text-[#5A4A3A]/60 mt-1">
                                         <i class="fa-solid fa-location-dot mr-1"></i>
                                         {{ $laporan->lat }}, {{ $laporan->lng }}
                                     </div>
                                 </td>
 
                                 <!-- STATUS -->
+                                @php
+                                    $statusPublik = $laporan->status;
+
+                                    if ($laporan->klaster && $statusPublik !== 'ditolak') {
+                                        $statusPublik = match ($laporan->klaster->status) {
+                                            \App\Enums\StatusKlaster::MenungguVerifikasi => 'menunggu',
+                                            \App\Enums\StatusKlaster::Terverifikasi,
+                                            \App\Enums\StatusKlaster::Disposisi,
+                                            \App\Enums\StatusKlaster::Ditugaskan => 'terverifikasi',
+                                            \App\Enums\StatusKlaster::DalamProses => 'dalam_proses',
+                                            \App\Enums\StatusKlaster::Selesai => 'selesai',
+                                            default => $statusPublik,
+                                        };
+                                    }
+                                @endphp
+
                                 <td class="py-4 px-6 whitespace-nowrap">
-                                    @if ($laporan->status === 'terverifikasi')
+                                    @if ($statusPublik === 'terverifikasi')
                                         <span class="bg-amber-100 text-amber-800 border border-amber-200 text-xs font-bold px-3 py-1 rounded-full inline-flex items-center gap-1.5">
                                             <i class="fa-solid fa-circle-check text-[10px]"></i>
                                             Terverifikasi
                                         </span>
-                                    @elseif ($laporan->status === 'dalam_proses')
+                                    @elseif ($statusPublik === 'dalam_proses')
                                         <span class="bg-blue-100 text-blue-800 border border-blue-200 text-xs font-bold px-3 py-1 rounded-full inline-flex items-center gap-1.5">
                                             <i class="fa-solid fa-spinner fa-spin text-[10px]"></i>
                                             Dalam Proses
                                         </span>
-                                    @elseif ($laporan->status === 'selesai')
+                                    @elseif ($statusPublik === 'selesai')
                                         <span class="bg-emerald-100 text-emerald-800 border border-emerald-200 text-xs font-bold px-3 py-1 rounded-full inline-flex items-center gap-1.5">
                                             <i class="fa-solid fa-circle-check text-[10px]"></i>
                                             Selesai

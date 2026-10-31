@@ -2,19 +2,33 @@
 
     {{-- RINGKASAN --}}
     <div>
-        <h2 class="text-lg font-bold mb-3">Ringkasan Laporan</h2>
+        <h2 class="text-lg font-bold mb-3">
+            {{ $role === 'operator' ? 'Ringkasan Laporan' : 'Ringkasan Klaster' }}
+        </h2>
 
-        <div class="grid grid-cols-2 md:grid-cols-5 gap-3">
-            @php
+        @php
+            if ($role === 'operator') {
                 $cards = [
-                    ['label' => 'Menunggu', 'key' => 'menunggu', 'color' => 'warning'],
-                    ['label' => 'Terverifikasi', 'key' => 'terverifikasi', 'color' => 'info'],
-                    ['label' => 'Dalam Proses', 'key' => 'dalam_proses', 'color' => 'primary'],
-                    ['label' => 'Selesai', 'key' => 'selesai', 'color' => 'success'],
-                    ['label' => 'Ditolak', 'key' => 'ditolak', 'color' => 'danger'],
+                    ['label' => 'Menunggu', 'key' => 'menunggu'],
+                    ['label' => 'Terverifikasi', 'key' => 'terverifikasi'],
+                    ['label' => 'Dalam Proses', 'key' => 'dalam_proses'],
+                    ['label' => 'Selesai', 'key' => 'selesai'],
+                    ['label' => 'Ditolak', 'key' => 'ditolak'],
                 ];
-            @endphp
+            } else {
+                $cards = [
+                    ['label' => 'Menunggu Verifikasi', 'key' => 'menunggu_verifikasi'],
+                    ['label' => 'Terverifikasi', 'key' => 'terverifikasi'],
+                    ['label' => 'Disposisi', 'key' => 'disposisi'],
+                    ['label' => 'Ditugaskan', 'key' => 'ditugaskan'],
+                    ['label' => 'Dalam Proses', 'key' => 'dalam_proses'],
+                    ['label' => 'Selesai', 'key' => 'selesai'],
+                    ['label' => 'Ditolak', 'key' => 'ditolak'],
+                ];
+            }
+        @endphp
 
+        <div class="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-7 gap-3">
             @foreach ($cards as $card)
                 <div class="rounded-xl bg-white dark:bg-gray-900 shadow-sm ring-1 ring-gray-950/5 dark:ring-white/10 p-4">
                     <p class="text-sm text-gray-500 dark:text-gray-400">
@@ -22,7 +36,7 @@
                     </p>
 
                     <p class="text-2xl font-bold mt-1">
-                        {{ $stats[$card['key']] }}
+                        {{ $stats[$card['key']] ?? 0 }}
                     </p>
                 </div>
             @endforeach
@@ -203,7 +217,7 @@
             style="height: 420px; width: 100%; border-radius: 12px; z-index: 1;"
         ></div>
     </div>
-    
+
     {{-- LEAFLET --}}
     @assets
         <link
