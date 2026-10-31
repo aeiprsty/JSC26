@@ -70,33 +70,33 @@ Ikuti langkah berikut untuk menjalankan JambiBersih secara lokal.
 
 ### Langkah Instalasi
 
-1. Clone repository:
+1. Kloning repositori:
 
    ```bash
    git clone <REPOSITORY_URL>
    cd tps-liar
    ```
 
-2. Install dependencies:
+2. Instal dependensi:
 
    ```bash
    composer install
    npm install
    ```
 
-3. Copy environment file:
+3. Salin file konfigurasi environment::
 
    ```bash
    cp .env.example .env
    ```
 
-4. Generate application key:
+4. Buat application key:
 
    ```bash
    php artisan key:generate
    ```
 
-5. Configure database pada file `.env`, kemudian jalankan migrasi:
+5. Konfigurasi database pada file .env, kemudian jalankan migrasi database:
 
    ```bash
    php artisan migrate
@@ -107,13 +107,13 @@ Ikuti langkah berikut untuk menjalankan JambiBersih secara lokal.
    php artisan db:seed
    ```
 
-7. Build frontend assets:
+7. Build aset frontend:
 
    ```bash
    npm run build
    ```
 
-8. Start the development server:
+8. Jalankan server aplikasi:
 
    ```bash
    php artisan serve
