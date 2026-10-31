@@ -16,7 +16,5 @@ class ListUsers extends ListRecords
             Actions\CreateAction::make()
                 ->label('Tambah Akun'),
         ];
-    }
-
-    
+    }    
 }
