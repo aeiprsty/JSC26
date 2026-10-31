@@ -24,6 +24,8 @@ class User extends Authenticatable implements FilamentUser
         'email',
         'password',
         'role',
+        'is_active',
+        'tim_komando',
     ];
     /**
      * The attributes that should be hidden for serialization.
@@ -45,12 +47,13 @@ class User extends Authenticatable implements FilamentUser
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_active' => 'boolean',
         ];
     }
 
     public function canAccessPanel(Panel $panel): bool
     {
-        return in_array($this->role, [
+        return $this->is_active && in_array($this->role, [
             'operator',
             'kabid',
             'subkoordinator',

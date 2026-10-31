@@ -136,7 +136,9 @@
         <div class="text-center mb-8">
             <span class="bg-[#4C6A73]/20 text-[#1F3D2E] text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Pemantauan Laporan Masyarakat</span>
             <h1 class="text-3xl sm:text-4xl font-extrabold text-[#1F3D2E] mt-3">Cek Penanganan TPS Liar</h1>
-            <p class="text-sm text-[#5A4A3A] mt-2 max-w-lg mx-auto">Cari kode tiket pelaporan Anda atau klik tanda panah pada tabel untuk melihat riwayat penanganan lokasi secara detail.</p>
+            <p class="text-sm text-[#5A4A3A] mt-2 max-w-lg mx-auto">
+                Cari kode tiket pelaporan Anda untuk melihat informasi dan perkembangan penanganan laporan TPS liar.
+            </p>
         </div>
 
         <!-- FORM PENCARIAN TIKET -->
@@ -146,7 +148,7 @@
                     <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                         <i class="fa-solid fa-magnifying-glass text-[#5A4A3A]/50"></i>
                     </div>
-                    <input type="text" id="ticket-search-input" placeholder="Masukkan Kode Tiket (Contoh: TPS-20261028-XYZ)"
+                    <input type="text" id="ticket-search-input" placeholder="Masukkan Kode Tiket (Contoh: TPS-DFGSTXXXX)"
                         class="w-full pl-11 pr-4 py-3.5 bg-[#FFFAE8]/50 border border-[#5A4A3A]/20 rounded-2xl text-sm font-medium text-[#1F3D2E] focus:outline-none focus:ring-2 focus:ring-[#6B7F4E] transition-all" required>
                 </div>
                 <button type="submit" class="bg-[#1F3D2E] hover:bg-[#4C6A73] text-white font-bold px-8 py-3.5 rounded-2xl shadow-md transition-colors flex items-center justify-center gap-2 shrink-0">
@@ -246,7 +248,7 @@
                             <i class="fa-solid fa-camera text-[#6B7F4E]"></i>
                             Foto Bukti Laporan
                         </h5>
-                        <img id="hasil-foto" class="hidden h-auto w-auto max-w-full max-h-[600px] rounded-2xl border border-[#5A4A3A]/15" alt="Foto laporan TPS liar">
+                        <img id="hasil-foto" class="hidden h-auto w-auto max-w-full max-h-[600px] rounded-2xl border border-[#5A4A3A]/15" alt="Foto laporan TPS liar" onclick="openPhotoModal(this.src, 'Foto Bukti Laporan')" class="hidden h-auto w-auto max-w-full max-h-[600px] rounded-2xl border border-[#5A4A3A]/15 cursor-zoom-in">
                     </div>
 
                     <!-- Foto Bukti Hasil Pembersihan Petugas -->
@@ -258,15 +260,13 @@
 
                         <img id="hasil-foto-bukti"
                             class="hidden h-auto w-auto max-w-full max-h-[600px] rounded-2xl border border-[#5A4A3A]/15"
-                            alt="Foto bukti hasil pembersihan petugas">
+                            alt="Foto bukti hasil pembersihan petugas" onclick="openPhotoModal(this.src, 'Foto Hasil Pembersihan Petugas')" class="hidden h-auto w-auto max-w-full max-h-[600px] rounded-2xl border border-[#5A4A3A]/15 cursor-zoom-in">
                     </div>
-                    <!-- Alasan Penolakan -->
-                    <div id="hasil-alasan-tolak" class="hidden mt-4 rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-800"></div>
                 </div>
             </div>
         </div>
 
-        <!-- TABEL DAFTAR PELAPORAN (ACCORDION STYLED) -->
+        <!-- TABEL DAFTAR PELAPORAN -->
         <div id="daftar-pelaporan" class="bg-white rounded-3xl shadow-xl border border-[#5A4A3A]/15 overflow-hidden">
             <div class="overflow-x-auto">
                 <table class="w-full text-left border-collapse">
@@ -276,229 +276,74 @@
                             <th class="py-4 px-6">Tanggal Lapor</th>
                             <th class="py-4 px-6">Lokasi Kejadian</th>
                             <th class="py-4 px-6">Status Terakhir</th>
-                            <th class="py-4 px-6 text-center">Detail Penanganan</th>
                         </tr>
                     </thead>
 
                     <tbody class="divide-y divide-gray-100 text-sm font-medium text-[#5A4A3A]">
 
-                        <!-- CONTOH 1: STATUS DALAM PROSES -->
-                        <tr class="report-row hover:bg-[#DCC8A3]/10 cursor-pointer transition-colors" data-ticket="TPS-20261028-XYZ" onclick="toggleAccordion('detail-1', 'arrow-1')">
-                            <td class="py-4 px-6 whitespace-nowrap">
-                                <div class="font-bold text-[#1F3D2E]">28 Okt 2026</div>
-                                <div class="text-[11px] text-[#5A4A3A]/70">08:30 WIB</div>
-                            </td>
-                            <td class="py-4 px-6">
-                                <div class="font-semibold text-[#1F3D2E]">Samping Pos Ronda RT 03</div>
-                                <div class="text-xs text-[#5A4A3A]/70">Kel. Dahlan, Kec. Sukajadi</div>
-                            </td>
-                            <td class="py-4 px-6 whitespace-nowrap">
-                                <span class="bg-blue-100 text-blue-800 border border-blue-200 text-xs font-bold px-3 py-1 rounded-full inline-flex items-center gap-1.5">
-                                    <i class="fa-solid fa-spinner fa-spin text-[10px]"></i> Dalam Proses
-                                </span>
-                            </td>
-                            <td class="py-4 px-6 text-center">
-                                <button type="button" class="w-8 h-8 rounded-full bg-[#DCC8A3]/30 text-[#1F3D2E] inline-flex items-center justify-center hover:bg-[#6B7F4E] hover:text-white transition-all">
-                                    <i id="arrow-1" class="fa-solid fa-chevron-down text-xs transition-transform duration-300"></i>
-                                </button>
-                            </td>
-                        </tr>
+                        @forelse ($laporans as $laporan)
+                            <tr class="report-row hover:bg-[#DCC8A3]/10 transition-colors">
 
-                        <!-- DETAIL ACCORDION CONTOH 1 -->
-                        <tr id="detail-1" class="hidden bg-[#FFFAE8]/40 border-b border-gray-200">
-                            <td colspan="4" class="p-6">
-                                <div class="bg-white p-6 rounded-2xl border border-[#5A4A3A]/10 shadow-inner">
-                                    <h4 class="text-xs font-extrabold text-[#1F3D2E] uppercase tracking-wider mb-4 border-b border-gray-100 pb-2">
-                                        <i class="fa-solid fa-route text-[#6B7F4E] mr-1.5"></i> Riwayat Penanganan Laporan
-                                    </h4>
-
-                                    <div class="relative border-l-2 border-[#6B7F4E]/30 ml-3 space-y-6">
-                                        <!-- 1. Laporan Masuk -->
-                                        <div class="relative pl-6">
-                                            <div class="absolute -left-[7px] top-1 w-3 h-3 rounded-full bg-[#6B7F4E]"></div>
-                                            <p class="text-[11px] text-[#5A4A3A]/70 font-semibold">28 Okt 2026, 08:30 WIB</p>
-                                            <h5 class="text-xs font-bold text-[#1F3D2E]">Laporan Masuk</h5>
-                                            <p class="text-xs text-[#5A4A3A] mt-0.5">Laporan berhasil dikirim oleh Masyarakat dan tercatat di sistem.</p>
-                                        </div>
-
-                                        <!-- 2. Menunggu -->
-                                        <div class="relative pl-6">
-                                            <div class="absolute -left-[7px] top-1 w-3 h-3 rounded-full bg-[#6B7F4E]"></div>
-                                            <p class="text-[11px] text-[#5A4A3A]/70 font-semibold">28 Okt 2026, 09:00 WIB</p>
-                                            <h5 class="text-xs font-bold text-[#1F3D2E]">Menunggu</h5>
-                                            <p class="text-xs text-[#5A4A3A] mt-0.5">Menunggu verifikasi berkas dan keabsahan titik lokasi oleh admin DLH.</p>
-                                        </div>
-
-                                        <!-- 3. Dalam Proses (Aktif) -->
-                                        <div class="relative pl-6">
-                                            <div class="absolute -left-[10px] top-0.5 w-5 h-5 rounded-full bg-[#4C6A73] ring-4 ring-[#4C6A73]/20 flex items-center justify-center">
-                                                <div class="w-2 h-2 rounded-full bg-white animate-pulse"></div>
-                                            </div>
-                                            <p class="text-[11px] text-[#4C6A73] font-bold">28 Okt 2026, 10:15 WIB</p>
-                                            <h5 class="text-xs font-bold text-[#4C6A73]">Dalam Proses</h5>
-                                            <p class="text-xs text-[#5A4A3A] mt-0.5">Tim armada kebersihan sedang melakukan pengangkutan sampah di lokasi.</p>
-                                        </div>
-
-                                        <!-- 4. Selesai (Belum) -->
-                                        <div class="relative pl-6">
-                                            <div class="absolute -left-[7px] top-1 w-3 h-3 rounded-full bg-gray-300"></div>
-                                            <h5 class="text-xs font-semibold text-gray-400">Selesai</h5>
-                                        </div>
+                                <!-- TANGGAL LAPOR -->
+                                <td class="py-4 px-6 whitespace-nowrap">
+                                    <div class="font-bold text-[#1F3D2E]">
+                                        {{ $laporan->created_at->translatedFormat('d M Y') }}
                                     </div>
-                                </div>
-                            </td>
-                        </tr>
+                                    <div class="text-[11px] text-[#5A4A3A]/70">
+                                        {{ $laporan->created_at->format('H:i') }} WIB
+                                    </div>
+                                </td>
 
-                        <!-- CONTOH 2: STATUS SELESAI -->
-                        <tr class="report-row hover:bg-[#DCC8A3]/10 cursor-pointer transition-colors" data-ticket="TPS-20261027-ABC" onclick="toggleAccordion('detail-2', 'arrow-2')">
-                            <td class="py-4 px-6 whitespace-nowrap">
-                                <div class="font-bold text-[#1F3D2E]">27 Okt 2026</div>
-                                <div class="text-[11px] text-[#5A4A3A]/70">14:15 WIB</div>
-                            </td>
-                            <td class="py-4 px-6">
-                                <div class="font-semibold text-[#1F3D2E]">Lahan Kosong Depan Pasar Minggu</div>
-                                <div class="text-xs text-[#5A4A3A]/70">Kel. Senapelan, Kec. Senapelan</div>
-                            </td>
-                            <td class="py-4 px-6 whitespace-nowrap">
-                                <span class="bg-emerald-100 text-emerald-800 border border-emerald-200 text-xs font-bold px-3 py-1 rounded-full inline-flex items-center gap-1.5">
-                                    <i class="fa-solid fa-circle-check text-[10px]"></i> Selesai
-                                </span>
-                            </td>
-                            <td class="py-4 px-6 text-center">
-                                <button type="button" class="w-8 h-8 rounded-full bg-[#DCC8A3]/30 text-[#1F3D2E] inline-flex items-center justify-center hover:bg-[#6B7F4E] hover:text-white transition-all">
-                                    <i id="arrow-2" class="fa-solid fa-chevron-down text-xs transition-transform duration-300"></i>
-                                </button>
-                            </td>
-                        </tr>
+                                <!-- LOKASI KEJADIAN -->
+                                <td class="py-4 px-6">
+                                    <div class="font-semibold text-[#1F3D2E]">
+                                        {{ $laporan->deskripsi ?: 'Lokasi pelaporan' }}
+                                    </div>
+                                    <div class="text-[11px] text-[#5A4A3A]/60 mt-1">
+                                        <i class="fa-solid fa-location-dot mr-1"></i>
+                                        {{ $laporan->lat }}, {{ $laporan->lng }}
+                                    </div>
+                                </td>
 
-                        <!-- DETAIL ACCORDION CONTOH 2 -->
-                        <tr id="detail-2" class="hidden bg-[#FFFAE8]/40 border-b border-gray-200">
-                            <td colspan="4" class="p-6">
-                                <div class="bg-white p-6 rounded-2xl border border-[#5A4A3A]/10 shadow-inner">
-
-                                    <div class="flex items-center justify-between border-b border-gray-100 pb-3 mb-4">
-                                        <h4 class="text-xs font-extrabold text-[#1F3D2E] uppercase tracking-wider flex items-center gap-2">
-                                            <i class="fa-solid fa-route text-[#6B7F4E]"></i> Riwayat Penanganan Laporan
-                                        </h4>
-                                        <span class="text-[11px] bg-emerald-50 text-emerald-700 border border-emerald-200 px-2.5 py-0.5 rounded-full font-bold">
-                                            Penanganan Tuntas
+                                <!-- STATUS -->
+                                <td class="py-4 px-6 whitespace-nowrap">
+                                    @if ($laporan->status === 'terverifikasi')
+                                        <span class="bg-amber-100 text-amber-800 border border-amber-200 text-xs font-bold px-3 py-1 rounded-full inline-flex items-center gap-1.5">
+                                            <i class="fa-solid fa-circle-check text-[10px]"></i>
+                                            Terverifikasi
                                         </span>
-                                    </div>
-
-                                    <!-- TIMELINE STATUS -->
-                                    <div class="relative border-l-2 border-[#6B7F4E] ml-3 space-y-6 mb-6">
-                                        <div class="relative pl-6">
-                                            <div class="absolute -left-[7px] top-1 w-3 h-3 rounded-full bg-[#6B7F4E]"></div>
-                                            <p class="text-[11px] text-[#5A4A3A]/70 font-semibold">27 Okt 2026, 14:15 WIB</p>
-                                            <h5 class="text-xs font-bold text-[#1F3D2E]">Laporan Masuk</h5>
-                                        </div>
-                                        <div class="relative pl-6">
-                                            <div class="absolute -left-[7px] top-1 w-3 h-3 rounded-full bg-[#6B7F4E]"></div>
-                                            <p class="text-[11px] text-[#5A4A3A]/70 font-semibold">27 Okt 2026, 14:45 WIB</p>
-                                            <h5 class="text-xs font-bold text-[#1F3D2E]">Menunggu Verifikasi</h5>
-                                        </div>
-                                        <div class="relative pl-6">
-                                            <div class="absolute -left-[7px] top-1 w-3 h-3 rounded-full bg-[#6B7F4E]"></div>
-                                            <p class="text-[11px] text-[#5A4A3A]/70 font-semibold">27 Okt 2026, 15:30 WIB</p>
-                                            <h5 class="text-xs font-bold text-[#1F3D2E]">Dalam Proses Pembersihan</h5>
-                                        </div>
-                                        <div class="relative pl-6">
-                                            <div class="absolute -left-[7px] top-1 w-3 h-3 rounded-full bg-emerald-600 ring-4 ring-emerald-100"></div>
-                                            <p class="text-[11px] text-emerald-700 font-extrabold">27 Okt 2026, 17:00 WIB</p>
-                                            <h5 class="text-xs font-bold text-emerald-800">Selesai Dibersihkan</h5>
-                                            <p class="text-xs text-[#5A4A3A] mt-0.5">Lokasi telah dibersihkan sepenuhnya oleh Tim Regu 2 DLH Jambi dan diangkut ke TPA.</p>
-                                        </div>
-                                    </div>
-
-                                    <!-- SECTION BUKTI FOTO HASIL LAPANGAN -->
-                                    <div class="bg-gray-50 border border-gray-200/80 rounded-2xl p-4">
-                                        <div class="flex items-center justify-between mb-3">
-                                            <h5 class="text-xs font-bold text-[#1F3D2E] uppercase tracking-wider flex items-center gap-2">
-                                                <i class="fa-solid fa-camera text-[#6B7F4E]"></i> Foto Bukti Lapangan Petugas
-                                            </h5>
-                                            <span class="text-[10px] text-gray-500 font-medium">*Klik gambar untuk memperbesar</span>
-                                        </div>
-
-                                        <div class="flex gap-3 overflow-x-auto pb-1">
-                                            <div class="relative group shrink-0 cursor-pointer overflow-hidden rounded-xl border-2 border-emerald-300 shadow-sm hover:shadow-md transition-all"
-                                                onclick="openPhotoModal('https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=800&auto=format&fit=crop&q=80', 'Foto Kanan: Lokasi Telah Bersih Rapi Tuntas (Sesudah Pembersihan)')">
-                                                <img src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=300&auto=format&fit=crop&q=80" alt="Sesudah" class="w-24 h-24 sm:w-28 sm:h-28 object-cover group-hover:scale-105 transition-transform duration-300">
-                                                <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center text-white text-xs font-semibold gap-1">
-                                                    <i class="fa-solid fa-magnifying-glass-plus text-base"></i>
-                                                    <span class="text-[10px]">Lihat Foto</span>
-                                                </div>
-                                                <span class="absolute top-1.5 left-1.5 bg-emerald-700/90 text-white text-[9px] font-bold px-2 py-0.5 rounded-md shadow">
-                                                    Sesudah (Bersih)
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </td>
-                        </tr>
-
-                        <!-- CONTOH 3: STATUS DITOLAK -->
-                        <tr class="report-row hover:bg-[#DCC8A3]/10 cursor-pointer transition-colors" data-ticket="TPS-20261026-REJ" onclick="toggleAccordion('detail-3', 'arrow-3')">
-                            <td class="py-4 px-6 whitespace-nowrap">
-                                <div class="font-bold text-[#1F3D2E]">26 Okt 2026</div>
-                                <div class="text-[11px] text-[#5A4A3A]/70">11:00 WIB</div>
-                            </td>
-                            <td class="py-4 px-6">
-                                <div class="font-semibold text-[#1F3D2E]">Jalan Lintas Lorong 5</div>
-                                <div class="text-xs text-[#5A4A3A]/70">Kel. Telanaipura, Kec. Telanaipura</div>
-                            </td>
-                            <td class="py-4 px-6 whitespace-nowrap">
-                                <span class="bg-red-100 text-red-800 border border-red-200 text-xs font-bold px-3 py-1 rounded-full inline-flex items-center gap-1.5">
-                                    <i class="fa-solid fa-circle-xmark text-[10px]"></i> Ditolak
-                                </span>
-                            </td>
-                            <td class="py-4 px-6 text-center">
-                                <button type="button" class="w-8 h-8 rounded-full bg-[#DCC8A3]/30 text-[#1F3D2E] inline-flex items-center justify-center hover:bg-[#6B7F4E] hover:text-white transition-all">
-                                    <i id="arrow-3" class="fa-solid fa-chevron-down text-xs transition-transform duration-300"></i>
-                                </button>
-                            </td>
-                        </tr>
-
-                        <!-- DETAIL ACCORDION CONTOH 3 (DITOLAK) -->
-                        <tr id="detail-3" class="hidden bg-[#FFFAE8]/40 border-b border-gray-200">
-                            <td colspan="4" class="p-6">
-                                <div class="bg-white p-6 rounded-2xl border border-[#5A4A3A]/10 shadow-inner">
-                                    <h4 class="text-xs font-extrabold text-[#1F3D2E] uppercase tracking-wider mb-4 border-b border-gray-100 pb-2">
-                                        <i class="fa-solid fa-route text-red-600 mr-1.5"></i> Riwayat Penanganan Laporan
-                                    </h4>
-
-                                    <div class="relative border-l-2 border-red-300 ml-3 space-y-6 mb-6">
-                                        <div class="relative pl-6">
-                                            <div class="absolute -left-[7px] top-1 w-3 h-3 rounded-full bg-[#6B7F4E]"></div>
-                                            <p class="text-[11px] text-[#5A4A3A]/70 font-semibold">26 Okt 2026, 11:00 WIB</p>
-                                            <h5 class="text-xs font-bold text-[#1F3D2E]">Laporan Masuk</h5>
-                                        </div>
-                                        <div class="relative pl-6">
-                                            <div class="absolute -left-[7px] top-1 w-3 h-3 rounded-full bg-red-600"></div>
-                                            <p class="text-[11px] text-red-600 font-semibold">26 Okt 2026, 13:20 WIB</p>
-                                            <h5 class="text-xs font-bold text-red-700">Laporan Ditolak</h5>
-                                        </div>
-                                    </div>
-
-                                    <!-- BOX ALASAN PENOLAKAN -->
-                                    <div class="bg-red-50 border border-red-200 rounded-xl p-4 flex items-start gap-3">
-                                        <i class="fa-solid fa-triangle-exclamation text-red-600 text-lg mt-0.5"></i>
-                                        <div>
-                                            <h5 class="text-xs font-bold text-red-800 uppercase tracking-wider">Alasan Penolakan:</h5>
-                                            <p class="text-xs text-red-700 mt-1">
-                                                Foto bukti tumpukan sampah tidak jelas / titik koordinat berada di luar wilayah kewenangan operasional Dinas Lingkungan Hidup Kota Jambi. Silakan buat laporan ulang dengan foto lokasi yang lebih akurat.
-                                            </p>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </td>
-                        </tr>
+                                    @elseif ($laporan->status === 'dalam_proses')
+                                        <span class="bg-blue-100 text-blue-800 border border-blue-200 text-xs font-bold px-3 py-1 rounded-full inline-flex items-center gap-1.5">
+                                            <i class="fa-solid fa-spinner fa-spin text-[10px]"></i>
+                                            Dalam Proses
+                                        </span>
+                                    @elseif ($laporan->status === 'selesai')
+                                        <span class="bg-emerald-100 text-emerald-800 border border-emerald-200 text-xs font-bold px-3 py-1 rounded-full inline-flex items-center gap-1.5">
+                                            <i class="fa-solid fa-circle-check text-[10px]"></i>
+                                            Selesai
+                                        </span>
+                                    @endif
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="3" class="py-10 px-6 text-center text-gray-500">
+                                    <i class="fa-solid fa-inbox text-3xl mb-3 block text-gray-300"></i>
+                                    Belum ada laporan yang dapat ditampilkan.
+                                </td>
+                            </tr>
+                        @endforelse
 
                     </tbody>
                 </table>
             </div>
+
+            <!-- PAGINATION -->
+            @if ($laporans->hasPages())
+                <div class="px-6 py-4 border-t border-gray-100">
+                    {{ $laporans->links() }}
+                </div>
+            @endif
         </div>
 
     </main>
@@ -595,16 +440,17 @@
             const pesan = document.getElementById('pesan-pencarian');
             const detail = document.getElementById('detail-pencarian');
             const daftar = document.getElementById('daftar-pelaporan');
+
             const statusEl = document.getElementById('hasil-status');
             const foto = document.getElementById('hasil-foto');
             const bagianFoto = document.getElementById('bagian-foto');
             const alasanTolak = document.getElementById('hasil-alasan-tolak');
+            const fotoBukti = document.getElementById('hasil-foto-bukti');
+            const bagianFotoBukti = document.getElementById('bagian-foto-bukti');
+
             const submitButton = document.querySelector(
                 '#search-form button[type="submit"]'
             );
-            const fotoBukti = document.getElementById('hasil-foto-bukti');
-            const bagianFotoBukti = document.getElementById('bagian-foto-bukti');
-            const submitButton = document.querySelector('#search-form button[type="submit"]');
 
             if (!query) {
                 alert('Masukkan kode tiket laporan terlebih dahulu.');
@@ -615,25 +461,35 @@
             daftar.classList.add('hidden');
 
             detail.classList.add('hidden');
+
             foto.classList.add('hidden');
             bagianFoto.classList.add('hidden');
             foto.removeAttribute('src');
-            alasanTolak.classList.add('hidden');
+            foto.onload = null;
+            foto.onerror = null;
 
             fotoBukti.classList.add('hidden');
             bagianFotoBukti.classList.add('hidden');
             fotoBukti.removeAttribute('src');
+            fotoBukti.onload = null;
+            fotoBukti.onerror = null;
+
+            alasanTolak.classList.add('hidden');
+            alasanTolak.textContent = '';
 
             pesan.textContent = 'Sedang mencari tiket...';
             submitButton.disabled = true;
 
             try {
-                const response = await fetch(`/laporan/${encodeURIComponent(query)}`, {
-                    method: 'GET',
-                    headers: {
-                        'Accept': 'application/json'
+                const response = await fetch(
+                    `/laporan/${encodeURIComponent(query)}`,
+                    {
+                        method: 'GET',
+                        headers: {
+                            'Accept': 'application/json'
+                        }
                     }
-                });
+                );
 
                 const result = await response.json();
 
@@ -647,17 +503,38 @@
 
                 const data = result.data;
 
-                document.getElementById('hasil-kode-tiket').textContent = data.kode_tiket;
+                document.getElementById('hasil-kode-tiket').textContent =
+                    data.kode_tiket;
 
-                const status = String(data.status || 'menunggu').trim().toLowerCase();
+                const status = String(data.status || 'menunggu')
+                    .trim()
+                    .toLowerCase();
 
                 const statusConfig = {
-                    menunggu: { label: 'Menunggu', color: 'bg-amber-100 text-amber-800' },
-                    terverifikasi: { label: 'Terverifikasi', color: 'bg-cyan-100 text-cyan-800' },
-                    diproses: { label: 'Dalam Proses', color: 'bg-blue-100 text-blue-800' },
-                    dalam_proses: { label: 'Dalam Proses', color: 'bg-blue-100 text-blue-800' },
-                    selesai: { label: 'Selesai', color: 'bg-emerald-100 text-emerald-800' },
-                    ditolak: { label: 'Ditolak', color: 'bg-red-100 text-red-800' }
+                    menunggu: {
+                        label: 'Menunggu',
+                        color: 'bg-amber-100 text-amber-800'
+                    },
+                    terverifikasi: {
+                        label: 'Terverifikasi',
+                        color: 'bg-cyan-100 text-cyan-800'
+                    },
+                    diproses: {
+                        label: 'Dalam Proses',
+                        color: 'bg-blue-100 text-blue-800'
+                    },
+                    dalam_proses: {
+                        label: 'Dalam Proses',
+                        color: 'bg-blue-100 text-blue-800'
+                    },
+                    selesai: {
+                        label: 'Selesai',
+                        color: 'bg-emerald-100 text-emerald-800'
+                    },
+                    ditolak: {
+                        label: 'Ditolak',
+                        color: 'bg-red-100 text-red-800'
+                    }
                 };
 
                 const statusInfo = statusConfig[status] || {
@@ -666,7 +543,9 @@
                 };
 
                 statusEl.textContent = statusInfo.label;
-                statusEl.className = 'inline-flex items-center rounded-full px-4 py-2 text-sm font-bold ' + statusInfo.color;
+                statusEl.className =
+                    'inline-flex items-center rounded-full px-4 py-2 text-sm font-bold ' +
+                    statusInfo.color;
 
                 const tanggal = data.created_at
                     ? new Date(data.created_at).toLocaleString('id-ID', {
@@ -677,22 +556,29 @@
                     : 'Tanggal laporan tidak tersedia';
 
                 document.getElementById('hasil-tanggal').textContent = tanggal;
-                document.getElementById('hasil-deskripsi').textContent = data.deskripsi || 'Tidak ada deskripsi.';
-                document.getElementById('hasil-koordinat').textContent = `${data.lat}, ${data.lng}`;
 
+                document.getElementById('hasil-deskripsi').textContent =
+                    data.deskripsi || 'Tidak ada keterangan tambahan.';
+
+                document.getElementById('hasil-koordinat').textContent =
+                    `${data.lat}, ${data.lng}`;
+
+                // Foto laporan warga
                 if (data.foto) {
                     foto.onload = () => {
                         foto.classList.remove('hidden');
                         bagianFoto.classList.remove('hidden');
                     };
+
                     foto.onerror = () => {
                         foto.classList.add('hidden');
                         bagianFoto.classList.add('hidden');
                     };
+
                     foto.src = data.foto;
                 }
 
-                // Foto bukti hasil pembersihan petugas.
+                // Foto bukti hasil pembersihan petugas
                 if (data.foto_bukti) {
                     fotoBukti.onload = () => {
                         fotoBukti.classList.remove('hidden');
@@ -707,9 +593,11 @@
                     fotoBukti.src = data.foto_bukti;
                 }
 
-                // Alasan penolakan, jika tersedia.
+                // Alasan penolakan
                 if (data.alasan_tolak) {
-                    alasanTolak.textContent = 'Alasan penolakan: ' + data.alasan_tolak;
+                    alasanTolak.textContent =
+                        'Alasan penolakan: ' + data.alasan_tolak;
+
                     alasanTolak.classList.remove('hidden');
                 }
 
@@ -717,11 +605,14 @@
                 detail.classList.remove('hidden');
 
             } catch (error) {
-                pesan.textContent = error.message || 'Terjadi kesalahan saat mencari tiket.';
+                pesan.textContent =
+                    error.message || 'Terjadi kesalahan saat mencari tiket.';
+
             } finally {
                 submitButton.disabled = false;
             }
         }
+
 
         function toggleMobileMenu() {
             const menu = document.getElementById('mobile-menu');
@@ -740,6 +631,21 @@
             const dropdown = document.getElementById(id);
             dropdown.classList.toggle('hidden');
         }
+
+        // Otomatis mencari tiket jika halaman dibuka dari kode tiket di tabel.
+        document.addEventListener('DOMContentLoaded', function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            const kodeTiket = urlParams.get('kode_tiket');
+
+            if (kodeTiket) {
+                const input = document.getElementById('ticket-search-input');
+
+                if (input) {
+                    input.value = kodeTiket;
+                    document.getElementById('search-form').requestSubmit();
+                }
+            }
+        });
     </script>
 </body>
 </html>

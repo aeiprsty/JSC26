@@ -342,7 +342,7 @@ class KlasterResource extends Resource
             'subkoordinator' => $record->status === StatusKlaster::Disposisi,
 
             'komando_lapangan' =>
-                $record->assigned_to === $user->id
+                (int) $record->assigned_to === (int) $user->id
                 && in_array($record->status, [
                     StatusKlaster::Ditugaskan,
                     StatusKlaster::DalamProses,
@@ -365,4 +365,60 @@ class KlasterResource extends Resource
     protected static ?string $navigationLabel = 'Klaster';
 
     protected static ?int $navigationSort = 3;
+
+    public static function getEloquentQuery(): Builder
+    {
+        $query = parent::getEloquentQuery()
+            ->with(['petugas'])
+            ->withCount('laporan');
+
+        $user = auth()->user();
+
+        if (! $user) {
+            return $query->whereRaw('1 = 0');
+        }
+
+        return match ($user->role) {
+            'operator' => $query,
+
+            'kabid' => $query->where(
+                'status',
+                StatusKlaster::Terverifikasi
+            ),
+
+            'subkoordinator' => $query->where(
+                'status',
+                StatusKlaster::Disposisi
+            ),
+
+            'komando_lapangan' => $query
+                ->where('assigned_to', $user->id)
+                ->whereIn('status', [
+                    StatusKlaster::Ditugaskan,
+                    StatusKlaster::DalamProses,
+                ]),
+
+            default => $query->whereRaw('1 = 0'),
+        };
+    }
+
+    public static function canViewAny(): bool
+    {
+        return in_array(auth()->user()?->role, [
+            'operator',
+            'kabid',
+            'subkoordinator',
+            'komando_lapangan',
+        ], true);
+    }
+
+    public static function canView(Model $record): bool
+    {
+        return in_array(auth()->user()?->role, [
+            'operator',
+            'kabid',
+            'subkoordinator',
+            'komando_lapangan',
+        ], true);
+    }
 }

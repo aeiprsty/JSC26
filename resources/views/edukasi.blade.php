@@ -166,83 +166,63 @@
                 </div>
             </div>
 
+
             <!-- CONTAINER SCROLL HORIZONTAL -->
             <div id="video-container" class="flex gap-5 overflow-x-auto pb-4 scroll-smooth no-scrollbar snap-x snap-mandatory">
-                
-                <!-- CARD VIDEO 1 -->
-                <div class="min-w-[280px] sm:min-w-[320px] max-w-[320px] bg-white rounded-3xl border border-[#5A4A3A]/15 shadow-md overflow-hidden snap-start shrink-0 group">
-                    <div class="relative overflow-hidden aspect-video bg-black/80">
-                        <img src="https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?w=600&auto=format&fit=crop&q=80" alt="Video 1" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 opacity-90">
-                        <span class="absolute bottom-2 right-2 bg-black/70 text-white text-[10px] font-bold px-2 py-0.5 rounded">03:45</span>
-                        <div class="absolute inset-0 flex items-center justify-center">
-                            <div class="w-12 h-12 rounded-full bg-[#1F3D2E]/90 text-white flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:bg-[#6B7F4E] transition-all">
-                                <i class="fa-solid fa-play ml-1"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="p-5">
-                        <span class="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2.5 py-0.5 rounded-md">Tata Cara Lapor</span>
-                        <h3 class="text-sm font-bold text-[#1F3D2E] mt-2 line-clamp-2">Panduan Melaporkan TPS Liar Lewat Aplikasi SIPAS</h3>
-                        <p class="text-xs text-[#5A4A3A]/80 mt-1 line-clamp-2">Langkah mudah memfoto dan menandai titik GPS lokasi tumpukan sampah liar.</p>
-                    </div>
-                </div>
 
-                <!-- CARD VIDEO 2 -->
-                <div class="min-w-[280px] sm:min-w-[320px] max-w-[320px] bg-white rounded-3xl border border-[#5A4A3A]/15 shadow-md overflow-hidden snap-start shrink-0 group">
-                    <div class="relative overflow-hidden aspect-video bg-black/80">
-                        <img src="https://images.unsplash.com/photo-1611284446314-60a58ac0deb9?w=600&auto=format&fit=crop&q=80" alt="Video 2" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 opacity-90">
-                        <span class="absolute bottom-2 right-2 bg-black/70 text-white text-[10px] font-bold px-2 py-0.5 rounded">05:12</span>
-                        <div class="absolute inset-0 flex items-center justify-center">
-                            <div class="w-12 h-12 rounded-full bg-[#1F3D2E]/90 text-white flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:bg-[#6B7F4E] transition-all">
-                                <i class="fa-solid fa-play ml-1"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="p-5">
-                        <span class="text-[10px] bg-amber-100 text-amber-800 font-bold px-2.5 py-0.5 rounded-md">Pemilahan Rumah Tangga</span>
-                        <h3 class="text-sm font-bold text-[#1F3D2E] mt-2 line-clamp-2">Pilah Sampah Organik & Anorganik Dapur</h3>
-                        <p class="text-xs text-[#5A4A3A]/80 mt-1 line-clamp-2">Cara praktis memisahkan sisa sisa bahan makanan dengan limbah plastik kemasan.</p>
-                    </div>
-                </div>
+                @forelse ($videos as $video)
+                    <div class="min-w-[280px] sm:min-w-[320px] max-w-[320px] bg-white rounded-3xl border border-[#5A4A3A]/15 shadow-md overflow-hidden snap-start shrink-0 group">
 
-                <!-- CARD VIDEO 3 -->
-                <div class="min-w-[280px] sm:min-w-[320px] max-w-[320px] bg-white rounded-3xl border border-[#5A4A3A]/15 shadow-md overflow-hidden snap-start shrink-0 group">
-                    <div class="relative overflow-hidden aspect-video bg-black/80">
-                        <img src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=600&auto=format&fit=crop&q=80" alt="Video 3" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 opacity-90">
-                        <span class="absolute bottom-2 right-2 bg-black/70 text-white text-[10px] font-bold px-2 py-0.5 rounded">04:20</span>
-                        <div class="absolute inset-0 flex items-center justify-center">
-                            <div class="w-12 h-12 rounded-full bg-[#1F3D2E]/90 text-white flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:bg-[#6B7F4E] transition-all">
-                                <i class="fa-solid fa-play ml-1"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="p-5">
-                        <span class="text-[10px] bg-blue-100 text-blue-800 font-bold px-2.5 py-0.5 rounded-md">Operasional OPBM</span>
-                        <h3 class="text-sm font-bold text-[#1F3D2E] mt-2 line-clamp-2">Mengenal Cara Kerja Armada Motor Bentor Hijau</h3>
-                        <p class="text-xs text-[#5A4A3A]/80 mt-1 line-clamp-2">Melihat langsung rute kerja petugas kebersihan menjemput sampah ke lorong Masyarakat.</p>
-                    </div>
-                </div>
+                        <div class="relative overflow-hidden aspect-video bg-black/80">
+                            @if ($video->url_video)
+                                <a href="{{ $video->url_video }}" target="_blank" rel="noopener noreferrer">
+                            @endif
 
-                <!-- CARD VIDEO 4 -->
-                <div class="min-w-[280px] sm:min-w-[320px] max-w-[320px] bg-white rounded-3xl border border-[#5A4A3A]/15 shadow-md overflow-hidden snap-start shrink-0 group">
-                    <div class="relative overflow-hidden aspect-video bg-black/80">
-                        <img src="https://images.unsplash.com/photo-1530587191325-3db32d826c18?w=600&auto=format&fit=crop&q=80" alt="Video 4" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 opacity-90">
-                        <span class="absolute bottom-2 right-2 bg-black/70 text-white text-[10px] font-bold px-2 py-0.5 rounded">02:50</span>
-                        <div class="absolute inset-0 flex items-center justify-center">
-                            <div class="w-12 h-12 rounded-full bg-[#1F3D2E]/90 text-white flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:bg-[#6B7F4E] transition-all">
-                                <i class="fa-solid fa-play ml-1"></i>
-                            </div>
+                                <img
+                                    src="{{ $video->gambar ? asset('storage/' . $video->gambar) : 'https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?w=600&auto=format&fit=crop&q=80' }}"
+                                    alt="{{ $video->judul }}"
+                                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 opacity-90"
+                                >
+
+                                @if ($video->durasi)
+                                    <span class="absolute bottom-2 right-2 bg-black/70 text-white text-[10px] font-bold px-2 py-0.5 rounded">
+                                        {{ $video->durasi }}
+                                    </span>
+                                @endif
+
+                                <div class="absolute inset-0 flex items-center justify-center">
+                                    <div class="w-12 h-12 rounded-full bg-[#1F3D2E]/90 text-white flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:bg-[#6B7F4E] transition-all">
+                                        <i class="fa-solid fa-play ml-1"></i>
+                                    </div>
+                                </div>
+
+                            @if ($video->url_video)
+                                </a>
+                            @endif
+                        </div>
+
+                        <div class="p-5">
+                            <span class="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2.5 py-0.5 rounded-md">
+                                {{ $video->kategori }}
+                            </span>
+
+                            <h3 class="text-sm font-bold text-[#1F3D2E] mt-2 line-clamp-2">
+                                {{ $video->judul }}
+                            </h3>
+
+                            <p class="text-xs text-[#5A4A3A]/80 mt-1 line-clamp-2">
+                                {{ $video->ringkasan }}
+                            </p>
                         </div>
                     </div>
-                    <div class="p-5">
-                        <span class="text-[10px] bg-red-100 text-red-800 font-bold px-2.5 py-0.5 rounded-md">Bahaya TPS Liar</span>
-                        <h3 class="text-sm font-bold text-[#1F3D2E] mt-2 line-clamp-2">Dampak Tumpukan Sampah Bagi Kesehatan</h3>
-                        <p class="text-xs text-[#5A4A3A]/80 mt-1 line-clamp-2">Bahaya pencemaran air tanah dan risiko penyakit akibat pembuangan liar.</p>
+                @empty
+                    <div class="w-full text-center py-10 text-sm text-[#5A4A3A]/70">
+                        Belum ada video edukasi yang tersedia.
                     </div>
-                </div>
+                @endforelse
 
             </div>
-        </section>
+            </section>
 
         <!-- ==========================================
              SECTION 2: ARTIKEL EDUKASI (SCROLL KEBAWAH)
@@ -257,72 +237,53 @@
 
             <!-- LIST ARTIKEL VERTIKAL -->
             <div class="space-y-4">
-                
-                <!-- ARTIKEL 1 -->
-                <article class="bg-white rounded-3xl p-5 sm:p-6 border border-[#5A4A3A]/15 shadow-md hover:shadow-lg transition-all flex flex-col sm:flex-row gap-5 items-start">
-                    <img src="https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?w=400&auto=format&fit=crop&q=80" alt="Artikel 1" class="w-full sm:w-48 h-36 object-cover rounded-2xl shrink-0">
-                    <div class="flex-grow space-y-2">
-                        <div class="flex items-center gap-3 text-xs text-[#5A4A3A]/70">
-                            <span class="bg-[#1F3D2E]/10 text-[#1F3D2E] font-bold px-2.5 py-0.5 rounded-md">Regulasi & Hukum</span>
-                            <span><i class="fa-regular fa-calendar mr-1"></i> 25 Oktober 2026</span>
-                        </div>
-                        <h3 class="text-base sm:text-lg font-bold text-[#1F3D2E] hover:text-[#4C6A73] transition-colors">
-                            Sanksi & Denda Bagi Pelaku Pembuang Sampah Liar di Kota Jambi
-                        </h3>
-                        <p class="text-xs sm:text-sm text-[#5A4A3A] line-clamp-2">
-                            Ketahui Peraturan Daerah mengenai penegakan hukum dan denda administratif bagi oknum yang kedapatan membuang sampah sembarangan di pinggir jalan utama.
-                        </p>
-                        <a href="#" class="inline-flex items-center gap-1.5 text-xs font-bold text-[#1F3D2E] hover:text-[#6B7F4E] pt-1">
-                            <span>Baca Selengkapnya</span>
-                            <i class="fa-solid fa-arrow-right text-[10px]"></i>
-                        </a>
-                    </div>
-                </article>
 
-                <!-- ARTIKEL 2 -->
-                <article class="bg-white rounded-3xl p-5 sm:p-6 border border-[#5A4A3A]/15 shadow-md hover:shadow-lg transition-all flex flex-col sm:flex-row gap-5 items-start">
-                    <img src="https://images.unsplash.com/photo-1611284446314-60a58ac0deb9?w=400&auto=format&fit=crop&q=80" alt="Artikel 2" class="w-full sm:w-48 h-36 object-cover rounded-2xl shrink-0">
-                    <div class="flex-grow space-y-2">
-                        <div class="flex items-center gap-3 text-xs text-[#5A4A3A]/70">
-                            <span class="bg-[#6B7F4E]/10 text-[#1F3D2E] font-bold px-2.5 py-0.5 rounded-md">Tip Lingkungan</span>
-                            <span><i class="fa-regular fa-calendar mr-1"></i> 20 Oktober 2026</span>
-                        </div>
-                        <h3 class="text-base sm:text-lg font-bold text-[#1F3D2E] hover:text-[#4C6A73] transition-colors">
-                            5 Langkah Mudah Mengolah Dapur Menjadi Pupuk Kompos Organik
-                        </h3>
-                        <p class="text-xs sm:text-sm text-[#5A4A3A] line-clamp-2">
-                            Ubah sisa sayuran dan kulit buah menjadi pupuk kaya nutrisi untuk tanaman di pekarangan rumah tanpa menimbulkan bau tidak sedap.
-                        </p>
-                        <a href="#" class="inline-flex items-center gap-1.5 text-xs font-bold text-[#1F3D2E] hover:text-[#6B7F4E] pt-1">
-                            <span>Baca Selengkapnya</span>
-                            <i class="fa-solid fa-arrow-right text-[10px]"></i>
-                        </a>
-                    </div>
-                </article>
+                @forelse ($artikels as $artikel)
+                    <article class="bg-white rounded-3xl p-5 sm:p-6 border border-[#5A4A3A]/15 shadow-md hover:shadow-lg transition-all flex flex-col sm:flex-row gap-5 items-start">
 
-                <!-- ARTIKEL 3 -->
-                <article class="bg-white rounded-3xl p-5 sm:p-6 border border-[#5A4A3A]/15 shadow-md hover:shadow-lg transition-all flex flex-col sm:flex-row gap-5 items-start">
-                    <img src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=400&auto=format&fit=crop&q=80" alt="Artikel 3" class="w-full sm:w-48 h-36 object-cover rounded-2xl shrink-0">
-                    <div class="flex-grow space-y-2">
-                        <div class="flex items-center gap-3 text-xs text-[#5A4A3A]/70">
-                            <span class="bg-[#4C6A73]/10 text-[#4C6A73] font-bold px-2.5 py-0.5 rounded-md">Komunitas</span>
-                            <span><i class="fa-regular fa-calendar mr-1"></i> 14 Oktober 2026</span>
+                        <img
+                            src="{{ $artikel->gambar ? asset('storage/' . $artikel->gambar) : 'https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?w=400&auto=format&fit=crop&q=80' }}"
+                            alt="{{ $artikel->judul }}"
+                            class="w-full sm:w-48 h-36 object-cover rounded-2xl shrink-0"
+                        >
+
+                        <div class="flex-grow space-y-2">
+
+                            <div class="flex items-center gap-3 text-xs text-[#5A4A3A]/70">
+                                <span class="bg-[#1F3D2E]/10 text-[#1F3D2E] font-bold px-2.5 py-0.5 rounded-md">
+                                    {{ $artikel->kategori }}
+                                </span>
+
+                                <span class="text-xs text-[#5A4A3A]/70">
+                                    <i class="fa-regular fa-calendar mr-1"></i>
+                                    {{ $artikel->created_at->translatedFormat('d F Y') }}
+                                </span>
+                            </div>
+
+                            <h3 class="text-base sm:text-lg font-bold text-[#1F3D2E] hover:text-[#4C6A73] transition-colors">
+                                {{ $artikel->judul }}
+                            </h3>
+
+                            <p class="text-xs sm:text-sm text-[#5A4A3A] line-clamp-2">
+                                {{ $artikel->ringkasan }}
+                            </p>
+
+                            <a href="{{ url('/edukasi/' . $artikel->slug) }}"
+                            class="inline-flex items-center gap-1.5 text-xs font-bold text-[#1F3D2E] hover:text-[#6B7F4E] pt-1">
+                                <span>Baca Selengkapnya</span>
+                                <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                            </a>
+
                         </div>
-                        <h3 class="text-base sm:text-lg font-bold text-[#1F3D2E] hover:text-[#4C6A73] transition-colors">
-                            Peran Aktif Bank Sampah Kelurahan Dalam Menjaga Lingkungan
-                        </h3>
-                        <p class="text-xs sm:text-sm text-[#5A4A3A] line-clamp-2">
-                            Simak cerita sukses partisipasi masyarakat di tingkat RT yang berhasil menukar limbah plastik bernilai ekonomis melalui program Bank Sampah.
-                        </p>
-                        <a href="#" class="inline-flex items-center gap-1.5 text-xs font-bold text-[#1F3D2E] hover:text-[#6B7F4E] pt-1">
-                            <span>Baca Selengkapnya</span>
-                            <i class="fa-solid fa-arrow-right text-[10px]"></i>
-                        </a>
+                    </article>
+                @empty
+                    <div class="text-center py-10 text-sm text-[#5A4A3A]/70">
+                        Belum ada artikel edukasi yang tersedia.
                     </div>
-                </article>
+                @endforelse
 
             </div>
-        </section>
+            </section>
 
     </main>
 

@@ -404,64 +404,51 @@
                             </thead>
 
                             <tbody class="divide-y divide-gray-100 text-sm font-medium text-[#5A4A3A]">
+                                @forelse ($jadwalPreview as $jadwal)
+                                    <tr class="hover:bg-[#DCC8A3]/10 transition-colors">
+                                        <td class="py-4 px-6">
+                                            <div class="font-bold text-[#1F3D2E]">
+                                                Kel. {{ $jadwal->kelurahan }}
+                                            </div>
+                                            <div class="text-xs text-[#5A4A3A]/70">
+                                                Kec. {{ $jadwal->kecamatan }}
+                                            </div>
+                                        </td>
 
-                                <!-- BARIS 1 -->
-                                <tr class="hover:bg-[#DCC8A3]/10 transition-colors">
-                                    <td class="py-4 px-6">
-                                        <div class="font-bold text-[#1F3D2E]">Kel. Dahlan</div>
-                                        <div class="text-xs text-[#5A4A3A]/70">Kec. Sukajadi</div>
-                                    </td>
-                                    <td class="py-4 px-6">
-                                        <span class="bg-[#6B7F4E]/10 text-[#1F3D2E] text-xs px-2.5 py-1 rounded-md font-semibold">RT 01 s/d RT 08</span>
-                                    </td>
-                                    <td class="py-4 px-6 whitespace-nowrap">
-                                        <div class="font-bold text-[#1F3D2E]">Senin & Kamis</div>
-                                    </td>
-                                    <td class="py-4 px-6 whitespace-nowrap">
-                                        <span class="text-xs bg-amber-50 text-amber-800 border border-amber-200 px-3 py-1 rounded-lg font-bold inline-flex items-center gap-1.5">
-                                            <i class="fa-regular fa-clock"></i> 06.30 - 09.00 WIB
-                                        </span>
-                                    </td>
-                                </tr>
+                                        <td class="py-4 px-6">
+                                            <span class="bg-[#6B7F4E]/10 text-[#1F3D2E] text-xs px-2.5 py-1 rounded-md font-semibold">
+                                                {{ $jadwal->cakupan_rt }}
+                                            </span>
+                                        </td>
 
-                                <!-- BARIS 2 -->
-                                <tr class="hover:bg-[#DCC8A3]/10 transition-colors">
-                                    <td class="py-4 px-6">
-                                        <div class="font-bold text-[#1F3D2E]">Kel. Kebun Handil</div>
-                                        <div class="text-xs text-[#5A4A3A]/70">Kec. Jelutung</div>
-                                    </td>
-                                    <td class="py-4 px-6">
-                                        <span class="bg-[#6B7F4E]/10 text-[#1F3D2E] text-xs px-2.5 py-1 rounded-md font-semibold">RT 01 s/d RT 15</span>
-                                    </td>
-                                    <td class="py-4 px-6 whitespace-nowrap">
-                                        <div class="font-bold text-[#1F3D2E]">Selasa & Jumat</div>
-                                    </td>
-                                    <td class="py-4 px-6 whitespace-nowrap">
-                                        <span class="text-xs bg-amber-50 text-amber-800 border border-amber-200 px-3 py-1 rounded-lg font-bold inline-flex items-center gap-1.5">
-                                            <i class="fa-regular fa-clock"></i> 07.00 - 10.00 WIB
-                                        </span>
-                                    </td>
-                                </tr>
+                                        <td class="py-4 px-6 whitespace-nowrap">
+                                            <div class="font-bold text-[#1F3D2E]">
+                                                {{ implode(', ', json_decode($jadwal->hari_penjemputan, true) ?? []) }}
+                                            </div>
+                                        </td>
 
-                                <!-- BARIS 3 -->
-                                <tr class="hover:bg-[#DCC8A3]/10 transition-colors">
-                                    <td class="py-4 px-6">
-                                        <div class="font-bold text-[#1F3D2E]">Kel. Lingkar Selatan</div>
-                                        <div class="text-xs text-[#5A4A3A]/70">Kec. Paal Merah</div>
-                                    </td>
-                                    <td class="py-4 px-6">
-                                        <span class="bg-[#6B7F4E]/10 text-[#1F3D2E] text-xs px-2.5 py-1 rounded-md font-semibold">RT 05 s/d RT 18</span>
-                                    </td>
-                                    <td class="py-4 px-6 whitespace-nowrap">
-                                        <div class="font-bold text-[#1F3D2E]">Rabu & Sabtu</div>
-                                    </td>
-                                    <td class="py-4 px-6 whitespace-nowrap">
-                                        <span class="text-xs bg-amber-50 text-amber-800 border border-amber-200 px-3 py-1 rounded-lg font-bold inline-flex items-center gap-1.5">
-                                            <i class="fa-regular fa-clock"></i> 06.30 - 09.30 WIB
-                                        </span>
-                                    </td>
-                                </tr>
+                                        <td class="py-4 px-6 whitespace-nowrap">
+                                            <span class="text-xs bg-amber-50 text-amber-800 border border-amber-200 px-3 py-1 rounded-lg font-bold inline-flex items-center gap-1.5">
+                                                <i class="fa-regular fa-clock"></i>
 
+                                                @if ($jadwal->jam_mulai && $jadwal->jam_selesai)
+                                                    {{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H.i') }}
+                                                    -
+                                                    {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H.i') }}
+                                                    WIB
+                                                @else
+                                                    {{ $jadwal->jam_operasional ?? '-' }}
+                                                @endif
+                                            </span>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="4" class="py-8 text-center text-sm text-gray-500">
+                                            Belum ada jadwal penjemputan yang tersedia.
+                                        </td>
+                                    </tr>
+                                @endforelse
                             </tbody>
                         </table>
                     </div>
@@ -518,66 +505,44 @@
                         <!-- WADAH TRANSPARAN (OVERFLOW-VISIBLE AGAR KARTU MEKAR FULL) -->
                         <div class="relative w-full h-[280px] sm:h-[340px] flex items-center justify-center overflow-visible my-2">
 
-                            <!-- KARTU 1 -->
-                            <div class="v-card absolute w-[65%] sm:w-[60%] aspect-[16/10] bg-black rounded-2xl overflow-hidden shadow-xl border border-white/30 transition-all duration-500 ease-in-out cursor-pointer group"
-                                onclick="goToVideoStack(0)">
-                                <img src="https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?w=800&auto=format&fit=crop&q=80" alt="Video 1" class="w-full h-full object-cover">
-                                <div class="absolute inset-0 bg-black/20 flex items-center justify-center">
-                                    <div class="w-12 h-12 rounded-full bg-[#1F3D2E]/90 text-white flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:bg-[#6B7F4E] transition-all">
-                                        <i class="fa-solid fa-play ml-0.5"></i>
+                            @forelse ($videoPreview as $index => $video)
+                                <div
+                                    class="v-card absolute w-[65%] sm:w-[60%] aspect-[16/10] bg-black rounded-2xl overflow-hidden shadow-xl border border-white/30 transition-all duration-500 ease-in-out cursor-pointer group"
+                                    onclick="window.location.href='{{ url('/edukasi') }}'"
+                                >
+                                    @if ($video->gambar)
+                                        <img
+                                            src="{{ asset('storage/' . $video->gambar) }}"
+                                            alt="{{ $video->judul }}"
+                                            class="w-full h-full object-cover"
+                                        >
+                                    @else
+                                        <div class="w-full h-full bg-[#1F3D2E] flex items-center justify-center">
+                                            <i class="fa-solid fa-play text-4xl text-white"></i>
+                                        </div>
+                                    @endif
+
+                                    <div class="absolute inset-0 bg-black/20 flex items-center justify-center">
+                                        <div class="w-12 h-12 rounded-full bg-[#1F3D2E]/90 text-white flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:bg-[#6B7F4E] transition-all">
+                                            <i class="fa-solid fa-play ml-0.5"></i>
+                                        </div>
+                                    </div>
+
+                                    <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent p-4 text-white">
+                                        <span class="text-[9px] bg-[#6B7F4E] font-bold px-2.5 py-0.5 rounded-full uppercase">
+                                            {{ $video->kategori }}
+                                        </span>
+
+                                        <h4 class="text-xs sm:text-sm font-bold mt-1 line-clamp-1">
+                                            {{ $video->judul }}
+                                        </h4>
                                     </div>
                                 </div>
-                                <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent p-4 text-white">
-                                    <span class="text-[9px] bg-[#6B7F4E] font-bold px-2.5 py-0.5 rounded-full uppercase">Panduan</span>
-                                    <h4 class="text-xs sm:text-sm font-bold mt-1 line-clamp-1">Tata Cara Melaporkan TPS Liar</h4>
+                            @empty
+                                <div class="text-center text-sm text-[#5A4A3A]/70">
+                                    Belum ada video edukasi yang dipublikasikan.
                                 </div>
-                            </div>
-
-                            <!-- KARTU 2 -->
-                            <div class="v-card absolute w-[65%] sm:w-[60%] aspect-[16/10] bg-black rounded-2xl overflow-hidden shadow-xl border border-white/30 transition-all duration-500 ease-in-out cursor-pointer group"
-                                onclick="goToVideoStack(1)">
-                                <img src="https://images.unsplash.com/photo-1611284446314-60a58ac0deb9?w=800&auto=format&fit=crop&q=80" alt="Video 2" class="w-full h-full object-cover">
-                                <div class="absolute inset-0 bg-black/20 flex items-center justify-center">
-                                    <div class="w-12 h-12 rounded-full bg-[#1F3D2E]/90 text-white flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:bg-[#6B7F4E] transition-all">
-                                        <i class="fa-solid fa-play ml-0.5"></i>
-                                    </div>
-                                </div>
-                                <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent p-4 text-white">
-                                    <span class="text-[9px] bg-[#4C6A73] font-bold px-2.5 py-0.5 rounded-full uppercase">Pemilahan</span>
-                                    <h4 class="text-xs sm:text-sm font-bold mt-1 line-clamp-1">Pilah Sampah Organik & Anorganik</h4>
-                                </div>
-                            </div>
-
-                            <!-- KARTU 3 -->
-                            <div class="v-card absolute w-[65%] sm:w-[60%] aspect-[16/10] bg-black rounded-2xl overflow-hidden shadow-xl border border-white/30 transition-all duration-500 ease-in-out cursor-pointer group"
-                                onclick="goToVideoStack(2)">
-                                <img src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=800&auto=format&fit=crop&q=80" alt="Video 3" class="w-full h-full object-cover">
-                                <div class="absolute inset-0 bg-black/20 flex items-center justify-center">
-                                    <div class="w-12 h-12 rounded-full bg-[#1F3D2E]/90 text-white flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:bg-[#6B7F4E] transition-all">
-                                        <i class="fa-solid fa-play ml-0.5"></i>
-                                    </div>
-                                </div>
-                                <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent p-4 text-white">
-                                    <span class="text-[9px] bg-[#DCC8A3] text-[#1F3D2E] font-bold px-2.5 py-0.5 rounded-full uppercase">Operasional</span>
-                                    <h4 class="text-xs sm:text-sm font-bold mt-1 line-clamp-1">Mengenal Armada Bentor Hijau</h4>
-                                </div>
-                            </div>
-
-                            <!-- KARTU 4 -->
-                            <div class="v-card absolute w-[65%] sm:w-[60%] aspect-[16/10] bg-black rounded-2xl overflow-hidden shadow-xl border border-white/30 transition-all duration-500 ease-in-out cursor-pointer group"
-                                onclick="goToVideoStack(3)">
-                                <img src="https://images.unsplash.com/photo-1530587191325-3db32d826c18?w=800&auto=format&fit=crop&q=80" alt="Video 4" class="w-full h-full object-cover">
-                                <div class="absolute inset-0 bg-black/20 flex items-center justify-center">
-                                    <div class="w-12 h-12 rounded-full bg-[#1F3D2E]/90 text-white flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:bg-[#6B7F4E] transition-all">
-                                        <i class="fa-solid fa-play ml-0.5"></i>
-                                    </div>
-                                </div>
-                                <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent p-4 text-white">
-                                    <span class="text-[9px] bg-red-800 font-bold px-2.5 py-0.5 rounded-full uppercase">Dampak Lingkungan</span>
-                                    <h4 class="text-xs sm:text-sm font-bold mt-1 line-clamp-1">Bahaya Penumpukan TPS Liar</h4>
-                                </div>
-                            </div>
-
+                            @endforelse
                         </div>
                     </div>
 
@@ -588,38 +553,46 @@
                         </h3>
 
                         <div class="space-y-3">
-                            <!-- ARTIKEL 1 -->
-                            <a href="{{ url('/edukasi') }}" class="flex items-center gap-4 p-3 bg-white hover:bg-white rounded-2xl border border-[#5A4A3A]/10 transition-all shadow-sm group">
-                                <img src="https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?w=200&auto=format&fit=crop&q=80" alt="Artikel 1" class="w-16 h-16 rounded-xl object-cover shrink-0 border border-gray-200">
-                                <div class="flex-grow min-w-0">
-                                    <h4 class="text-xs font-bold text-[#1F3D2E] group-hover:text-[#4C6A73] transition-colors line-clamp-2 leading-snug">
-                                        Sanksi & Denda Bagi Pelaku Pembuang Sampah Liar
-                                    </h4>
-                                    <span class="text-[10px] text-[#5A4A3A]/70 mt-1 block">25 Okt 2026 • 3 min read</span>
-                                </div>
-                            </a>
+                            @forelse ($artikelPreview as $artikel)
+                                <a
+                                    href="{{ url('/edukasi') }}"
+                                    class="flex items-center gap-4 p-3 bg-white hover:bg-white rounded-2xl border border-[#5A4A3A]/10 transition-all shadow-sm group"
+                                >
+                                    @if ($artikel->gambar)
+                                        <img
+                                            src="{{ asset('storage/' . $artikel->gambar) }}"
+                                            alt="{{ $artikel->judul }}"
+                                            class="w-16 h-16 rounded-xl object-cover shrink-0 border border-gray-200"
+                                        >
+                                    @else
+                                        <div class="w-16 h-16 rounded-xl bg-[#DCC8A3]/40 flex items-center justify-center shrink-0">
+                                            <i class="fa-solid fa-newspaper text-[#1F3D2E]"></i>
+                                        </div>
+                                    @endif
 
-                            <!-- ARTIKEL 2 -->
-                            <a href="{{ url('/edukasi') }}" class="flex items-center gap-4 p-3 bg-white hover:bg-white rounded-2xl border border-[#5A4A3A]/10 transition-all shadow-sm group">
-                                <img src="https://images.unsplash.com/photo-1611284446314-60a58ac0deb9?w=200&auto=format&fit=crop&q=80" alt="Artikel 2" class="w-16 h-16 rounded-xl object-cover shrink-0 border border-gray-200">
-                                <div class="flex-grow min-w-0">
-                                    <h4 class="text-xs font-bold text-[#1F3D2E] group-hover:text-[#4C6A73] transition-colors line-clamp-2 leading-snug">
-                                        5 Langkah Mengolah Sisa Dapur Menjadi Kompos
-                                    </h4>
-                                    <span class="text-[10px] text-[#5A4A3A]/70 mt-1 block">20 Okt 2026 • 5 min read</span>
-                                </div>
-                            </a>
+                                    <div class="flex-grow min-w-0">
+                                        <div class="flex items-center justify-between gap-2 mb-1">
+                                            <span class="text-[10px] bg-[#6B7F4E] font-semibold text-white px-2.5 py-0.5 rounded-full uppercase">
+                                                {{ $artikel->kategori }}
+                                            </span>
 
-                            <!-- ARTIKEL 3 -->
-                            <a href="{{ url('/edukasi') }}" class="flex items-center gap-4 p-3 bg-white hover:bg-white rounded-2xl border border-[#5A4A3A]/10 transition-all shadow-sm group">
-                                <img src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=200&auto=format&fit=crop&q=80" alt="Artikel 3" class="w-16 h-16 rounded-xl object-cover shrink-0 border border-gray-200">
-                                <div class="flex-grow min-w-0">
-                                    <h4 class="text-xs font-bold text-[#1F3D2E] group-hover:text-[#4C6A73] transition-colors line-clamp-2 leading-snug">
-                                        Peran Bank Sampah Kelurahan Dalam Kebersihan
-                                    </h4>
-                                    <span class="text-[10px] text-[#5A4A3A]/70 mt-1 block">14 Okt 2026 • 4 min read</span>
-                                </div>
-                            </a>
+                                            @if ($artikel->durasi)
+                                                <span class="text-[10px] text-[#5A4A3A]/70 whitespace-nowrap">
+                                                    {{ $artikel->durasi }} menit baca
+                                                </span>
+                                            @endif
+                                        </div>
+
+                                        <h4 class="text-xs font-bold text-[#1F3D2E] group-hover:text-[#4C6A73] transition-colors line-clamp-2 leading-snug">
+                                            {{ $artikel->judul }}
+                                        </h4>
+                                    </div>
+                                </a>
+                            @empty
+                                <p class="text-sm text-[#5A4A3A]/70">
+                                    Belum ada artikel yang dipublikasikan.
+                                </p>
+                            @endforelse
                         </div>
                     </div>
 

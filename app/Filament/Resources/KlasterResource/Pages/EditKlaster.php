@@ -82,6 +82,7 @@ class EditKlaster extends EditRecord
             $petugasValid = User::query()
                 ->whereKey($assignedToBaru)
                 ->where('role', 'komando_lapangan')
+                ->where('is_active', true)
                 ->exists();
 
             if (! $petugasValid) {

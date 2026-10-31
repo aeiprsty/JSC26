@@ -27,6 +27,7 @@ class KlasterWorkflowTest extends TestCase
 
         $user = User::factory()->create([
             'role' => 'operator',
+            'is_active' => true,
         ]);
 
         $this->actingAs($user);
@@ -146,6 +147,7 @@ class KlasterWorkflowTest extends TestCase
     {
         $user = User::factory()->create([
             'role' => $role,
+            'is_active' => true,
         ]);
 
         $this->actingAs($user);
@@ -219,7 +221,7 @@ class KlasterWorkflowTest extends TestCase
         $this->get(route(
             'filament.admin.resources.klasters.edit',
             ['record' => $klaster->id]
-        ))->assertForbidden();
+        ))->assertNotFound();
     }
 
     public function test_komando_lapangan_dapat_membuka_klaster_tugasnya(): void

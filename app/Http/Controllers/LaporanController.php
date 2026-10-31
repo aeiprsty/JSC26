@@ -97,6 +97,20 @@ class LaporanController extends Controller
         }
     }
 
+    public function index()
+    {
+        $laporans = Laporan::query()
+            ->whereIn('status', [
+                'terverifikasi',
+                'dalam_proses',
+                'selesai',
+            ])
+            ->latest()
+            ->paginate(10);
+
+        return view('lacak', compact('laporans'));
+    }
+
     public function search(string $kodeTiket): JsonResponse
     {
         $laporan = Laporan::with('klaster')

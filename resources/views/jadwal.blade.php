@@ -161,8 +161,7 @@
         <div class="bg-white rounded-3xl shadow-xl border border-[#5A4A3A]/15 overflow-hidden">
             <div class="overflow-x-auto">
                 <table class="w-full text-left border-collapse" id="tabel-jadwal">
-                    
-                    <!-- HEADERS TABEL -->
+
                     <thead>
                         <tr class="bg-[#1F3D2E] text-white text-xs uppercase tracking-wider font-semibold">
                             <th class="py-4 px-6">Wilayah / Kelurahan</th>
@@ -172,68 +171,60 @@
                         </tr>
                     </thead>
 
-                    <!-- DATA BARIS TABEL -->
                     <tbody class="divide-y divide-gray-100 text-sm font-medium text-[#5A4A3A]">
-                        
-                        <!-- BARIS 1 -->
-                        <tr class="jadwal-row hover:bg-[#DCC8A3]/10 transition-colors">
-                            <td class="py-4 px-6">
-                                <div class="font-bold text-[#1F3D2E]">Kel. Dahlan</div>
-                                <div class="text-xs text-[#5A4A3A]/70">Kec. Sukajadi</div>
-                            </td>
-                            <td class="py-4 px-6">
-                                <span class="bg-[#6B7F4E]/10 text-[#1F3D2E] text-xs px-2.5 py-1 rounded-md font-semibold">RT 01 s/d RT 08</span>
-                            </td>
-                            <td class="py-4 px-6 whitespace-nowrap">
-                                <div class="font-bold text-[#1F3D2E]">Senin & Kamis</div>
-                            </td>
-                            <td class="py-4 px-6 whitespace-nowrap">
-                                <span class="text-xs bg-amber-50 text-amber-800 border border-amber-200 px-3 py-1 rounded-lg font-bold inline-flex items-center gap-1.5">
-                                    <i class="fa-regular fa-clock"></i> 06.30 - 09.00 WIB
-                                </span>
-                            </td>
-                        </tr>
 
-                        <!-- BARIS 2 -->
-                        <tr class="jadwal-row hover:bg-[#DCC8A3]/10 transition-colors">
-                            <td class="py-4 px-6">
-                                <div class="font-bold text-[#1F3D2E]">Kel. Kebun Handil</div>
-                                <div class="text-xs text-[#5A4A3A]/70">Kec. Jelutung</div>
-                            </td>
-                            <td class="py-4 px-6">
-                                <span class="bg-[#6B7F4E]/10 text-[#1F3D2E] text-xs px-2.5 py-1 rounded-md font-semibold">RT 01 s/d RT 15</span>
-                            </td>
-                            <td class="py-4 px-6 whitespace-nowrap">
-                                <div class="font-bold text-[#1F3D2E]">Selasa & Jumat</div>
-                            </td>
-                            <td class="py-4 px-6 whitespace-nowrap">
-                                <span class="text-xs bg-amber-50 text-amber-800 border border-amber-200 px-3 py-1 rounded-lg font-bold inline-flex items-center gap-1.5">
-                                    <i class="fa-regular fa-clock"></i> 07.00 - 10.00 WIB
-                                </span>
-                            </td>
-                        </tr>
+                        @forelse ($jadwals as $jadwal)
+                            <tr class="jadwal-row hover:bg-[#DCC8A3]/10 transition-colors">
+                                <td class="py-4 px-6">
+                                    <div class="font-bold text-[#1F3D2E]">
+                                        Kel. {{ $jadwal->kelurahan }}
+                                    </div>
+                                    <div class="text-xs text-[#5A4A3A]/70">
+                                        Kec. {{ $jadwal->kecamatan }}
+                                    </div>
+                                </td>
 
-                        <!-- BARIS 3 -->
-                        <tr class="jadwal-row hover:bg-[#DCC8A3]/10 transition-colors">
-                            <td class="py-4 px-6">
-                                <div class="font-bold text-[#1F3D2E]">Kel. Lingkar Selatan</div>
-                                <div class="text-xs text-[#5A4A3A]/70">Kec. Paal Merah</div>
-                            </td>
-                            <td class="py-4 px-6">
-                                <span class="bg-[#6B7F4E]/10 text-[#1F3D2E] text-xs px-2.5 py-1 rounded-md font-semibold">RT 05 s/d RT 18</span>
-                            </td>
-                            <td class="py-4 px-6 whitespace-nowrap">
-                                <div class="font-bold text-[#1F3D2E]">Rabu & Sabtu</div>
-                            </td>
-                            <td class="py-4 px-6 whitespace-nowrap">
-                                <span class="text-xs bg-amber-50 text-amber-800 border border-amber-200 px-3 py-1 rounded-lg font-bold inline-flex items-center gap-1.5">
-                                    <i class="fa-regular fa-clock"></i> 06.30 - 09.30 WIB
-                                </span>
-                            </td>
-                        </tr>
+                                <td class="py-4 px-6">
+                                    <span class="bg-[#6B7F4E]/10 text-[#1F3D2E] text-xs px-2.5 py-1 rounded-md font-semibold">
+                                        {{ $jadwal->cakupan_rt }}
+                                    </span>
+                                </td>
+
+                                <td class="py-4 px-6 whitespace-nowrap">
+                                    <div class="font-bold text-[#1F3D2E]">
+                                       {{ str_replace(['["', '"]', '","'], ['', '', ', '], $jadwal->hari_penjemputan ?? '') }}
+                                    </div>
+                                </td>
+
+                                <td class="py-4 px-6 whitespace-nowrap">
+                                    <span class="text-xs bg-amber-50 text-amber-800 border border-amber-200 px-3 py-1 rounded-lg font-bold inline-flex items-center gap-1.5">
+                                        <i class="fa-regular fa-clock"></i>
+                                        {{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H.i') }}
+                                        -
+                                        {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H.i') }}
+                                        WIB
+                                    </span>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="4" class="py-10 px-6 text-center text-sm text-[#5A4A3A]/70">
+                                    <i class="fa-solid fa-calendar-xmark text-3xl mb-3 text-[#4C6A73]"></i>
+                                    <p class="font-bold text-[#1F3D2E]">Belum ada jadwal penjemputan</p>
+                                    <p class="text-xs mt-1">Jadwal OPBM untuk saat ini belum tersedia.</p>
+                                </td>
+                            </tr>
+                        @endforelse
 
                     </tbody>
                 </table>
+            </div>
+
+            <!-- PESAN JIKA HASIL PENCARIAN KOSONG -->
+            <div id="no-jadwal-msg" class="hidden p-10 text-center text-[#5A4A3A]/70 text-sm">
+                <i class="fa-solid fa-circle-exclamation text-3xl mb-3 text-[#4C6A73]"></i>
+                <p class="font-bold text-[#1F3D2E]">Wilayah tidak ditemukan</p>
+                <p class="text-xs mt-1">Pastikan penulisan nama kelurahan, kecamatan, atau RT sudah benar.</p>
             </div>
         </div>
             <!-- PESAN JIKA HASIL PENCARIAN KOSONG -->

@@ -218,101 +218,46 @@
                     </p>
                 </div>
 
-                <!-- GRID 5 KARTU KOMPONEN IURAN OPBM -->
+
+                <!-- GRID KARTU KOMPONEN IURAN OPBM -->
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 
-                    <!-- KOMPONEN 1: BBM BENTOR HIJAU -->
-                    <div class="bg-white p-6 rounded-3xl border border-[#5A4A3A]/10 shadow-sm hover:shadow-md transition-shadow space-y-4">
-                        <div class="w-14 h-14 rounded-2xl bg-[#1F3D2E]/10 text-[#1F3D2E] flex items-center justify-center text-2xl">
-                            <i class="fa-solid fa-gas-pump"></i>
-                        </div>
-                        <div>
-                            <h3 class="font-extrabold text-[#1F3D2E] text-lg">BBM & Operasional Bentor</h3>
-                            <p class="text-xs text-[#5A4A3A] mt-2 leading-relaxed">
-                                Pengadaan Bahan Bakar Minyak (BBM Pertalite) harian untuk armada motor bentor hijau agar jadwal penjemputan door-to-door di rumah warga berjalan tepat waktu.
-                            </p>
-                        </div>
-                        <ul class="text-xs text-[#5A4A3A]/80 space-y-1.5 pt-2 border-t border-gray-100">
-                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-[#6B7F4E]"></i> Pembelian BBM Harian Bentor Keliling</li>
-                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-[#6B7F4E]"></i> Oli Mesin & Pelumas Rantai Rutin</li>
-                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-[#6B7F4E]"></i> Cadangan Darurat Perjalanan Armada</li>
-                        </ul>
-                    </div>
+                    @forelse ($informasis as $informasi)
+                        <div class="bg-white p-6 rounded-3xl border border-[#5A4A3A]/10 shadow-sm hover:shadow-md transition-shadow space-y-4">
 
-                    <!-- KOMPONEN 2: HONOR & INSENTIF PETUGAS -->
-                    <div class="bg-white p-6 rounded-3xl border border-[#5A4A3A]/10 shadow-sm hover:shadow-md transition-shadow space-y-4">
-                        <div class="w-14 h-14 rounded-2xl bg-[#6B7F4E]/10 text-[#6B7F4E] flex items-center justify-center text-2xl">
-                            <i class="fa-solid fa-user-group"></i>
-                        </div>
-                        <div>
-                            <h3 class="font-extrabold text-[#1F3D2E] text-lg">Honor & Insentif Petugas OPBM</h3>
-                            <p class="text-xs text-[#5A4A3A] mt-2 leading-relaxed">
-                                Dukungan insentif dan upah harian bagi para petugas/operator bentor yang bertugas mengangkut sampah dari depan rumah warga menuju titik kumpul/TPS.
-                            </p>
-                        </div>
-                        <ul class="text-xs text-[#5A4A3A]/80 space-y-1.5 pt-2 border-t border-gray-100">
-                            <li class="flex items-center gap-2"><li class="flex items-center gap-2"><i class="fa-solid fa-check text-[#6B7F4E]"></i> Honor Rutin Operator Bentor Hijau</li>
-                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-[#6B7F4E]"></i> Uang Transport & Lembur Penanganan Ekstra</li>
-                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-[#6B7F4E]"></i> Jaminan Keamanan Kerja Petugas RT</li>
-                        </ul>
-                    </div>
+                            <div class="w-14 h-14 rounded-2xl bg-[#1F3D2E]/10 text-[#1F3D2E] flex items-center justify-center text-2xl">
+                                <i class="{{ $informasi->ikon ?: 'fa-solid fa-circle-info' }}"></i>
+                            </div>
 
-                    <!-- KOMPONEN 3: PEMELIHARAAN & SERVIS BENTOR -->
-                    <div class="bg-white p-6 rounded-3xl border border-[#5A4A3A]/10 shadow-sm hover:shadow-md transition-shadow space-y-4">
-                        <div class="w-14 h-14 rounded-2xl bg-[#4C6A73]/10 text-[#4C6A73] flex items-center justify-center text-2xl">
-                            <i class="fa-solid fa-wrench"></i>
-                        </div>
-                        <div>
-                            <h3 class="font-extrabold text-[#1F3D2E] text-lg">Servis & Perbaikan Armada</h3>
-                            <p class="text-xs text-[#5A4A3A] mt-2 leading-relaxed">
-                                Biaya pemeliharaan teknis berkala, perbaikan mesin, penggantian sparepart usang, dan perawatan bak bentor agar armada siap dipakai setiap hari.
-                            </p>
-                        </div>
-                        <ul class="text-xs text-[#5A4A3A]/80 space-y-1.5 pt-2 border-t border-gray-100">
-                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-[#6B7F4E]"></i> Servis Rutin Mesin Bentor Sampah</li>
-                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-[#6B7F4E]"></i> Penggantian Ban, Rem & Sparepart Usang</li>
-                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-[#6B7F4E]"></i> Perbaikan & Pengecatan Bak Bentor Rusak</li>
-                        </ul>
-                    </div>
+                            <div>
+                                <h3 class="font-extrabold text-[#1F3D2E] text-lg">
+                                    {{ $informasi->judul }}
+                                </h3>
 
-                    <!-- KOMPONEN 4: APD & PERLENGKAPAN K3 -->
-                    <div class="bg-white p-6 rounded-3xl border border-[#5A4A3A]/10 shadow-sm hover:shadow-md transition-shadow space-y-4">
-                        <div class="w-14 h-14 rounded-2xl bg-[#DCC8A3]/30 text-[#1F3D2E] flex items-center justify-center text-2xl">
-                            <i class="fa-solid fa-shield-cat"></i>
-                        </div>
-                        <div>
-                            <h3 class="font-extrabold text-[#1F3D2E] text-lg">APD & Kesehatan Petugas</h3>
-                            <p class="text-xs text-[#5A4A3A] mt-2 leading-relaxed">
-                                Penyediaan Alat Pelindung Diri (APD) standar bagi petugas operasional agar terhindar dari risiko penyakit dan cedera kerja saat kontak dengan sampah.
-                            </p>
-                        </div>
-                        <ul class="text-xs text-[#5A4A3A]/80 space-y-1.5 pt-2 border-t border-gray-100">
-                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-[#6B7F4E]"></i> Sepatu Boots Safety & Sarung Tangan Karet</li>
-                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-[#6B7F4E]"></i> Masker Kesehatan & Jas Hujan Petugas</li>
-                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-[#6B7F4E]"></i> Kit Pertolongan Pertama (P3K) Armada</li>
-                        </ul>
-                    </div>
+                                <p class="text-xs text-[#5A4A3A] mt-2 leading-relaxed">
+                                    {{ $informasi->deskripsi }}
+                                </p>
+                            </div>
 
-                    <!-- KOMPONEN 5: PERALATAN KEBERSIHAN RT/RW -->
-                    <div class="bg-white p-6 rounded-3xl border border-[#5A4A3A]/10 shadow-sm hover:shadow-md transition-shadow space-y-4">
-                        <div class="w-14 h-14 rounded-2xl bg-[#1F3D2E]/10 text-[#6B7F4E] flex items-center justify-center text-2xl">
-                            <i class="fa-solid fa-broom"></i>
+                            @if (!empty($informasi->rincian))
+                                <ul class="text-xs text-[#5A4A3A]/80 space-y-1.5 pt-2 border-t border-gray-100">
+                                    @foreach ($informasi->rincian as $rincian)
+                                        <li class="flex items-center gap-2">
+                                            <i class="fa-solid fa-check text-[#6B7F4E]"></i>
+                                            {{ $rincian }}
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            @endif
+
                         </div>
-                        <div>
-                            <h3 class="font-extrabold text-[#1F3D2E] text-lg">Peralatan Pendukung Kerja</h3>
-                            <p class="text-xs text-[#5A4A3A] mt-2 leading-relaxed">
-                                Pengadaan sarana kerja fisik pendukung di lapangan seperti garuk sampah, sekop, sapu lidi besar, serta cairan pembersih untuk sterilisasi armada.
-                            </p>
+                    @empty
+                        <div class="col-span-full text-center py-10 text-sm text-[#5A4A3A]/70">
+                            Belum ada informasi alokasi iuran yang tersedia.
                         </div>
-                        <ul class="text-xs text-[#5A4A3A]/80 space-y-1.5 pt-2 border-t border-gray-100">
-                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-[#6B7F4E]"></i> Pengadaan Garuk, Sekop & Sapu Lidi</li>
-                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-[#6B7F4E]"></i> Terpal Penutup Bak Bentor Sampah</li>
-                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-[#6B7F4E]"></i> Cairan Disinfektan & Pembersih Armada</li>
-                        </ul>
-                    </div>
+                    @endforelse
 
                 </div>
-
             </div>
         </section>
 
