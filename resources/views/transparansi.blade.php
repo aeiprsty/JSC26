@@ -5,45 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Transparansi Alokasi Dana Iuran - JambiBersih</title>
 
-    <!-- Tailwind CSS CDN -->
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- Font Inter & Font Awesome Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
 
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #DCC8A3;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #6B7F4E;
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #1F3D2E;
-        }
+        body { font-family: 'Inter', sans-serif; }
     </style>
 </head>
-<body class="bg-[#FFFAE8] text-[#5A4A3A] antialiased selection:bg-[#6B7F4E] selection:text-white min-h-screen flex flex-col">
 
-    <!-- NAVBAR / HEADER UTAMA -->
-    <header class="sticky top-0 z-50 bg-[#1F3D2E] text-white shadow-md">
+<body class="bg-[#DCC8A3]/30 text-[#5A4A3A] antialiased min-h-screen flex flex-col">
+
+    <!-- NAVBAR UTAMA (KONSISTEN DI SEMUA HALAMAN) -->
+    <header class="sticky top-0 z-50 bg-[#1F3D2E] text-white shadow-md transition-all duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-20">
-
+                
                 <!-- Logo & Branding -->
                 <a href="{{ url('/') }}" class="flex items-center gap-3 group">
-                    <div class="w-10 h-10 rounded-xl bg-[#6B7F4E] flex items-center justify-center text-white shadow-lg group-hover:bg-[#4C6A73] transition-colors">
-                        <i class="fa-solid fa-leaf text-xl"></i>
+                    <div class="w-10 h-10 rounded-xl bg-[#6B7F4E] flex items-center justify-center text-white shadow-lg group-hover:bg-[#4C6A73] transition-colors duration-200">
+                        <i class="fa-solid font-bold fa-leaf text-xl"></i>
                     </div>
                     <div class="flex flex-col">
                         <span class="font-extrabold text-lg tracking-tight leading-none text-white group-hover:text-[#DCC8A3] transition-colors">JambiBersih</span>
@@ -51,51 +37,54 @@
                     </div>
                 </a>
 
-                <!-- Navigasi Desktop -->
+                <!-- Desktop Navigation Menu -->
                 <nav class="hidden md:flex items-center gap-8 ml-auto">
                     <a href="{{ url('/') }}" class="px-3 py-2 rounded-lg text-sm font-medium text-emerald-100 hover:text-white hover:bg-white/10 transition-colors">
                         Beranda
                     </a>
+                    
                     <a href="{{ url('/lapor') }}" class="px-3 py-2 rounded-lg text-sm font-medium text-emerald-100 hover:text-white hover:bg-white/10 transition-colors">
                         Lapor TPS
                     </a>
+
                     <a href="{{ url('/lacak') }}" class="px-3 py-2 rounded-lg text-sm font-medium text-emerald-100 hover:text-white hover:bg-white/10 transition-colors">
                         Cek Penanganan TPS
                     </a>
 
-                    <!-- Dropdown Informasi & Edukasi -->
+                    <!-- Dropdown Informasi & Edukasi (Active Highlight) -->
                     <div class="relative group" id="desktop-dropdown">
-                        <button class="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-semibold text-white bg-white/10 focus:outline-none" onclick="toggleDropdown('desktop-menu')">
+                        <button class="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-semibold text-white bg-white/10 transition-colors focus:outline-none" onclick="toggleDropdown('desktop-menu')">
                             <span>Informasi & Edukasi</span>
                             <i class="fa-solid fa-chevron-down text-xs transition-transform duration-200 group-hover:rotate-180"></i>
                         </button>
-
-                        <div id="desktop-menu" class="hidden group-hover:block absolute right-0 mt-1 w-64 bg-white rounded-xl shadow-xl border border-[#5A4A3A]/10 py-2 text-[#5A4A3A] z-50">
+                        
+                        <div id="desktop-menu" class="hidden group-hover:block absolute right-0 mt-1 w-64 bg-white rounded-xl shadow-xl border border-[#5A4A3A]/10 py-2 text-[#5A4A3A] z-50 animate-fadeIn">
                             <a href="{{ url('/jadwal') }}" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium hover:bg-[#DCC8A3]/30 hover:text-[#1F3D2E] transition-colors">
-                                <div class="w-8 h-8 rounded-lg bg-[#4C6A73]/10 flex items-center justify-center text-[#4C6A73]">
+                                <div class="w-8 h-8 rounded-lg bg-[#6B7F4E]/10 flex items-center justify-center text-[#6B7F4E]">
                                     <i class="fa-solid fa-calendar-alt text-xs"></i>
                                 </div>
                                 <div>
-                                    <div class="font-semibold">Jadwal OPBM</div>
+                                    <div class="font-bold">Jadwal OPBM</div>
                                     <div class="text-[11px] text-[#5A4A3A]/70">Operasi Pembersihan Bersama</div>
                                 </div>
                             </a>
-                            <a href="{{ url('/transparansi') }}" class="flex items-center gap-3 px-4 py-2.5 text-sm font-semibold bg-[#DCC8A3]/30 text-[#1F3D2E]">
-                                <div class="w-8 h-8 rounded-lg bg-[#1F3D2E] flex items-center justify-center text-white">
+                            <a href="{{ url('/transparansi') }}" class="flex items-center gap-3 px-4 py-2.5 text-sm font-bold bg-[#DCC8A3]/30 text-[#1F3D2E] transition-colors">
+                                <div class="w-8 h-8 rounded-lg bg-[#4C6A73] text-white flex items-center justify-center">
                                     <i class="fa-solid fa-chart-pie text-xs"></i>
                                 </div>
                                 <div>
-                                    <div class="font-bold">Transparansi Dana</div>
+                                    <div class="font-semibold">Transparansi Dana</div>
                                     <div class="text-[11px] text-[#5A4A3A]/70">Rincian Komponen Alokasi</div>
                                 </div>
                             </a>
+                            <div class="border-t border-gray-100 my-1"></div>
                             <a href="{{ url('/edukasi') }}" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium hover:bg-[#DCC8A3]/30 hover:text-[#1F3D2E] transition-colors">
-                                <div class="w-8 h-8 rounded-lg bg-[#4C6A73]/10 flex items-center justify-center text-[#4C6A73]">
+                                <div class="w-8 h-8 rounded-lg bg-[#1F3D2E]/10 flex items-center justify-center text-[#1F3D2E]">
                                     <i class="fa-solid fa-book-open text-xs"></i>
                                 </div>
                                 <div>
                                     <div class="font-semibold">Edukasi & Media</div>
-                                    <div class="text-[11px] text-[#5A4A3A]/70">Artikel & Video Edukasi</div>
+                                    <div class="text-[11px] text-[#5A4A3A]/70">Artikel, Tips & Video Edukasi</div>
                                 </div>
                             </a>
                         </div>
@@ -111,7 +100,7 @@
             </div>
         </div>
 
-        <!-- Mobile Nav Panel -->
+        <!-- Mobile Menu Navigation Panel -->
         <div id="mobile-menu" class="hidden md:hidden absolute top-full left-0 w-full bg-[#1F3D2E] border-t border-b border-white/10 px-4 pt-3 pb-6 space-y-2 shadow-2xl z-50">
             <a href="{{ url('/') }}" class="block px-3 py-2 rounded-lg text-base font-medium text-emerald-100 hover:text-white hover:bg-white/10">
                 Beranda
@@ -122,23 +111,30 @@
             <a href="{{ url('/lacak') }}" class="block px-3 py-2 rounded-lg text-base font-medium text-emerald-100 hover:text-white hover:bg-white/10">
                 Cek Penanganan TPS
             </a>
-
+            
             <div class="pt-2 border-t border-white/10">
-                <div class="px-3 py-1 text-xs font-semibold text-[#DCC8A3] uppercase tracking-wider">Informasi & Edukasi</div>
-                <a href="{{ url('/jadwal') }}" class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-emerald-100 hover:text-white hover:bg-white/10 rounded-lg">
-                    <i class="text-[#6B7F4E]"></i>
+                <div class="px-3 py-1 text-xs font-semibold text-[#DCC8A3] uppercase tracking-wider">
+                    Informasi & Edukasi
+                </div>
+
+                <a href="{{ url('/jadwal') }}"
+                    class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-emerald-100 hover:text-white hover:bg-white/10 rounded-lg">
+                    <i class="fa-solid fa-calendar-alt text-xs"></i>
                     <span>Jadwal OPBM</span>
                 </a>
-                <a href="{{ url('/transparansi') }}" class="flex items-center gap-3 px-3 py-2.5 text-sm font-bold text-white bg-white/10 rounded-lg">
-                    <i class="text-[#4C6A73]"></i>
+
+                <a href="{{ url('/transparansi') }}"
+                    class="flex items-center gap-3 px-3 py-2.5 text-sm font-bold text-white bg-white/10 rounded-lg">
+                    <i class="fa-solid fa-chart-pie text-xs"></i>
                     <span>Transparansi Alokasi Dana</span>
                 </a>
-                <a href="{{ url('/edukasi') }}" class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-emerald-100 hover:text-white hover:bg-white/10 rounded-lg">
-                    <i class="text-[#DCC8A3]"></i>
+
+                <a href="{{ url('/edukasi') }}"
+                    class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-emerald-100 hover:text-white hover:bg-white/10 rounded-lg">
+                    <i class="fa-solid fa-book-open text-xs"></i>
                     <span>Edukasi</span>
                 </a>
             </div>
-        </div>
     </header>
 
     <main class="flex-grow">

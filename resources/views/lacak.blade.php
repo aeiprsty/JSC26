@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cek Penanganan TPS - JambiBersih</title>
 
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
 
@@ -142,19 +144,27 @@
         </div>
 
         <!-- FORM PENCARIAN TIKET -->
-        <div class="bg-white rounded-3xl p-6 shadow-lg border border-[#5A4A3A]/15 relative z-10 mb-8">
-            <form id="search-form" onsubmit="searchTicket(event)" class="flex flex-col sm:flex-row gap-4">
-                <div class="relative flex-grow">
+        <div class="bg-white rounded-3xl p-5 sm:p-6 shadow-lg border border-[#5A4A3A]/15 relative z-10 mb-8">
+            <form id="search-form" onsubmit="searchTicket(event)" class="flex flex-col sm:flex-row gap-3 sm:gap-4">
+
+                <div class="relative flex-1 min-w-0">
                     <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                         <i class="fa-solid fa-magnifying-glass text-[#5A4A3A]/50"></i>
                     </div>
-                    <input type="text" id="ticket-search-input" placeholder="Masukkan Kode Tiket (Contoh: TPS-DFGSTXXXX)"
-                        class="w-full pl-11 pr-4 py-3.5 bg-[#FFFAE8]/50 border border-[#5A4A3A]/20 rounded-2xl text-sm font-medium text-[#1F3D2E] focus:outline-none focus:ring-2 focus:ring-[#6B7F4E] transition-all" required>
+
+                    <input
+                        type="text"
+                        id="ticket-search-input"
+                        placeholder="Masukkan Kode Tiket (Contoh: TPS-DFGSTXXXXX)"
+                        class="w-full h-[50px] pl-11 pr-3 bg-[#FFFAE8]/50 border border-[#5A4A3A]/20 rounded-2xl text-sm font-medium text-[#1F3D2E] placeholder:text-xs sm:placeholder:text-sm placeholder:tracking-tight focus:outline-none focus:ring-2 focus:ring-[#6B7F4E] transition-all"
+                        required>
                 </div>
-                <button type="submit" class="bg-[#1F3D2E] hover:bg-[#4C6A73] text-white font-bold px-8 py-3.5 rounded-2xl shadow-md transition-colors flex items-center justify-center gap-2 shrink-0">
-                    <i class="fa-solid fa-filter text-xs"></i>
+
+                <button type="submit"
+                    class="w-full sm:w-auto h-[50px] bg-[#1F3D2E] hover:bg-[#4C6A73] text-white font-bold px-8 rounded-2xl shadow-md transition-colors flex items-center justify-center gap-2 shrink-0">
                     <span>Cari Tiket</span>
                 </button>
+
             </form>
         </div>
 
@@ -248,7 +258,13 @@
                             <i class="fa-solid fa-camera text-[#6B7F4E]"></i>
                             Foto Bukti Laporan
                         </h5>
-                        <img id="hasil-foto" class="hidden h-auto w-auto max-w-full max-h-[600px] rounded-2xl border border-[#5A4A3A]/15" alt="Foto laporan TPS liar" onclick="openPhotoModal(this.src, 'Foto Bukti Laporan')" class="hidden h-auto w-auto max-w-full max-h-[600px] rounded-2xl border border-[#5A4A3A]/15 cursor-zoom-in">
+
+                        <div class="flex justify-center">
+                            <img id="hasil-foto"
+                                class="hidden h-auto w-auto max-w-full max-h-[600px] rounded-2xl border border-[#5A4A3A]/15 cursor-zoom-in"
+                                alt="Foto laporan TPS liar"
+                                onclick="openPhotoModal(this.src, 'Foto Bukti Laporan')">
+                        </div>
                     </div>
 
                     <!-- Foto Bukti Hasil Pembersihan Petugas -->
@@ -258,34 +274,70 @@
                             Foto Hasil Pembersihan Petugas
                         </h5>
 
-                        <img id="hasil-foto-bukti"
-                            class="hidden h-auto w-auto max-w-full max-h-[600px] rounded-2xl border border-[#5A4A3A]/15"
-                            alt="Foto bukti hasil pembersihan petugas" onclick="openPhotoModal(this.src, 'Foto Hasil Pembersihan Petugas')" class="hidden h-auto w-auto max-w-full max-h-[600px] rounded-2xl border border-[#5A4A3A]/15 cursor-zoom-in">
+                        <div class="flex justify-center">
+                            <img id="hasil-foto-bukti"
+                                class="hidden h-auto w-auto max-w-full max-h-[600px] rounded-2xl border border-[#5A4A3A]/15 cursor-zoom-in"
+                                alt="Foto bukti hasil pembersihan petugas"
+                                onclick="openPhotoModal(this.src, 'Foto Bukti Hasil Pembersihan Petugas')">
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-
-        <!-- TABEL DAFTAR PELAPORAN -->
+        
+        <!-- DAFTAR PELAPORAN -->
         <div id="daftar-pelaporan" class="bg-white rounded-3xl shadow-xl border border-[#5A4A3A]/15 overflow-hidden">
-            <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse">
+
+            <!-- TAMPILAN DESKTOP -->
+            <div id="laporan-desktop" class="hidden md:block overflow-x-auto">
+                <table class="w-full table-fixed text-left border-collapse">
+
+                    <colgroup>
+                        <col class="w-[25%]">
+                        <col class="w-[45%]">
+                        <col class="w-[30%]">
+                    </colgroup>
 
                     <thead>
                         <tr class="bg-[#1F3D2E] text-white text-xs uppercase tracking-wider font-semibold">
-                            <th class="py-4 px-6">Tanggal Lapor</th>
-                            <th class="py-4 px-6">Lokasi Kejadian</th>
-                            <th class="py-4 px-6">Status Terakhir</th>
+                            <th class="py-4 px-6 text-center">Tanggal Lapor</th>
+                            <th class="py-4 px-6 text-center">Lokasi Kejadian</th>
+                            <th class="py-4 px-6 text-center">Status Terakhir</th>
                         </tr>
                     </thead>
 
                     <tbody class="divide-y divide-gray-100 text-sm font-medium text-[#5A4A3A]">
 
                         @forelse ($laporans as $laporan)
+                            @php
+                                $statusPublik = $laporan->status;
+
+                                if ($laporan->klaster && $statusPublik !== 'ditolak') {
+                                    $statusPublik = match ($laporan->klaster->status) {
+                                        \App\Enums\StatusKlaster::MenungguVerifikasi => 'menunggu',
+                                        \App\Enums\StatusKlaster::Terverifikasi,
+                                        \App\Enums\StatusKlaster::Disposisi,
+                                        \App\Enums\StatusKlaster::Ditugaskan => 'terverifikasi',
+                                        \App\Enums\StatusKlaster::DalamProses => 'dalam_proses',
+                                        \App\Enums\StatusKlaster::Selesai => 'selesai',
+                                        default => $statusPublik,
+                                    };
+                                }
+
+                                $statusLabel = match ($statusPublik) {
+                                    'menunggu' => 'Menunggu',
+                                    'terverifikasi' => 'Terverifikasi',
+                                    'dalam_proses' => 'Dalam Proses',
+                                    'selesai' => 'Selesai',
+                                    'ditolak' => 'Ditolak',
+                                    default => ucfirst(str_replace('_', ' ', $statusPublik)),
+                                };
+                            @endphp
+
                             <tr class="report-row hover:bg-[#DCC8A3]/10 transition-colors">
 
-                                <!-- TANGGAL LAPOR -->
-                                <td class="py-4 px-6 whitespace-nowrap">
+                                <!-- TANGGAL -->
+                                <td class="py-4 px-6 text-center">
                                     <div class="font-bold text-[#1F3D2E]">
                                         {{ $laporan->created_at->translatedFormat('d M Y') }}
                                     </div>
@@ -294,32 +346,16 @@
                                     </div>
                                 </td>
 
-                                <!-- LOKASI KEJADIAN -->
-                                <td class="py-4 px-6">
-                                    <div class="font-semibold text-[#1F3D2E]">
+                                <!-- LOKASI -->
+                                <td class="py-4 px-6 text-center">
+                                    <div class="font-semibold text-[#1F3D2E] break-words">
                                         <i class="fa-solid fa-location-dot mr-1"></i>
                                         {{ $laporan->lat }}, {{ $laporan->lng }}
                                     </div>
                                 </td>
 
                                 <!-- STATUS -->
-                                @php
-                                    $statusPublik = $laporan->status;
-
-                                    if ($laporan->klaster && $statusPublik !== 'ditolak') {
-                                        $statusPublik = match ($laporan->klaster->status) {
-                                            \App\Enums\StatusKlaster::MenungguVerifikasi => 'menunggu',
-                                            \App\Enums\StatusKlaster::Terverifikasi,
-                                            \App\Enums\StatusKlaster::Disposisi,
-                                            \App\Enums\StatusKlaster::Ditugaskan => 'terverifikasi',
-                                            \App\Enums\StatusKlaster::DalamProses => 'dalam_proses',
-                                            \App\Enums\StatusKlaster::Selesai => 'selesai',
-                                            default => $statusPublik,
-                                        };
-                                    }
-                                @endphp
-
-                                <td class="py-4 px-6 whitespace-nowrap">
+                                <td class="py-4 px-6 text-center">
                                     @if ($statusPublik === 'terverifikasi')
                                         <span class="bg-amber-100 text-amber-800 border border-amber-200 text-xs font-bold px-3 py-1 rounded-full inline-flex items-center gap-1.5">
                                             <i class="fa-solid fa-circle-check text-[10px]"></i>
@@ -335,8 +371,23 @@
                                             <i class="fa-solid fa-circle-check text-[10px]"></i>
                                             Selesai
                                         </span>
+                                    @elseif ($statusPublik === 'menunggu')
+                                        <span class="bg-gray-100 text-gray-700 border border-gray-200 text-xs font-bold px-3 py-1 rounded-full inline-flex items-center gap-1.5">
+                                            <i class="fa-regular fa-clock text-[10px]"></i>
+                                            Menunggu
+                                        </span>
+                                    @elseif ($statusPublik === 'ditolak')
+                                        <span class="bg-red-100 text-red-800 border border-red-200 text-xs font-bold px-3 py-1 rounded-full inline-flex items-center gap-1.5">
+                                            <i class="fa-solid fa-circle-xmark text-[10px]"></i>
+                                            Ditolak
+                                        </span>
+                                    @else
+                                        <span class="bg-gray-100 text-gray-700 text-xs font-bold px-3 py-1 rounded-full">
+                                            {{ $statusLabel }}
+                                        </span>
                                     @endif
                                 </td>
+
                             </tr>
                         @empty
                             <tr>
@@ -351,18 +402,130 @@
                 </table>
             </div>
 
+            <!-- TAMPILAN MOBILE -->
+            <div id="laporan-mobile" class="md:hidden p-3 space-y-3">
+
+                @forelse ($laporans as $laporan)
+                    @php
+                        $statusPublik = $laporan->status;
+
+                        if ($laporan->klaster && $statusPublik !== 'ditolak') {
+                            $statusPublik = match ($laporan->klaster->status) {
+                                \App\Enums\StatusKlaster::MenungguVerifikasi => 'menunggu',
+                                \App\Enums\StatusKlaster::Terverifikasi,
+                                \App\Enums\StatusKlaster::Disposisi,
+                                \App\Enums\StatusKlaster::Ditugaskan => 'terverifikasi',
+                                \App\Enums\StatusKlaster::DalamProses => 'dalam_proses',
+                                \App\Enums\StatusKlaster::Selesai => 'selesai',
+                                default => $statusPublik,
+                            };
+                        }
+
+                        $statusLabel = match ($statusPublik) {
+                            'menunggu' => 'Menunggu',
+                            'terverifikasi' => 'Terverifikasi',
+                            'dalam_proses' => 'Dalam Proses',
+                            'selesai' => 'Selesai',
+                            'ditolak' => 'Ditolak',
+                            default => ucfirst(str_replace('_', ' ', $statusPublik)),
+                        };
+                    @endphp
+
+                    <div class="report-row bg-white rounded-2xl shadow-sm border border-[#5A4A3A]/10 p-4 min-w-0">
+
+                        <!-- TANGGAL -->
+                        <div class="border-b border-[#5A4A3A]/10 pb-3 mb-3">
+                            <p class="text-[10px] font-bold uppercase tracking-wider text-[#6B7F4E] mb-1">
+                                Tanggal Laporan
+                            </p>
+                            <p class="text-sm font-bold text-[#1F3D2E]">
+                                {{ $laporan->created_at->translatedFormat('d M Y') }}
+                            </p>
+                            <p class="text-xs text-[#5A4A3A]/70">
+                                {{ $laporan->created_at->format('H:i') }} WIB
+                            </p>
+                        </div>
+
+                        <!-- LOKASI -->
+                        <div class="mb-3">
+                            <p class="text-[10px] font-semibold text-[#6B7F4E] mb-1">
+                                Lokasi Kejadian
+                            </p>
+                            <p class="text-xs font-semibold text-[#1F3D2E] break-all">
+                                <i class="fa-solid fa-location-dot mr-1"></i>
+                                {{ $laporan->lat }}, {{ $laporan->lng }}
+                            </p>
+                        </div>
+
+                        <!-- STATUS -->
+                        <div>
+                            <p class="text-[10px] font-semibold text-[#6B7F4E] mb-2">
+                                Status Terakhir
+                            </p>
+
+                            @if ($statusPublik === 'terverifikasi')
+                                <span class="bg-amber-100 text-amber-800 border border-amber-200 text-xs font-bold px-3 py-1 rounded-full inline-flex items-center gap-1.5">
+                                    <i class="fa-solid fa-circle-check text-[10px]"></i>
+                                    Terverifikasi
+                                </span>
+                            @elseif ($statusPublik === 'dalam_proses')
+                                <span class="bg-blue-100 text-blue-800 border border-blue-200 text-xs font-bold px-3 py-1 rounded-full inline-flex items-center gap-1.5">
+                                    <i class="fa-solid fa-spinner fa-spin text-[10px]"></i>
+                                    Dalam Proses
+                                </span>
+                            @elseif ($statusPublik === 'selesai')
+                                <span class="bg-emerald-100 text-emerald-800 border border-emerald-200 text-xs font-bold px-3 py-1 rounded-full inline-flex items-center gap-1.5">
+                                    <i class="fa-solid fa-circle-check text-[10px]"></i>
+                                    Selesai
+                                </span>
+                            @elseif ($statusPublik === 'menunggu')
+                                <span class="bg-gray-100 text-gray-700 border border-gray-200 text-xs font-bold px-3 py-1 rounded-full inline-flex items-center gap-1.5">
+                                    <i class="fa-regular fa-clock text-[10px]"></i>
+                                    Menunggu
+                                </span>
+                            @elseif ($statusPublik === 'ditolak')
+                                <span class="bg-red-100 text-red-800 border border-red-200 text-xs font-bold px-3 py-1 rounded-full inline-flex items-center gap-1.5">
+                                    <i class="fa-solid fa-circle-xmark text-[10px]"></i>
+                                    Ditolak
+                                </span>
+                            @else
+                                <span class="bg-gray-100 text-gray-700 text-xs font-bold px-3 py-1 rounded-full">
+                                    {{ $statusLabel }}
+                                </span>
+                            @endif
+                        </div>
+
+                    </div>
+                @empty
+                    <div class="text-center py-8 text-xs text-[#5A4A3A]/70">
+                        <i class="fa-solid fa-inbox text-3xl mb-3 block text-gray-300"></i>
+                        <p class="font-bold text-[#1F3D2E]">Belum ada laporan</p>
+                        <p class="mt-1">Belum ada laporan yang dapat ditampilkan.</p>
+                    </div>
+                @endforelse
+
+            </div>
+
+            <!-- PESAN JIKA HASIL PENCARIAN KOSONG -->
+            <div id="no-report-msg" class="hidden p-10 text-center text-[#5A4A3A]/70 text-sm">
+                <i class="fa-solid fa-circle-exclamation text-3xl mb-3 text-[#4C6A73]"></i>
+                <p class="font-bold text-[#1F3D2E]">Laporan tidak ditemukan</p>
+                <p class="text-xs mt-1">Coba gunakan kata kunci tanggal, koordinat lokasi, atau status laporan.</p>
+            </div>
+
             <!-- PAGINATION -->
             @if ($laporans->hasPages())
-                <div class="px-6 py-4 border-t border-gray-100">
+                <div id="laporan-pagination" class="px-6 py-4 border-t border-gray-100">
                     {{ $laporans->links() }}
                 </div>
             @endif
+
         </div>
 
     </main>
 
     <!-- MODAL POPUP PREVIEW FOTO -->
-    <div id="photo-modal" class="fixed inset-0 z-[100] bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4 animate-fadeIn">
+    <div id="photo-modal" class="fixed inset-0 z-[100] bg-white/90 backdrop-blur-sm hidden flex items-center justify-center p-4 animate-fadeIn">
         <div class="relative max-w-3xl w-full bg-white rounded-3xl overflow-hidden shadow-2xl">
             <!-- Header Modal -->
             <div class="flex items-center justify-between p-4 bg-[#1F3D2E] text-white">
@@ -372,7 +535,7 @@
                 </button>
             </div>
             <!-- Gambar Besar -->
-            <div class="p-2 bg-black flex justify-center max-h-[75vh]">
+            <div class="p-2 bg-white flex justify-center max-h-[75vh]">
                 <img id="modal-img" src="" alt="Preview Full" class="max-h-[70vh] w-auto object-contain rounded-xl">
             </div>
         </div>

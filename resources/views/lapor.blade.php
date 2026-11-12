@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulir Pelaporan TPS Liar - JambiBersih</title>
+    <title>Lapor TPS - JambiBersih</title>
+
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -133,7 +135,7 @@
             </div>
         </div>
     </header>
-
+    
     <!-- FORM SECTION -->
     <main class="flex-grow py-12 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto w-full">
 
@@ -142,6 +144,7 @@
             <h1 class="text-3xl font-extrabold text-[#1F3D2E] mt-2">Buat Laporan TPS Liar</h1>
             <p class="text-sm text-[#5A4A3A] mt-1">Isi formulir di bawah ini dengan lengkap untuk mempercepat proses penanganan oleh tim kebersihan.</p>
         </div>
+        
 
         <form id="form-lapor" onsubmit="submitLaporan(event)" action="#" method="POST" enctype="multipart/form-data" class="bg-white rounded-3xl p-6 sm:p-10 shadow-xl border border-[#5A4A3A]/15 space-y-8 relative z-10">
             @csrf
@@ -149,7 +152,7 @@
             <!-- 1. UNGGAH FOTO BUKTI -->
             <div>
                 <label class="block text-sm font-bold text-[#1F3D2E] mb-2">
-                    Foto Bukti Sampah Liar <span class="text-red-500">*</span>
+                    Foto Bukti TPS Liar<span class="text-red-500">*</span>
                 </label>
 
                 <!-- Area Klik untuk Membuka Modal Pilihan -->
@@ -177,7 +180,7 @@
             <!-- 2. TITIK LOKASI PETA & PATOKAN -->
             <div class="space-y-4">
                 <label class="block text-sm font-bold text-[#1F3D2E]">
-                    Titik Lokasi Kejadian (Peta) <span class="text-red-500">*</span>
+                    Titik Lokasi Kejadian (Peta)<span class="text-red-500">*</span>
                 </label>
 
                 <div class="flex flex-col sm:flex-row gap-3">
@@ -193,7 +196,18 @@
                 <p class="text-[11px] text-[#5A4A3A]/70 italic mt-1">*Geser pin warna biru pada peta ke titik lokasi tumpukan sampah yang tepat.</p>
 
                 <div class="pt-2">
-                    <input type="text" name="alamat_detail" wire:model="alamat_detail" placeholder="Alamat / Patokan Lokasi (Misal: Samping pos ronda RT 03)" class="w-full border border-[#5A4A3A]/20 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#6B7F4E]" required>
+                    <label class="block text-sm font-bold text-[#1F3D2E] mb-2">
+                        Alamat/Patokan Lokasi<span class="text-red-500">*</span>
+                    </label>
+
+                    <input
+                        type="text"
+                        name="alamat_detail"
+                        wire:model="alamat_detail"
+                        placeholder="Misal: Samping pos ronda RT 03"
+                        class="w-full border border-[#5A4A3A]/20 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#6B7F4E]"
+                        required
+                    >
                 </div>
             </div>
 
@@ -327,6 +341,30 @@
             const dropdown = document.getElementById(id);
             dropdown.classList.toggle('hidden');
         }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.getElementById('form-lapor');
+
+            form.querySelectorAll('[required]').forEach(function (input) {
+                input.addEventListener('invalid', function () {
+                    if (input.validity.valueMissing) {
+                        input.setCustomValidity('Kolom ini wajib diisi.');
+                    } else if (input.validity.typeMismatch) {
+                        input.setCustomValidity('Silakan masukkan format yang benar.');
+                    } else {
+                        input.setCustomValidity('Data yang dimasukkan belum valid.');
+                    }
+                });
+
+                input.addEventListener('input', function () {
+                    input.setCustomValidity('');
+                });
+
+                input.addEventListener('change', function () {
+                    input.setCustomValidity('');
+                });
+            });
+        });
 
         async function submitLaporan(e) {
             e.preventDefault();

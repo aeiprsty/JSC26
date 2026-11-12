@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistem Pelaporan TPS Liar & Kebersihan Lingkungan</title>
-
+    <title>JambiBersih</title>
+    
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
 
@@ -32,6 +32,14 @@
         }
         ::-webkit-scrollbar-thumb:hover {
             background: #1F3D2E;
+        }
+
+        @media (max-width: 639px) {
+            .hero-wave {
+                transform: translateY(1px);
+                width: 100%;
+                left: 0;
+            }
         }
     </style>
 
@@ -150,7 +158,7 @@
         </div>
     </header>
 
-    <main class="flex-grow">
+    <main class="flex-grow overflow-x-clip">
 
         <!-- ==========================================
              HERO SECTION
@@ -201,10 +209,21 @@
                 </div>
             </div>
 
-            <!-- 3. SVG GELOMBANG (LENGKUNGAN MENTOK KE BAWAH) -->
-            <div class="absolute bottom-0 left-0 right-0 w-full overflow-hidden leading-none z-20 pointer-events-none">
-                <svg class="relative block w-full h-12 sm:h-20 lg:h-28" viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-                    <path d="M0,60 C320,110 420,30 720,70 C1020,110 1120,30 1440,60 L1440,120 L0,120 Z" style="fill: #FFFAE8;"></path>
+            <!-- SVG GELOMBANG -->
+            <div class="hero-wave absolute bottom-0 left-0 right-0 w-full overflow-hidden leading-none z-20 pointer-events-none">
+                <svg
+                    class="relative block w-full h-12 sm:h-20 lg:h-28"
+                    viewBox="0 0 1440 120"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    preserveAspectRatio="none"
+                    style="display: block; margin-bottom: -2px;"
+                >
+                    <path
+                        d="M0,60 C320,110 420,30 720,70 C1020,110 1120,30 1440,60 L1440,122 L0,122 Z"
+                        fill="#FFFAE8"
+                        stroke="none"
+                    />
                 </svg>
             </div>
 
@@ -389,70 +408,132 @@
                     </a>
                 </div>
 
-                <!-- TABEL PREVIEW JADWAL -->
-                <div class="bg-white rounded-3xl shadow-lg border border-[#5A4A3A]/15 overflow-hidden reveal opacity-0 translate-y-10 transition-all duration-700 delay-150 ease-out">
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left border-collapse">
+                <!-- PREVIEW JADWAL -->
+                <div class="reveal opacity-0 translate-y-10 transition-all duration-700 delay-150 ease-out">
 
-                            <thead>
-                                <tr class="bg-[#1F3D2E] text-white text-xs uppercase tracking-wider font-semibold">
-                                    <th class="py-4 px-6">Wilayah / Kelurahan</th>
-                                    <th class="py-4 px-6">Cakupan Area (RT)</th>
-                                    <th class="py-4 px-6">Hari Penjemputan</th>
-                                    <th class="py-4 px-6">Jam Operasional</th>
-                                </tr>
-                            </thead>
-
-                            <tbody class="divide-y divide-gray-100 text-sm font-medium text-[#5A4A3A]">
-                                @forelse ($jadwalPreview as $jadwal)
-                                    <tr class="hover:bg-[#DCC8A3]/10 transition-colors">
-                                        <td class="py-4 px-6">
-                                            <div class="font-bold text-[#1F3D2E]">
-                                                Kel. {{ $jadwal->kelurahan }}
-                                            </div>
-                                            <div class="text-xs text-[#5A4A3A]/70">
-                                                Kec. {{ $jadwal->kecamatan }}
-                                            </div>
-                                        </td>
-
-                                        <td class="py-4 px-6">
-                                            <span class="bg-[#6B7F4E]/10 text-[#1F3D2E] text-xs px-2.5 py-1 rounded-md font-semibold">
-                                                {{ $jadwal->cakupan_rt }}
-                                            </span>
-                                        </td>
-
-                                        <td class="py-4 px-6 whitespace-nowrap">
-                                            <div class="font-bold text-[#1F3D2E]">
-                                                {{ implode(', ', json_decode($jadwal->hari_penjemputan, true) ?? []) }}
-                                            </div>
-                                        </td>
-
-                                        <td class="py-4 px-6 whitespace-nowrap">
-                                            <span class="text-xs bg-amber-50 text-amber-800 border border-amber-200 px-3 py-1 rounded-lg font-bold inline-flex items-center gap-1.5">
-                                                <i class="fa-regular fa-clock"></i>
-
-                                                @if ($jadwal->jam_mulai && $jadwal->jam_selesai)
-                                                    {{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H.i') }}
-                                                    -
-                                                    {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H.i') }}
-                                                    WIB
-                                                @else
-                                                    {{ $jadwal->jam_operasional ?? '-' }}
-                                                @endif
-                                            </span>
-                                        </td>
+                    <!-- TAMPILAN DESKTOP -->
+                    <div class="hidden md:block bg-white rounded-3xl shadow-lg border border-[#5A4A3A]/15 overflow-hidden">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="bg-[#1F3D2E] text-white text-xs uppercase tracking-wider font-semibold text-center">
+                                        <th class="py-4 px-6">Kelurahan/Kecamatan</th>
+                                        <th class="py-4 px-6">Cakupan RT</th>
+                                        <th class="py-4 px-6">Hari Penjemputan</th>
+                                        <th class="py-4 px-6">Jam Operasional</th>
                                     </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="4" class="py-8 text-center text-sm text-gray-500">
-                                            Belum ada jadwal penjemputan yang tersedia.
-                                        </td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
+                                </thead>
+
+                                <tbody class="divide-y divide-gray-100 text-sm font-medium text-[#5A4A3A]">
+                                    @forelse ($jadwalPreview as $jadwal)
+                                        <tr class="hover:bg-[#DCC8A3]/10 transition-colors">
+                                            <td class="py-4 px-6">
+                                                <div class="font-bold text-[#1F3D2E]">
+                                                    Kel. {{ $jadwal->kelurahan }}
+                                                </div>
+                                                <div class="text-xs text-[#5A4A3A]/70">
+                                                    Kec. {{ $jadwal->kecamatan }}
+                                                </div>
+                                            </td>
+
+                                            <td class="py-4 px-6 text-center">
+                                                <span class="bg-[#6B7F4E]/10 text-[#1F3D2E] text-xs px-2.5 py-1 rounded-md font-semibold">
+                                                    {{ $jadwal->cakupan_rt }}
+                                                </span>
+                                            </td>
+
+                                            <td class="py-4 px-6 text-center">
+                                                <div class="font-bold text-[#1F3D2E]">
+                                                    {{ implode(', ', json_decode($jadwal->hari_penjemputan, true) ?? []) }}
+                                                </div>
+                                            </td>
+
+                                            <td class="py-4 px-6 text-center">
+                                                <span class="text-xs bg-amber-50 text-amber-800 border border-amber-200 px-3 py-1 rounded-lg font-bold inline-flex items-center gap-1.5">
+                                                    <i class="fa-regular fa-clock"></i>
+                                                    @if ($jadwal->jam_mulai && $jadwal->jam_selesai)
+                                                        {{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H.i') }}
+                                                        -
+                                                        {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H.i') }} WIB
+                                                    @else
+                                                        {{ $jadwal->jam_operasional ?? '-' }}
+                                                    @endif
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="4" class="py-8 text-center text-sm text-gray-500">
+                                                Belum ada jadwal penjemputan yang tersedia.
+                                            </td>
+                                        </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                </div>
+
+                    <!-- TAMPILAN MOBILE -->
+                    <div class="md:hidden space-y-3">
+                        @forelse ($jadwalPreview as $jadwal)
+                            <div class="bg-white rounded-2xl shadow-sm border border-[#5A4A3A]/10 p-3">
+
+                                <!-- KELURAHAN -->
+                                <div class="border-b border-[#5A4A3A]/10 pb-2 mb-2">
+                                    <p class="text-[10px] font-bold uppercase tracking-wider text-[#6B7F4E] mb-0.5">
+                                        Wilayah Penjemputan
+                                    </p>
+                                    <h3 class="text-sm font-bold text-[#1F3D2E]">
+                                        Kel. {{ $jadwal->kelurahan }}
+                                    </h3>
+                                    <p class="text-[11px] text-[#5A4A3A]/70">
+                                        Kec. {{ $jadwal->kecamatan }}
+                                    </p>
+                                </div>
+
+                                <!-- DETAIL JADWAL -->
+                                <div class="grid grid-cols-2 gap-2">
+                                    <div>
+                                        <p class="text-[10px] font-semibold text-[#6B7F4E] mb-0.5">
+                                            Cakupan RT
+                                        </p>
+                                        <p class="text-xs font-semibold text-[#1F3D2E]">
+                                            {{ $jadwal->cakupan_rt }}
+                                        </p>
+                                    </div>
+
+                                    <div>
+                                        <p class="text-[10px] font-semibold text-[#6B7F4E] mb-0.5">
+                                            Hari Penjemputan
+                                        </p>
+                                        <p class="text-xs font-semibold text-[#1F3D2E]">
+                                            {{ implode(', ', json_decode($jadwal->hari_penjemputan, true) ?? []) }}
+                                        </p>
+                                    </div>
+
+                                    <div class="col-span-2">
+                                        <p class="text-[10px] font-semibold text-[#6B7F4E] mb-1">
+                                            Jam Operasional
+                                        </p>
+                                        <span class="inline-flex items-center gap-1.5 text-[10px] bg-amber-50 text-amber-800 border border-amber-200 px-2.5 py-1 rounded-lg font-bold">
+                                            <i class="fa-regular fa-clock"></i>
+                                            @if ($jadwal->jam_mulai && $jadwal->jam_selesai)
+                                                {{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H.i') }}
+                                                -
+                                                {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H.i') }} WIB
+                                            @else
+                                                {{ $jadwal->jam_operasional ?? '-' }}
+                                            @endif
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        @empty
+                            <p class="text-xs text-[#5A4A3A]/70">
+                                Belum ada jadwal penjemputan yang tersedia.
+                            </p>
+                        @endforelse
+                    </div>
 
             </div>
         </section>
@@ -503,7 +584,7 @@
                         </div>
 
                         <!-- WADAH TRANSPARAN (OVERFLOW-VISIBLE AGAR KARTU MEKAR FULL) -->
-                        <div class="relative w-full h-[280px] sm:h-[340px] flex items-center justify-center overflow-visible my-2">
+                        <div class="relative w-full h-[280px] sm:h-[340px] flex items-center justify-center overflow-hidden my-2">
 
                             @forelse ($videoPreview as $index => $video)
                                 <div
@@ -639,13 +720,13 @@
                         <!-- Komponen Alokasi (Visual Badges Ringkas) -->
                         <div class="pt-2 flex flex-wrap gap-2 text-xs font-semibold text-[#DCC8A3]">
                             <span class="bg-white/10 px-3 py-1.5 rounded-lg border border-white/10 flex items-center gap-1.5">
-                                <i class="fa-solid fa-truck-fuel text-[#6B7F4E]"></i> Operasional Armada & Bahan Bakar
+                                Operasional Armada & Bahan Bakar
                             </span>
                             <span class="bg-white/10 px-3 py-1.5 rounded-lg border border-white/10 flex items-center gap-1.5">
-                                <i class="fa-solid fa-user-shield text-[#6B7F4E]"></i> APD & Kesejahteraan Petugas
+                                APD & Kesejahteraan Petugas
                             </span>
-                            <span class="bg-[#6B7F4E]/30 px-3 py-1.5 rounded-lg border border-white/10 flex items-center gap-1.5">
-                                <i class="fa-solid fa-[#DCC8A3] fa-dumpster text-[#DCC8A3]"></i> Pemeliharaan Container Sampah
+                            <span class="bg-white/10 px-3 py-1.5 rounded-lg border border-white/10 flex items-center gap-1.5">
+                                Pemeliharaan Container Sampah
                             </span>
                         </div>
                     </div>

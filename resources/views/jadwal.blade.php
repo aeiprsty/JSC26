@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jadwal Penjemputan OPBM - JambiBersih</title>
+
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -146,26 +148,50 @@
         </div>
 
         <!-- MENU PENCARIAN REAL-TIME DI ATAS TABEL -->
-        <div class="bg-white p-5 rounded-3xl shadow-lg border border-[#5A4A3A]/15 mb-8 max-w-2xl mx-auto">
-            <div class="relative">
-                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                    <i class="fa-solid fa-magnifying-glass text-[#5A4A3A]/50 text-base"></i>
+        <div class="bg-white p-5 sm:p-6 rounded-3xl shadow-lg border border-[#5A4A3A]/15 mb-8 max-w-3xl mx-auto">
+            <div class="flex flex-col sm:flex-row gap-3 sm:gap-4">
+
+                <div class="relative flex-1 min-w-0">
+                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                        <i class="fa-solid fa-magnifying-glass text-[#5A4A3A]/50"></i>
+                    </div>
+
+                    <input
+                        type="text"
+                        id="opbm-search"
+                        oninput="filterJadwalOPBM()"
+                        placeholder="Masukkan nama Kelurahan, Kecamatan, atau RT..."
+                        class="w-full h-[50px] pl-11 pr-3 bg-[#FFFAE8]/50 border border-[#5A4A3A]/20 rounded-2xl text-sm font-medium text-[#1F3D2E] placeholder:text-xs sm:placeholder:text-sm placeholder:tracking-tight focus:outline-none focus:ring-2 focus:ring-[#6B7F4E] transition-all">
                 </div>
-                <input type="text" id="opbm-search" onkeyup="filterJadwalOPBM()" 
-                       placeholder="Cari berdasarkan nama Kelurahan, Kecamatan, atau RT..." 
-                       class="w-full pl-11 pr-4 py-3.5 bg-[#FFFAE8]/50 border border-[#5A4A3A]/20 rounded-2xl text-sm font-medium text-[#1F3D2E] focus:outline-none focus:ring-2 focus:ring-[#6B7F4E] transition-all">
+
+                <button
+                    type="button"
+                    onclick="filterJadwalOPBM()"
+                    class="w-full sm:w-auto h-[50px] bg-[#1F3D2E] hover:bg-[#4C6A73] text-white font-bold px-8 rounded-2xl shadow-md transition-colors flex items-center justify-center gap-2 shrink-0">
+                    <span>Cari</span>
+                </button>
+
             </div>
         </div>
 
-        <!-- TABEL JADWAL PENJEMPUTAN -->
+        <!-- JADWAL PENJEMPUTAN -->
         <div class="bg-white rounded-3xl shadow-xl border border-[#5A4A3A]/15 overflow-hidden">
-            <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse" id="tabel-jadwal">
+
+            <!-- TAMPILAN DESKTOP -->
+            <div id="jadwal-desktop" class="hidden md:block overflow-x-auto">
+                <table class="w-full table-fixed text-left border-collapse" id="tabel-jadwal">
+
+                    <colgroup>
+                        <col class="w-[25%]">
+                        <col class="w-[20%]">
+                        <col class="w-[25%]">
+                        <col class="w-[30%]">
+                    </colgroup>
 
                     <thead>
-                        <tr class="bg-[#1F3D2E] text-white text-xs uppercase tracking-wider font-semibold">
-                            <th class="py-4 px-6">Wilayah / Kelurahan</th>
-                            <th class="py-4 px-6">Cakupan Area (RT)</th>
+                        <tr class="bg-[#1F3D2E] text-white text-xs uppercase tracking-wider font-semibold text-center">
+                            <th class="py-4 px-6">Kelurahan/Kecamatan</th>
+                            <th class="py-4 px-6">Cakupan RT</th>
                             <th class="py-4 px-6">Hari Penjemputan</th>
                             <th class="py-4 px-6">Jam Operasional</th>
                         </tr>
@@ -175,6 +201,7 @@
 
                         @forelse ($jadwals as $jadwal)
                             <tr class="jadwal-row hover:bg-[#DCC8A3]/10 transition-colors">
+
                                 <td class="py-4 px-6">
                                     <div class="font-bold text-[#1F3D2E]">
                                         Kel. {{ $jadwal->kelurahan }}
@@ -184,32 +211,35 @@
                                     </div>
                                 </td>
 
-                                <td class="py-4 px-6">
+                                <td class="py-4 px-6 text-center">
                                     <span class="bg-[#6B7F4E]/10 text-[#1F3D2E] text-xs px-2.5 py-1 rounded-md font-semibold">
                                         {{ $jadwal->cakupan_rt }}
                                     </span>
                                 </td>
 
-                                <td class="py-4 px-6 whitespace-nowrap">
+                                <td class="py-4 px-6 whitespace-nowrap text-center">
                                     <div class="font-bold text-[#1F3D2E]">
-                                       {{ str_replace(['["', '"]', '","'], ['', '', ', '], $jadwal->hari_penjemputan ?? '') }}
+                                        {{ implode(', ', json_decode($jadwal->hari_penjemputan, true) ?? []) }}
                                     </div>
                                 </td>
 
-                                <td class="py-4 px-6 whitespace-nowrap">
+                                <td class="py-4 px-6 whitespace-nowrap text-center">
                                     <span class="text-xs bg-amber-50 text-amber-800 border border-amber-200 px-3 py-1 rounded-lg font-bold inline-flex items-center gap-1.5">
                                         <i class="fa-regular fa-clock"></i>
-                                        {{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H.i') }}
-                                        -
-                                        {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H.i') }}
-                                        WIB
+                                        @if ($jadwal->jam_mulai && $jadwal->jam_selesai)
+                                            {{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H.i') }}
+                                            -
+                                            {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H.i') }} WIB
+                                        @else
+                                            {{ $jadwal->jam_operasional ?? '-' }}
+                                        @endif
                                     </span>
                                 </td>
+
                             </tr>
                         @empty
                             <tr>
                                 <td colspan="4" class="py-10 px-6 text-center text-sm text-[#5A4A3A]/70">
-                                    <i class="fa-solid fa-calendar-xmark text-3xl mb-3 text-[#4C6A73]"></i>
                                     <p class="font-bold text-[#1F3D2E]">Belum ada jadwal penjemputan</p>
                                     <p class="text-xs mt-1">Jadwal OPBM untuk saat ini belum tersedia.</p>
                                 </td>
@@ -218,15 +248,82 @@
 
                     </tbody>
                 </table>
+            
             </div>
 
-            <!-- PESAN JIKA HASIL PENCARIAN KOSONG -->
-            <div id="no-jadwal-msg" class="hidden p-10 text-center text-[#5A4A3A]/70 text-sm">
-                <i class="fa-solid fa-circle-exclamation text-3xl mb-3 text-[#4C6A73]"></i>
-                <p class="font-bold text-[#1F3D2E]">Wilayah tidak ditemukan</p>
-                <p class="text-xs mt-1">Pastikan penulisan nama kelurahan, kecamatan, atau RT sudah benar.</p>
+            <!-- TAMPILAN MOBILE -->
+            <div id="jadwal-mobile" class="md:hidden p-3 space-y-3">
+
+                @forelse ($jadwals as $jadwal)
+                    <div class="jadwal-row bg-white rounded-2xl shadow-sm border border-[#5A4A3A]/10 p-3"
+                        data-search="{{ strtolower($jadwal->kelurahan . ' ' . $jadwal->kecamatan . ' ' . $jadwal->cakupan_rt . ' ' . implode(' ', json_decode($jadwal->hari_penjemputan, true) ?? []) . ' ' . ($jadwal->jam_operasional ?? '') . ' ' . ($jadwal->jam_mulai ?? '') . ' ' . ($jadwal->jam_selesai ?? '')) }}">
+
+                        <!-- KELURAHAN -->
+                        <div class="border-b border-[#5A4A3A]/10 pb-2 mb-2">
+                            <p class="text-[10px] font-bold uppercase tracking-wider text-[#6B7F4E] mb-0.5">
+                                Wilayah Penjemputan
+                            </p>
+
+                            <h3 class="text-sm font-bold text-[#1F3D2E]">
+                                Kel. {{ $jadwal->kelurahan }}
+                            </h3>
+
+                            <p class="text-[11px] text-[#5A4A3A]/70">
+                                Kec. {{ $jadwal->kecamatan }}
+                            </p>
+                        </div>
+
+                        <!-- DETAIL JADWAL -->
+                        <div class="grid grid-cols-2 gap-2">
+
+                            <div>
+                                <p class="text-[10px] font-semibold text-[#6B7F4E] mb-0.5">
+                                    Cakupan RT
+                                </p>
+                                <p class="text-xs font-semibold text-[#1F3D2E]">
+                                    {{ $jadwal->cakupan_rt }}
+                                </p>
+                            </div>
+
+                            <div>
+                                <p class="text-[10px] font-semibold text-[#6B7F4E] mb-0.5">
+                                    Hari Penjemputan
+                                </p>
+                                <p class="text-xs font-semibold text-[#1F3D2E]">
+                                    {{ implode(', ', json_decode($jadwal->hari_penjemputan, true) ?? []) }}
+                                </p>
+                            </div>
+
+                            <div class="col-span-2">
+                                <p class="text-[10px] font-semibold text-[#6B7F4E] mb-1">
+                                    Jam Operasional
+                                </p>
+
+                                <span class="inline-flex items-center gap-1.5 text-[10px] bg-amber-50 text-amber-800 border border-amber-200 px-2.5 py-1 rounded-lg font-bold">
+                                    <i class="fa-regular fa-clock"></i>
+
+                                    @if ($jadwal->jam_mulai && $jadwal->jam_selesai)
+                                        {{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H.i') }}
+                                        -
+                                        {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H.i') }} WIB
+                                    @else
+                                        {{ $jadwal->jam_operasional ?? '-' }}
+                                    @endif
+                                </span>
+                            </div>
+
+                        </div>
+                    </div>
+
+                @empty
+                    <div class="text-center py-8 text-xs text-[#5A4A3A]/70">
+                        <p class="font-bold text-[#1F3D2E]">Belum ada jadwal penjemputan</p>
+                        <p class="mt-1">Jadwal OPBM untuk saat ini belum tersedia.</p>
+                    </div>
+                @endforelse
+
             </div>
-        </div>
+
             <!-- PESAN JIKA HASIL PENCARIAN KOSONG -->
             <div id="no-jadwal-msg" class="hidden p-10 text-center text-[#5A4A3A]/70 text-sm">
                 <i class="fa-solid fa-circle-exclamation text-3xl mb-3 text-[#4C6A73]"></i>
@@ -280,11 +377,17 @@
     <script>
         function filterJadwalOPBM() {
             const input = document.getElementById('opbm-search').value.toLowerCase().trim();
+
             const rows = document.querySelectorAll('.jadwal-row');
+            const desktop = document.getElementById('jadwal-desktop');
+            const mobile = document.getElementById('jadwal-mobile');
+            const noMsg = document.getElementById('no-jadwal-msg');
+
             let found = false;
 
             rows.forEach(row => {
                 const text = row.innerText.toLowerCase();
+
                 if (text.includes(input)) {
                     row.style.display = '';
                     found = true;
@@ -293,10 +396,14 @@
                 }
             });
 
-            const noMsg = document.getElementById('no-jadwal-msg');
             if (!found) {
+                desktop.style.display = 'none';
+                mobile.style.display = 'none';
                 noMsg.classList.remove('hidden');
             } else {
+                // Kembalikan pengaturan tampilan responsif Tailwind
+                desktop.style.display = '';
+                mobile.style.display = '';
                 noMsg.classList.add('hidden');
             }
         }
