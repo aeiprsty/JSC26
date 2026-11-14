@@ -98,7 +98,7 @@ class EdukasiResource extends Resource
                 Forms\Components\FileUpload::make('gambar')
                     ->label('Gambar Artikel')
                     ->image()
-                    ->disk('public')
+                    ->disk('supabase')
                     ->directory('edukasi')
                     ->imageEditor()
                     ->visible(fn (Forms\Get $get): bool =>

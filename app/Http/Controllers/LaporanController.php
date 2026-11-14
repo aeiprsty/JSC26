@@ -41,10 +41,10 @@ class LaporanController extends Controller
             ],
         ]);
 
-        // Simpan foto pada disk public.
+        // Simpan foto pada Supabase Storage.
         $fotoPath = $request->file('foto')->store(
             'laporan',
-            'public'
+            'supabase'
         );
 
         try {
@@ -91,7 +91,7 @@ class LaporanController extends Controller
             ], 201);
         } catch (Throwable $exception) {
             // Hindari meninggalkan foto jika penyimpanan gagal.
-            Storage::disk('public')->delete($fotoPath);
+            Storage::disk('supabase')->delete($fotoPath);
 
             throw $exception;
         }

@@ -33,11 +33,11 @@ class LaporanRelationManager extends RelationManager
 
                 Tables\Columns\ImageColumn::make('foto')
                     ->label('Foto Laporan')
-                    ->disk('public')
+                    ->disk('supabase')
                     ->square()
                     ->url(fn (Laporan $record): ?string =>
                         $record->foto
-                            ? Storage::disk('public')->url($record->foto)
+                            ? Storage::disk('supabase')->url($record->foto)
                             : null
                     )
                     ->openUrlInNewTab(),

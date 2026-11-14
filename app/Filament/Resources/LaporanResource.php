@@ -54,7 +54,7 @@ class LaporanResource extends Resource
                 Forms\Components\FileUpload::make('foto')
                     ->label('Foto Laporan')
                     ->image()
-                    ->disk('public')
+                    ->disk('supabase')
                     ->directory('laporan')
                     ->required(),
 
@@ -91,7 +91,7 @@ class LaporanResource extends Resource
 
                 Tables\Columns\ImageColumn::make('foto')
                     ->label('Foto')
-                    ->disk('public')
+                    ->disk('supabase')
                     ->square()
                     ->extraAttributes([
                         'class' => 'cursor-zoom-in',

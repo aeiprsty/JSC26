@@ -93,7 +93,7 @@ class KlasterResource extends Resource
                 Forms\Components\FileUpload::make('foto_bukti')
                     ->label('Foto Bukti Pembersihan')
                     ->image()
-                    ->disk('public')
+                    ->disk('supabase')
                     ->directory('bukti-klaster')
                     ->visible(fn (): bool =>
                         auth()->user()?->role === 'komando_lapangan'

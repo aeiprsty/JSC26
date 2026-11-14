@@ -23,7 +23,7 @@ class KlasterWorkflowTest extends TestCase
     {
         parent::setUp();
 
-        Storage::fake('public');
+        Storage::fake('supabase');
 
         $user = User::factory()->create([
             'role' => 'operator',

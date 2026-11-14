@@ -604,16 +604,38 @@
                         <!-- WADAH TRANSPARAN (OVERFLOW-VISIBLE AGAR KARTU MEKAR FULL) -->
                         <div class="relative w-full h-[280px] sm:h-[340px] flex items-center justify-center overflow-hidden my-2">
 
+
                             @forelse ($videoPreview as $index => $video)
-                                <div
-                                    class="v-card absolute w-[65%] sm:w-[60%] aspect-[16/10] bg-black rounded-2xl overflow-hidden shadow-xl border border-white/30 transition-all duration-500 ease-in-out cursor-pointer group"
-                                    onclick="window.location.href='{{ url('/edukasi') }}'"
+                                @php
+                                    $youtubeId = null;
+
+                                    if ($video->url_video && preg_match(
+                                        '/(?:youtu\.be\/|youtube(?:-nocookie)?\.com\/(?:.*[?&]v=|embed\/|shorts\/|live\/))([A-Za-z0-9_-]{11})/',
+                                        $video->url_video,
+                                        $matches
+                                    )) {
+                                        $youtubeId = $matches[1];
+                                    }
+                                @endphp
+
+                                <a
+                                    href="{{ route('edukasi.show', $video->slug) }}"
+                                    class="v-card absolute w-[65%] sm:w-[60%] aspect-video bg-black rounded-2xl overflow-hidden shadow-xl border border-white/30 transition-all duration-500 ease-in-out cursor-pointer group"
+                                    aria-label="Lihat video {{ $video->judul }}"
                                 >
-                                    @if ($video->gambar)
+                                    @if ($youtubeId)
+                                        <img
+                                            src="https://img.youtube.com/vi/{{ $youtubeId }}/hqdefault.jpg"
+                                            alt="{{ $video->judul }}"
+                                            class="w-full h-full object-cover"
+                                            loading="lazy"
+                                        >
+                                    @elseif ($video->gambar)
                                         <img
                                             src="{{ asset('storage/' . $video->gambar) }}"
                                             alt="{{ $video->judul }}"
                                             class="w-full h-full object-cover"
+                                            loading="lazy"
                                         >
                                     @else
                                         <div class="w-full h-full bg-[#1F3D2E] flex items-center justify-center">
@@ -636,7 +658,7 @@
                                             {{ $video->judul }}
                                         </h4>
                                     </div>
-                                </div>
+                                </a>
                             @empty
                                 <div class="text-center text-sm text-[#5A4A3A]/70">
                                     Belum ada video edukasi yang dipublikasikan.
@@ -654,7 +676,7 @@
                         <div class="space-y-3">
                             @forelse ($artikelPreview as $artikel)
                                 <a
-                                    href="{{ url('/edukasi') }}"
+                                    href="{{ route('edukasi.show', $artikel->slug) }}"
                                     class="flex items-center gap-4 p-3 bg-white hover:bg-white rounded-2xl border border-[#5A4A3A]/10 transition-all shadow-sm group"
                                 >
                                     @if ($artikel->gambar)
@@ -671,7 +693,7 @@
 
                                     <div class="flex-grow min-w-0">
                                         <div class="flex items-center justify-between gap-2 mb-1">
-                                            <span class="text-[10px] bg-[#6B7F4E] font-semibold text-white px-2.5 py-0.5 rounded-full uppercase">
+                                            <span class="text-[9px] bg-[#6B7F4E] font-bold text-white px-2.5 py-0.5 rounded-full uppercase">
                                                 {{ $artikel->kategori }}
                                             </span>
 
@@ -778,7 +800,7 @@
                     <img
                         src="{{ asset('images/logo-jambibersih.png') }}"
                         alt="Logo JambiBersih"
-                        class="w-14 h-14 object-contain"
+                        class="w-14 h-14 object-contain mt-1"
                     >
 
                     <div>

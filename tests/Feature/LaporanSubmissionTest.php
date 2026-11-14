@@ -17,7 +17,7 @@ class LaporanSubmissionTest extends TestCase
 
     public function test_masyarakat_dapat_mengirim_laporan(): void
     {
-        Storage::fake('public');
+        Storage::fake('supabase');
 
         $response = $this->post(route('laporan.store'), [
             'foto' => UploadedFile::fake()->image('tps-liar.jpg'),
@@ -38,12 +38,12 @@ class LaporanSubmissionTest extends TestCase
         $this->assertNotEmpty($laporan->kode_tiket);
         $this->assertNotNull($laporan->klaster_id);
 
-        Storage::disk('public')->assertExists($laporan->foto);
+        Storage::disk('supabase')->assertExists($laporan->foto);
     }
 
     public function test_laporan_di_lokasi_dekat_masuk_ke_klaster_yang_sama(): void
     {
-        Storage::fake('public');
+        Storage::fake('supabase');
 
         $this->post(route('laporan.store'), [
             'foto' => UploadedFile::fake()->image('laporan-1.jpg'),
@@ -85,7 +85,7 @@ class LaporanSubmissionTest extends TestCase
     
     public function test_laporan_di_luar_radius_50_meter_membuat_klaster_baru(): void
     {
-        \Illuminate\Support\Facades\Storage::fake('public');
+        \Illuminate\Support\Facades\Storage::fake('supabase');
 
         $this->post(route('laporan.store'), [
             'foto' => \Illuminate\Http\UploadedFile::fake()->image('laporan-1.jpg'),
@@ -112,7 +112,7 @@ class LaporanSubmissionTest extends TestCase
 
     public function test_klaster_selesai_tidak_dipakai_kembali(): void
     {
-        \Illuminate\Support\Facades\Storage::fake('public');
+        \Illuminate\Support\Facades\Storage::fake('supabase');
 
         $this->post(route('laporan.store'), [
             'foto' => \Illuminate\Http\UploadedFile::fake()->image('laporan-1.jpg'),
@@ -148,7 +148,7 @@ class LaporanSubmissionTest extends TestCase
 
     public function test_klaster_ditolak_tidak_dipakai_kembali(): void
     {
-        \Illuminate\Support\Facades\Storage::fake('public');
+        \Illuminate\Support\Facades\Storage::fake('supabase');
 
         $this->post(route('laporan.store'), [
             'foto' => \Illuminate\Http\UploadedFile::fake()->image('laporan-1.jpg'),
@@ -185,7 +185,7 @@ class LaporanSubmissionTest extends TestCase
     
     public function test_laporan_ditolak_tetap_tersimpan_dan_lepas_dari_klaster(): void
     {
-        Storage::fake('public');
+        Storage::fake('supabase');
 
         $this->post(route('laporan.store'), [
             'foto' => UploadedFile::fake()->image('laporan.jpg'),
@@ -218,7 +218,7 @@ class LaporanSubmissionTest extends TestCase
 
     public function test_laporan_yang_ditolak_tidak_berubah_saat_klaster_selesai(): void
     {
-        Storage::fake('public');
+        Storage::fake('supabase');
 
         $this->post(route('laporan.store'), [
             'foto' => UploadedFile::fake()->image('laporan-1.jpg'),
@@ -265,7 +265,7 @@ class LaporanSubmissionTest extends TestCase
 
     public function test_alasan_penolakan_dapat_disimpan_bersama_status_ditolak(): void
     {
-        Storage::fake('public');
+        Storage::fake('supabase');
 
         $this->post(route('laporan.store'), [
             'foto' => UploadedFile::fake()->image('laporan.jpg'),

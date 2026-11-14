@@ -1,7 +1,7 @@
 <div class="flex justify-center">
     @if ($record->foto)
         <img
-            src="{{ Storage::disk('public')->url($record->foto) }}"
+            src="{{ Storage::disk('supabase')->url($record->foto) }}"
             alt="Foto Bukti Laporan"
             class="max-h-[75vh] w-auto max-w-full rounded-xl object-contain"
         >

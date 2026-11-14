@@ -316,6 +316,34 @@
             }
         </style>
 
+        <!-- PESAN JIKA FILTER TIDAK MENEMUKAN KONTEN -->
+        <div
+            id="no-filter-results"
+            class="hidden bg-white rounded-3xl border border-[#5A4A3A]/15 shadow-sm py-16 px-6 text-center"
+        >
+            <div class="w-16 h-16 mx-auto rounded-full bg-[#DCC8A3]/30 flex items-center justify-center mb-4">
+                <i class="fa-solid fa-book-open text-2xl text-[#6B7F4E]"></i>
+            </div>
+
+            <h3 class="text-base font-bold text-[#1F3D2E] mb-2">
+                Konten Tidak Ditemukan
+            </h3>
+
+            <p class="text-sm text-[#5A4A3A]/70 max-w-md mx-auto">
+                Maaf, belum ada konten edukasi yang sesuai dengan pencarian atau filter yang kamu pilih.
+                Coba gunakan kata kunci atau kategori lainnya.
+            </p>
+
+            <button
+                type="button"
+                id="empty-reset-filter"
+                class="mt-5 inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#1F3D2E] text-white text-xs font-bold hover:bg-[#6B7F4E] transition-colors"
+            >
+                <i class="fa-solid fa-rotate-left"></i>
+                Reset Pencarian & Filter
+            </button>
+        </div>
+
         <!-- ==========================================
              SECTION 1: VIDEO EDUKASI (SCROLL KESAMPING)
              ========================================== -->
@@ -478,7 +506,7 @@
                     <img
                         src="{{ asset('images/logo-jambibersih.png') }}"
                         alt="Logo JambiBersih"
-                        class="w-14 h-14 object-contain"
+                        class="w-14 h-14 object-contain mt-1"
                     >
 
                     <div>
@@ -546,6 +574,7 @@
         const filterChevron = document.getElementById('filter-chevron');
         const filterClose = document.getElementById('filter-close');
         const resetButton = document.getElementById('reset-filter');
+        const emptyResetButton = document.getElementById('empty-reset-filter');
 
         const cards = document.querySelectorAll('[data-filter-card]');
         const typeButtons = document.querySelectorAll('#type-options [data-type]');
@@ -653,6 +682,10 @@
             updateActiveButtons(categoryButtons, 'category', selectedCategory);
 
             updateFilter();
+        });
+
+        emptyResetButton.addEventListener('click', () => {
+            resetButton.click();
         });
 
         clearButton.classList.toggle(

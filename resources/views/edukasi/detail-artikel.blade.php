@@ -14,20 +14,11 @@
     </a>
 
     <article class="bg-white rounded-3xl border border-[#5A4A3A]/15 shadow-md overflow-hidden">
-
-        @if ($edukasi->gambar)
-            <img
-                src="{{ asset('storage/' . $edukasi->gambar) }}"
-                alt="{{ $edukasi->judul }}"
-                class="w-full max-h-[420px] object-cover"
-            >
-        @endif
-
+        
         <div class="p-6 sm:p-10">
 
             <!-- Informasi Artikel -->
             <div class="flex flex-wrap items-center gap-3 mb-5">
-
                 <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1 rounded-md">
                     {{ $edukasi->kategori }}
                 </span>
@@ -43,13 +34,23 @@
                         {{ $edukasi->penulis }}
                     </span>
                 @endif
-
             </div>
 
-            <h1 class="text-2xl sm:text-4xl font-extrabold text-[#1F3D2E] leading-tight mb-5">
+            <!-- Judul -->
+            <h1 class="text-2xl sm:text-4xl font-extrabold text-[#1F3D2E] leading-tight mb-6">
                 {{ $edukasi->judul }}
             </h1>
 
+            <!-- Gambar Cover -->
+            @if ($edukasi->gambar)
+                <img
+                    src="{{ asset('storage/' . $edukasi->gambar) }}"
+                    alt="{{ $edukasi->judul }}"
+                    class="w-full max-h-[420px] object-cover rounded-2xl mb-8"
+                >
+            @endif
+
+            <!-- Ringkasan -->
             @if ($edukasi->ringkasan)
                 <p class="text-base text-[#5A4A3A]/80 leading-relaxed border-l-4 border-[#6B7F4E] pl-4 mb-8">
                     {{ $edukasi->ringkasan }}
@@ -72,7 +73,6 @@
                         Isi artikel belum tersedia.
                     </p>
                 @endif
-
             </div>
 
         </div>

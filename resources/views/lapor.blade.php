@@ -312,7 +312,7 @@
                     <img
                         src="{{ asset('images/logo-jambibersih.png') }}"
                         alt="Logo JambiBersih"
-                        class="w-14 h-14 object-contain"
+                        class="w-14 h-14 object-contain mt-1"
                     >
 
                     <div>
