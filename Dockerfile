@@ -1,0 +1,62 @@
+# Stage 1: Build frontend assets
+FROM node:22-alpine AS frontend
+
+WORKDIR /app
+
+COPY package*.json ./
+RUN if [ -f package-lock.json ]; then npm ci; else npm install; fi
+
+COPY . .
+RUN npm run build
+
+
+# Stage 2: Laravel application
+FROM php:8.3-apache
+
+WORKDIR /var/www/html
+
+# Install PHP dependencies
+RUN apt-get update && apt-get install -y \
+    git \
+    unzip \
+    libzip-dev \
+    libicu-dev \
+    libpng-dev \
+    libjpeg62-turbo-dev \
+    libfreetype6-dev \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install \
+        pdo_mysql \
+        mbstring \
+        bcmath \
+        exif \
+        gd \
+        zip \
+        intl \
+        pcntl \
+    && a2enmod rewrite \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Composer
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+
+# Copy Laravel project
+COPY . .
+
+# Install Laravel dependencies
+RUN composer install --no-dev --optimize-autoloader --no-interaction
+
+# Copy frontend build
+COPY --from=frontend /app/public/build ./public/build
+
+# Configure Apache to use Laravel public directory
+ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
+
+RUN sed -ri 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' \
+    /etc/apache2/sites-available/000-default.conf \
+    && sed -ri '/<Directory \/var\/www\/>/,/<\/Directory>/ s/AllowOverride None/AllowOverride All/' \
+    /etc/apache2/apache2.conf \
+    && chown -R www-data:www-data storage bootstrap/cache
+
+# Render uses the PORT environment variable
+CMD ["bash", "-c", "sed -i \"s/Listen 80/Listen ${PORT:-10000}/\" /etc/apache2/ports.conf && sed -i \"s/*:80>/*:${PORT:-10000}>/\" /etc/apache2/sites-available/000-default.conf && apache2-foreground"]
