@@ -22,7 +22,7 @@ Route::get('/', function () {
                 ->orWhere('published_at', '<=', now());
         })
         ->latest('created_at')
-        ->limit(4)
+        ->limit(3)
         ->get();
 
     $artikelPreview = Edukasi::query()
