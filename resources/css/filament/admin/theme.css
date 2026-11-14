@@ -59,3 +59,50 @@
 #jambibersih-topbar-brand {
     background: transparent !important;
 }
+
+
+
+/* ========================================
+   LOGIN PAGE JAMBI BERSIH
+======================================== */
+
+/* Card login */
+html body main.fi-simple-main {
+    background: #6B7F4E !important;
+    border: 1px solid #5B6D42 !important;
+    border-radius: 16px !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12) !important;
+}
+
+/* Heading login */
+main.fi-simple-main .fi-simple-header-heading {
+    color: #ffffff !important;
+    font-weight: 700 !important;
+}
+
+/* Label email, password, ingat saya */
+main.fi-simple-main .fi-fo-field-wrp-label,
+main.fi-simple-main .fi-fo-field-wrp-label span {
+    color: #ffffff !important;
+}
+
+/* Input tetap putih */
+main.fi-simple-main .fi-input-wrp {
+    background-color: #ffffff !important;
+}
+
+/* Tombol login */
+main.fi-simple-main button[type="submit"] {
+    background-color: #1F3D2E !important;
+    color: #ffffff !important;
+}
+
+main.fi-simple-main button[type="submit"]:hover {
+    background-color: #152D21 !important;
+}
+
+/* Rounded corner logo Filament */
+.fi-sidebar-header .fi-logo {
+    border-radius: 10px;
+    overflow: hidden;
+}

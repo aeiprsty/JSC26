@@ -4,6 +4,14 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
+        <!-- PWA Configuration -->
+        <link rel="manifest" href="{{ asset('manifest.json') }}">
+        <meta name="theme-color" content="#1F3D2E">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-title" content="JambiBersih">
+        <meta name="apple-mobile-web-app-status-bar-style" content="default">
+        <link rel="apple-touch-icon" href="{{ asset('icons/icon-512.png') }}">
+
         <title>Laravel</title>
 
         <!-- Fonts -->

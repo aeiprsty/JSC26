@@ -4,6 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <!-- PWA Configuration -->
+    <link rel="manifest" href="{{ asset('manifest.json') }}">
+    <meta name="theme-color" content="#1F3D2E">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="JambiBersih">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <link rel="apple-touch-icon" href="{{ asset('icons/icon-512.png') }}">
+
     <title>@yield('title', 'Edukasi & Media - JambiBersih')</title>
     <link rel="icon" type="image/png" href="{{ asset('images/logo-angsa.png') }}">
 
@@ -199,6 +207,21 @@
 
         </div>
     </footer>
+
+    <!-- PWA Service Worker -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js')
+                    .then((registration) => {
+                        console.log('JambiBersih Service Worker aktif:', registration.scope);
+                    })
+                    .catch((error) => {
+                        console.error('Service Worker gagal:', error);
+                    });
+            });
+        }
+    </script>
 
 </body>
 </html>

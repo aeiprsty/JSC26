@@ -31,7 +31,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->brandName(' ')
-            ->brandLogo(asset('images/font-angsa.png'))
+            ->brandLogo(asset('images/font-angsa-internal.png'))
             ->brandLogoHeight('2.5rem')
             ->login()
             ->sidebarFullyCollapsibleOnDesktop()

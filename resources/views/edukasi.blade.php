@@ -3,6 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- PWA Configuration -->
+    <link rel="manifest" href="{{ asset('manifest.json') }}">
+    <meta name="theme-color" content="#1F3D2E">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="JambiBersih">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <link rel="apple-touch-icon" href="{{ asset('icons/icon-512.png') }}">
+
     <title>Edukasi & Media - JambiBersih</title>
     <link rel="icon" type="image/png" href="{{ asset('images/logo-angsa.png') }}">
 
@@ -451,7 +460,7 @@
                     >
 
                         <img
-                            src="{{ $artikel->gambar ? asset('storage/' . $artikel->gambar) : 'https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?w=400&auto=format&fit=crop&q=80' }}"
+                            src="{{ $artikel->gambar ? Storage::disk('supabase')->url($artikel->gambar) : 'https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?w=400&auto=format&fit=crop&q=80' }}"
                             alt="{{ $artikel->judul }}"
                             class="w-full sm:w-48 h-36 object-cover rounded-2xl shrink-0"
                         >
@@ -695,6 +704,21 @@
         
         updateFilter();
     });
+    </script>
+
+    <!-- PWA Service Worker -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js')
+                    .then((registration) => {
+                        console.log('JambiBersih Service Worker aktif:', registration.scope);
+                    })
+                    .catch((error) => {
+                        console.error('Service Worker gagal:', error);
+                    });
+            });
+        }
     </script>
 </body>
 </html>

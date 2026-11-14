@@ -44,7 +44,7 @@
             <!-- Gambar Cover -->
             @if ($edukasi->gambar)
                 <img
-                    src="{{ asset('storage/' . $edukasi->gambar) }}"
+                    src="{{ Storage::disk('supabase')->url($edukasi->gambar) }}"
                     alt="{{ $edukasi->judul }}"
                     class="w-full max-h-[420px] object-cover rounded-2xl mb-8"
                 >

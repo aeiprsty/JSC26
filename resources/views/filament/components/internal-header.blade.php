@@ -11,7 +11,7 @@
 
         <!-- Tulisan JambiBersih -->
         <img
-            src="{{ asset('images/font-angsa.png') }}"
+            src="{{ asset('images/font-angsa-internal.png') }}"
             alt="JambiBersih"
             class="h-11 w-auto object-contain"
         >

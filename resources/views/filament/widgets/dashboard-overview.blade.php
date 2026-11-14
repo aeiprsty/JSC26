@@ -133,7 +133,7 @@
             </div>
         </div>
     @else
-
+        
         {{-- DAFTAR KLASTER ROLE PENANGANAN --}}
         <div class="rounded-xl bg-white dark:bg-gray-900 shadow-sm ring-1 ring-gray-950/5 dark:ring-white/10 p-4">
             <h2 class="text-lg font-bold mb-4">Daftar Klaster</h2>
@@ -141,7 +141,7 @@
             <div class="overflow-x-auto">
                 <table class="w-full text-sm">
                     <thead>
-                        <tr class="border-b dark:border-gray-700 text-left">
+                        <tr class="border-b dark:border-gray-700 text-center">
                             <th class="p-3">ID Klaster</th>
                             <th class="p-3">Jumlah Laporan</th>
                             <th class="p-3">Status</th>
@@ -153,15 +153,65 @@
                     <tbody>
                         @forelse ($clusters as $cluster)
                             <tr class="border-b dark:border-gray-800">
-                                <td class="p-3">#{{ $cluster->id }}</td>
-                                <td class="p-3">{{ $cluster->laporan_count }}</td>
-                                <td class="p-3 capitalize">
-                                    {{ str_replace('_', ' ', $cluster->status->value) }}
+                                <td class="p-3 font-medium text-center">
+                                    #{{ $cluster->id }}
                                 </td>
-                                <td class="p-3">
+
+                                <td class="p-3 text-center">
+                                    {{ $cluster->laporan_count }}
+                                </td>
+
+                                <td class="p-3 text-center">
+                                    @php
+                                        $statusConfig = match ($cluster->status->value) {
+                                            'menunggu_verifikasi' => [
+                                                'label' => 'Menunggu Verifikasi',
+                                                'style' => 'background-color: #FEF3C7; color: #92400E;',
+                                            ],
+                                            'terverifikasi' => [
+                                                'label' => 'Terverifikasi',
+                                                'style' => 'background-color: #DBEAFE; color: #1E40AF;',
+                                            ],
+                                            'disposisi' => [
+                                                'label' => 'Disposisi',
+                                                'style' => 'background-color: #E0E7FF; color: #3730A3;',
+                                            ],
+                                            'ditugaskan' => [
+                                                'label' => 'Ditugaskan',
+                                                'style' => 'background-color: #FEF3C7; color: #92400E;',
+                                            ],
+                                            'dalam_proses' => [
+                                                'label' => 'Dalam Proses',
+                                                'style' => 'background-color: #E0E7FF; color: #3730A3;',
+                                            ],
+                                            'selesai' => [
+                                                'label' => 'Selesai',
+                                                'style' => 'background-color: #DCFCE7; color: #166534;',
+                                            ],
+                                            'ditolak' => [
+                                                'label' => 'Ditolak',
+                                                'style' => 'background-color: #FEE2E2; color: #991B1B;',
+                                            ],
+                                            default => [
+                                                'label' => ucfirst(str_replace('_', ' ', $cluster->status->value)),
+                                                'style' => 'background-color: #F3F4F6; color: #374151;',
+                                            ],
+                                        };
+                                    @endphp
+
+                                    <span
+                                        style="{{ $statusConfig['style'] }}"
+                                        class="inline-flex items-center justify-center rounded-full px-3 py-1 text-xs font-semibold whitespace-nowrap"
+                                    >
+                                        {{ $statusConfig['label'] }}
+                                    </span>
+                                </td>
+
+                                <td class="p-3 text-center">
                                     {{ $cluster->petugas?->name ?? 'Belum ditugaskan' }}
                                 </td>
-                                <td class="p-3">
+
+                                <td class="p-3 text-center">
                                     <a
                                         href="{{ \App\Filament\Resources\KlasterResource::getUrl('view', ['record' => $cluster]) }}"
                                         class="text-primary-600 hover:underline font-medium"
