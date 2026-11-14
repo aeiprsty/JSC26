@@ -17,6 +17,7 @@ WORKDIR /var/www/html
 
 # Install PHP dependencies
 RUN apt-get update && apt-get install -y \
+    ca-certificates \
     git \
     unzip \
     libzip-dev \
