@@ -52,7 +52,7 @@ COPY --from=frontend /app/public/build ./public/build
 # Configure Apache to use Laravel public directory
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
 
-RUN sed -ri 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' \
+RUN sed -ri "s!/var/www/html!${APACHE_DOCUMENT_ROOT}!g" \
     /etc/apache2/sites-available/000-default.conf \
     && sed -ri '/<Directory \/var\/www\/>/,/<\/Directory>/ s/AllowOverride None/AllowOverride All/' \
     /etc/apache2/apache2.conf \
