@@ -1,12 +1,18 @@
+
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 @tailwind variants;
+
 @import '../../../../vendor/filament/filament/resources/css/base.css';
 
 @config 'tailwind.config.js';
 
-/* Sidebar overlay desktop */
+/* ========================================
+   SIDEBAR OVERLAY
+======================================== */
 @media (min-width: 1024px) {
     .fi-sidebar {
         position: fixed !important;
@@ -17,13 +23,10 @@
         transition: transform 300ms ease !important;
     }
 
-    /* Konten utama tidak bergeser */
     .fi-main {
         margin-inline-start: 0 !important;
     }
-}
 
-@media (min-width: 1024px) {
     .fi-sidebar.fi-main-sidebar {
         background-color: #ffffff !important;
         box-shadow: 0 0 20px rgba(0, 0, 0, 0.12) !important;
@@ -34,7 +37,25 @@
     }
 }
 
-/* Dashboard: gunakan satu kolom penuh untuk widget */
-.fi-dashboard-page .fi-wi {
-    grid-template-columns: minmax(0, 1fr) !important;
+/* Header Topbar JambiBersih */
+.fi-topbar nav {
+    background-color: #6B7F4E !important;
+    background: #6B7F4E !important;
+    border-color: #5B6D42 !important;
+    --tw-ring-color: transparent !important;
+}
+
+/* Ikon hamburger */
+.fi-topbar nav .fi-icon-btn {
+    color: #ffffff !important;
+}
+
+/* Hover tombol hamburger */
+.fi-topbar nav .fi-icon-btn:hover {
+    color: #E5EBD9 !important;
+}
+
+/* Hilangkan background putih pada brand */
+#jambibersih-topbar-brand {
+    background: transparent !important;
 }

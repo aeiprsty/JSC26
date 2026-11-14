@@ -67,7 +67,7 @@ class UserResource extends Resource
     {
         return $form->schema([
             Forms\Components\TextInput::make('name')
-                ->label('Nama Lengkap')
+                ->label('Nama Peran')
                 ->required()
                 ->maxLength(255),
 
@@ -127,9 +127,11 @@ class UserResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->label('Nama Lengkap')
+                    ->label('Nama Peran')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()->extraHeaderAttributes(['class' => 'text-center'])
+                    ->extraAttributes(['class' => 'text-left']),
+
 
                 Tables\Columns\TextColumn::make('email')
                     ->label('Email')
@@ -144,16 +146,19 @@ class UserResource extends Resource
                         'komando_lapangan' => 'Komando Lapangan',
                         default => $state,
                     })
-                    ->badge(),
+                    ->badge()
+                    ->alignment('center'),
 
                 Tables\Columns\IconColumn::make('is_active')
                     ->label('Status Akun')
-                    ->boolean(),
+                    ->boolean()
+                    ->alignment('center'),
 
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Tanggal Dibuat')
                     ->dateTime('d M Y')
-                    ->sortable(),
+                    ->sortable()
+                    ->alignment('center'),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('role')

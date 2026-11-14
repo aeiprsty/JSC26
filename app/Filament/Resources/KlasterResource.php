@@ -110,7 +110,8 @@ class KlasterResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('id')
                     ->label('ID Klaster')
-                    ->sortable(),
+                    ->sortable()
+                    ->alignment('center'),
 
                 Tables\Columns\TextColumn::make('anchor_lat')
                     ->label('Latitude')
@@ -123,29 +124,45 @@ class KlasterResource extends Resource
                 Tables\Columns\TextColumn::make('laporan_count')
                     ->counts('laporan')
                     ->label('Jumlah Laporan')
-                    ->sortable(),
+                    ->sortable()
+                    ->alignment('center'),
 
                 Tables\Columns\TextColumn::make('status')
                     ->label('Status Klaster')
                     ->formatStateUsing(fn ($state): string => match ($state?->value ?? $state) {
                         'menunggu_verifikasi' => 'Menunggu Verifikasi',
                         'terverifikasi' => 'Terverifikasi',
+                        'disposisi' => 'Disposisi',
+                        'ditugaskan' => 'Ditugaskan',
                         'dalam_proses' => 'Dalam Proses',
                         'selesai' => 'Selesai',
                         'ditolak' => 'Ditolak',
                         default => ucfirst(str_replace('_', ' ', $state?->value ?? $state ?? '-')),
                     })
                     ->badge()
-                    ->sortable(),
+                    ->color(fn ($state): string => match ($state?->value ?? $state) {
+                        'menunggu_verifikasi' => 'warning',
+                        'terverifikasi' => 'info',
+                        'disposisi' => 'primary',
+                        'ditugaskan' => 'warning',
+                        'dalam_proses' => 'info',
+                        'selesai' => 'success',
+                        'ditolak' => 'danger',
+                        default => 'gray',
+                    })
+                    ->sortable()
+                    ->alignment('center'),
 
                 Tables\Columns\TextColumn::make('petugas.name')
                     ->label('Petugas')
-                    ->placeholder('Belum ditugaskan'),
+                    ->placeholder('Belum ditugaskan')
+                    ->alignment('center'),
 
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Waktu Dibuat')
-                    ->dateTime('d M Y H:i')
-                    ->sortable(),
+                    ->dateTime('d M Y, H:i')
+                    ->sortable()
+                    ->alignment('center'),
             ])
             ->filters([
                 //
@@ -291,7 +308,27 @@ class KlasterResource extends Resource
 
                                 TextEntry::make('status')
                                     ->label('Status Klaster')
-                                    ->badge(),
+                                    ->formatStateUsing(fn ($state): string => match ($state?->value ?? $state) {
+                                        'menunggu_verifikasi' => 'Menunggu Verifikasi',
+                                        'terverifikasi' => 'Terverifikasi',
+                                        'disposisi' => 'Disposisi',
+                                        'ditugaskan' => 'Ditugaskan',
+                                        'dalam_proses' => 'Dalam Proses',
+                                        'selesai' => 'Selesai',
+                                        'ditolak' => 'Ditolak',
+                                        default => ucfirst(str_replace('_', ' ', $state?->value ?? $state ?? '-')),
+                                    })
+                                    ->badge()
+                                    ->color(fn ($state): string => match ($state?->value ?? $state) {
+                                        'menunggu_verifikasi' => 'warning',
+                                        'terverifikasi' => 'info',
+                                        'disposisi' => 'primary',
+                                        'ditugaskan' => 'warning',
+                                        'dalam_proses' => 'info',
+                                        'selesai' => 'success',
+                                        'ditolak' => 'danger',
+                                        default => 'gray',
+                                    }),
 
                                 TextEntry::make('anchor_lat')
                                     ->label('Latitude Anchor')

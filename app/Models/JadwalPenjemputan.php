@@ -20,6 +20,7 @@ class JadwalPenjemputan extends Model
     protected function casts(): array
     {
         return [
+            'hari_penjemputan' => 'array',
             'status' => 'boolean',
         ];
     }

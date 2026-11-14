@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Models\Edukasi;
 use App\Models\Informasi;
 use App\Models\JadwalPenjemputan;
+use App\Http\Controllers\EdukasiController;
 
 Route::get('/', function () {
     $jadwalPreview = JadwalPenjemputan::query()
@@ -57,27 +58,11 @@ Route::get('/jadwal', function () {
     return view('jadwal', compact('jadwals'));
 })->name('jadwal.index');
 
-Route::get('/edukasi', function () {
-    $videos = Edukasi::where('jenis', 'video')
-        ->where('status', 'published')
-        ->where(function ($query) {
-            $query->whereNull('published_at')
-                ->orWhere('published_at', '<=', now());
-        })
-        ->latest('created_at')
-        ->get();
+Route::get('/edukasi', [EdukasiController::class, 'index'])
+    ->name('edukasi.index');
 
-    $artikels = Edukasi::where('jenis', 'artikel')
-        ->where('status', 'published')
-        ->where(function ($query) {
-            $query->whereNull('published_at')
-                ->orWhere('published_at', '<=', now());
-        })
-        ->latest('created_at')
-        ->get();
-
-    return view('edukasi', compact('videos', 'artikels'));
-})->name('edukasi.index');
+Route::get('/edukasi/{slug}', [EdukasiController::class, 'show'])
+    ->name('edukasi.show');
 
 Route::get('/transparansi', function () {
     $informasis = Informasi::where('status', true)

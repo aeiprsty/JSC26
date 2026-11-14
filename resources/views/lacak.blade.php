@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cek Penanganan TPS - JambiBersih</title>
+    <link rel="icon" type="image/png" href="{{ asset('images/logo-angsa.png') }}">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
@@ -28,14 +29,20 @@
             <div class="flex items-center justify-between h-20">
 
                 <!-- Logo & Branding -->
-                <a href="{{ url('/') }}" class="flex items-center gap-3 group">
-                    <div class="w-10 h-10 rounded-xl bg-[#6B7F4E] flex items-center justify-center text-white shadow-lg group-hover:bg-[#4C6A73] transition-colors duration-200">
-                        <i class="fa-solid font-bold fa-leaf text-xl"></i>
-                    </div>
-                    <div class="flex flex-col">
-                        <span class="font-extrabold text-lg tracking-tight leading-none text-white group-hover:text-[#DCC8A3] transition-colors">JambiBersih</span>
-                        <span class="text-[10px] text-[#DCC8A3] font-medium tracking-wider uppercase">Dinas Lingkungan Hidup Kota Jambi</span>
-                    </div>
+                <a href="{{ url('/') }}" class="flex items-center gap-1 group">
+                    <!-- Logo simbol -->
+                    <img
+                        src="{{ asset('images/logo-angsa.png') }}"
+                        alt="Logo JambiBersih"
+                        class="w-10 h-10 object-contain"
+                    >
+
+                    <!-- Tulisan JambiBersih -->
+                    <img
+                        src="{{ asset('images/font-angsa.png') }}"
+                        alt="JambiBersih"
+                        class="h-11 w-auto object-contain"
+                    >
                 </a>
 
                 <!-- Desktop Navigation Menu -->
@@ -114,18 +121,26 @@
             </a>
 
             <div class="pt-2 border-t border-white/10">
-                <div class="px-3 py-1 text-xs font-semibold text-[#DCC8A3] uppercase tracking-wider">Informasi & Edukasi</div>
-                <a href="{{ url('/jadwal') }}" class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-emerald-100 hover:text-white hover:bg-white/10 rounded-lg">
-                    <i class="text-[#6B7F4E]"></i>
+                <div class="px-3 py-1 text-xs font-semibold text-[#DCC8A3] uppercase tracking-wider">
+                    Informasi & Edukasi
+                </div>
+
+                <a href="{{ url('/jadwal') }}"
+                    class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-emerald-100 hover:text-white hover:bg-white/10 rounded-lg">
+                    <i class="fa-solid fa-calendar-alt text-xs"></i>
                     <span>Jadwal OPBM</span>
                 </a>
-                <a href="{{ url('/transparansi') }}" class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-emerald-100 hover:text-white hover:bg-white/10 rounded-lg">
-                    <i class="text-[#4C6A73]"></i>
-                    <span>Transparansi Alokasi Dana</span>
+
+                <a href="{{ url('/transparansi') }}"
+                    class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-emerald-100 hover:text-white hover:bg-white/10 rounded-lg">
+                    <i class="fa-solid fa-chart-pie text-xs"></i>
+                    <span>Transparansi Dana</span>
                 </a>
-                <a href="{{ url('/edukasi') }}" class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-emerald-100 hover:text-white hover:bg-white/10 rounded-lg">
-                    <i class="text-[#DCC8A3]"></i>
-                    <span>Edukasi</span>
+
+                <a href="{{ url('/edukasi') }}"
+                    class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-emerald-100 hover:text-white hover:bg-white/10 rounded-lg">
+                    <i class="fa-solid fa-book-open text-xs"></i>
+                    <span>Edukasi & Media</span>
                 </a>
             </div>
         </div>
@@ -547,13 +562,18 @@
             <div class="flex flex-col md:flex-row items-center justify-between gap-6">
 
                 <!-- Branding Left -->
-                <div class="flex items-center gap-3">
-                    <div class="w-8 h-8 rounded-lg bg-[#6B7F4E] flex items-center justify-center text-white font-bold text-sm">
-                        <i class="fa-solid fa-leaf"></i>
-                    </div>
+                <div class="flex items-center gap-1">
+                    <img
+                        src="{{ asset('images/logo-jambibersih.png') }}"
+                        alt="Logo JambiBersih"
+                        class="w-14 h-14 object-contain"
+                    >
+
                     <div>
                         <span class="font-bold text-base text-white">Sistem Pelaporan TPS Liar</span>
-                        <p class="text-xs text-[#DCC8A3]">Layanan Resmi Pengaduan & Informasi Kebersihan Lingkungan</p>
+                        <p class="text-xs text-[#DCC8A3]">
+                            Layanan Resmi Pengaduan & Informasi Kebersihan Lingkungan
+                        </p>
                     </div>
                 </div>
 

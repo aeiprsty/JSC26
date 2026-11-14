@@ -10,16 +10,18 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
+use Filament\Forms\Get;
+use Illuminate\Support\HtmlString;
 
 class InformasiResource extends Resource
 {
     protected static ?string $model = Informasi::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-information-circle';
+   protected static ?string $navigationIcon = 'heroicon-o-chart-pie';
 
-    protected static ?string $navigationLabel = 'Informasi';
+    protected static ?string $navigationLabel = 'Kelola Transparansi Dana';
 
-    protected static ?string $navigationGroup = 'Konten Publik';
+    protected static ?string $navigationGroup = 'Informasi & Edukasi';
 
     protected static ?int $navigationSort = 2;
 
@@ -70,10 +72,59 @@ class InformasiResource extends Resource
                     ->helperText('Setiap rincian menjadi satu poin pada halaman Transparansi.')
                     ->columnSpanFull(),
 
-                Forms\Components\TextInput::make('ikon')
-                    ->label('Ikon')
-                    ->placeholder('Contoh: fas fa-truck')
-                    ->helperText('Masukkan nama class ikon yang digunakan frontend.'),
+                Forms\Components\Select::make('ikon')
+                    ->label('Pilih Ikon')
+                    ->placeholder('Pilih simbol yang sesuai')
+                    ->options(fn () => collect([
+                        'fas fa-truck' => 'Truk Pengangkut Sampah',
+                        'fas fa-trash' => 'Tempat Sampah',
+                        'fas fa-recycle' => 'Daur Ulang',
+                        'fas fa-broom' => 'Kebersihan',
+                        'fas fa-dumpster' => 'Tempat Penampungan',
+                        'fas fa-users' => 'Masyarakat',
+                        'fas fa-user-group' => 'Kelompok Masyarakat',
+                        'fas fa-user-tie' => 'Petugas',
+                        'fas fa-handshake' => 'Kerja Sama',
+                        'fas fa-leaf' => 'Lingkungan',
+                        'fas fa-seedling' => 'Penghijauan',
+                        'fas fa-tree' => 'Pohon',
+                        'fas fa-droplet' => 'Air',
+                        'fas fa-wallet' => 'Dana',
+                        'fas fa-coins' => 'Keuangan',
+                        'fas fa-chart-pie' => 'Statistik',
+                        'fas fa-file-invoice-dollar' => 'Laporan Keuangan',
+                        'fas fa-calendar-days' => 'Jadwal',
+                        'fas fa-clock' => 'Jam Operasional',
+                        'fas fa-building' => 'Gedung',
+                        'fas fa-house' => 'Rumah',
+                        'fas fa-location-dot' => 'Lokasi',
+                        'fas fa-tools' => 'Peralatan',
+                        'fas fa-wrench' => 'Perawatan',
+                        'fas fa-gas-pump' => 'Bahan Bakar',
+                        'fas fa-shield-halved' => 'Keamanan',
+                        'fas fa-circle-check' => 'Selesai',
+                        'fas fa-circle-info' => 'Informasi',
+                        'fas fa-triangle-exclamation' => 'Peringatan',
+                    ])->mapWithKeys(fn ($label, $icon) => [
+                        $icon => view('filament.forms.components.icon-option', [
+                            'icon' => $icon,
+                            'label' => $label,
+                        ])->render(),
+                    ])->all())
+                    ->allowHtml()
+                    ->searchable()
+                    ->native(false)
+                    ->live()
+                    ->required()
+                    ->helperText('Pilih ikon yang paling sesuai dengan informasi.'),
+
+                Forms\Components\Placeholder::make('preview_ikon')
+                    ->label('Pratinjau Ikon')
+                    ->content(fn (Get $get) => new HtmlString(
+                        filled($get('ikon'))
+                            ? '<i class="' . e($get('ikon')) . '" style="font-size: 24px;"></i>'
+                            : '<span class="text-gray-400">Belum ada ikon dipilih</span>'
+                    )),
 
                 Forms\Components\TextInput::make('urutan')
                     ->label('Urutan Tampil')
@@ -97,35 +148,42 @@ class InformasiResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('urutan')
                     ->label('Urutan')
-                    ->sortable(),
+                    ->sortable()
+                    ->alignment('center'),
 
                 Tables\Columns\TextColumn::make('judul')
                     ->label('Judul')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->extraAttributes(['class' => 'text-left']),
 
                 Tables\Columns\TextColumn::make('deskripsi')
                     ->label('Deskripsi')
-                    ->limit(50),
+                    ->limit(50)
+                    ->extraAttributes(['class' => 'text-left']),
 
                 Tables\Columns\TextColumn::make('rincian')
                     ->label('Jumlah Rincian')
                     ->getStateUsing(function (\App\Models\Informasi $record): string {
                         return count($record->rincian ?? []) . ' poin';
-                    }),
+                    })
+                    ->alignment('center'),
 
-                Tables\Columns\TextColumn::make('ikon')
+                Tables\Columns\ViewColumn::make('ikon')
                     ->label('Ikon')
-                    ->placeholder('Tidak ada'),
+                    ->view('filament.tables.columns.icon-preview')
+                    ->alignCenter(),
 
                 Tables\Columns\IconColumn::make('status')
                     ->label('Aktif')
-                    ->boolean(),
+                    ->boolean()
+                    ->alignment('center'),
 
                 Tables\Columns\TextColumn::make('updated_at')
                     ->label('Terakhir Diperbarui')
-                    ->dateTime('d M Y H:i')
-                    ->sortable(),
+                    ->dateTime('d M Y, H:i')
+                    ->sortable()
+                    ->alignment('center'),
             ])
             ->defaultSort('urutan', 'asc')
             ->actions([

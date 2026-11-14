@@ -2,14 +2,19 @@
     id="jambibersih-topbar-brand"
     class="hidden items-center"
 >
-    <a href="{{ url('/') }}" class="flex flex-col group">
-        <span class="font-extrabold text-lg tracking-tight leading-none text-gray-900 dark:text-white group-hover:text-[#6B7F4E] transition-colors">
-            JambiBersih
-        </span>
+    <a href="{{ url('/') }}" class="flex items-center gap-1 group">
+        <!-- Logo simbol -->
+        <img
+            src="{{ asset('images/logo-angsa.png') }}"
+            alt="Logo JambiBersih"
+            class="w-10 h-10 object-contain">
 
-        <span class="text-[10px] text-gray-500 dark:text-gray-400 font-medium tracking-wider uppercase">
-            Dinas Lingkungan Hidup Kota Jambi
-        </span>
+        <!-- Tulisan JambiBersih -->
+        <img
+            src="{{ asset('images/font-angsa.png') }}"
+            alt="JambiBersih"
+            class="h-11 w-auto object-contain"
+        >
     </a>
 </div>
 

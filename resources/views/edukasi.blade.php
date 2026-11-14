@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edukasi & Media Kebersihan - JambiBersih</title>
+    <title>Edukasi & Media - JambiBersih</title>
+    <link rel="icon" type="image/png" href="{{ asset('images/logo-angsa.png') }}">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     
@@ -31,14 +32,20 @@
             <div class="flex items-center justify-between h-20">
                 
                 <!-- Logo & Branding -->
-                <a href="{{ url('/') }}" class="flex items-center gap-3 group">
-                    <div class="w-10 h-10 rounded-xl bg-[#6B7F4E] flex items-center justify-center text-white shadow-lg group-hover:bg-[#4C6A73] transition-colors duration-200">
-                        <i class="fa-solid font-bold fa-leaf text-xl"></i>
-                    </div>
-                    <div class="flex flex-col">
-                        <span class="font-extrabold text-lg tracking-tight leading-none text-white group-hover:text-[#DCC8A3] transition-colors">JambiBersih</span>
-                        <span class="text-[10px] text-[#DCC8A3] font-medium tracking-wider uppercase">Dinas Lingkungan Hidup Kota Jambi</span>
-                    </div>
+                <a href="{{ url('/') }}" class="flex items-center gap-1 group">
+                    <!-- Logo simbol -->
+                    <img
+                        src="{{ asset('images/logo-angsa.png') }}"
+                        alt="Logo JambiBersih"
+                        class="w-10 h-10 object-contain"
+                    >
+
+                    <!-- Tulisan JambiBersih -->
+                    <img
+                        src="{{ asset('images/font-angsa.png') }}"
+                        alt="JambiBersih"
+                        class="h-11 w-auto object-contain"
+                    >
                 </a>
 
                 <!-- Desktop Navigation Menu -->
@@ -117,25 +124,41 @@
             </a>
             
             <div class="pt-2 border-t border-white/10">
-                <div class="px-3 py-1 text-xs font-semibold text-[#DCC8A3] uppercase tracking-wider">Informasi & Edukasi</div>
-                <a href="{{ url('/jadwal') }}" class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-emerald-100 hover:text-white hover:bg-white/10 rounded-lg">
-                    <i class="text-[#6B7F4E]"></i>
+                <div class="px-3 py-1 text-xs font-semibold text-[#DCC8A3] uppercase tracking-wider">
+                    Informasi & Edukasi
+                </div>
+
+                <!-- Jadwal OPBM (Tidak Aktif) -->
+                <a href="{{ url('/jadwal') }}"
+                    class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-emerald-100 hover:text-white hover:bg-white/10 rounded-lg">
+                    <i class="fa-solid fa-calendar-alt text-xs"></i>
                     <span>Jadwal OPBM</span>
                 </a>
-                <a href="{{ url('/transparansi') }}" class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-emerald-100 hover:text-white hover:bg-white/10 rounded-lg">
-                    <i class="text-[#4C6A73]"></i>
-                    <span>Transparansi Alokasi Dana</span>
+
+                <!-- Transparansi (Tidak Aktif) -->
+                <a href="{{ url('/transparansi') }}"
+                    class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-emerald-100 hover:text-white hover:bg-white/10 rounded-lg">
+                    <i class="fa-solid fa-chart-pie text-xs"></i>
+                    <span>Transparansi Dana</span>
                 </a>
-                <a href="{{ url('/edukasi') }}" class="flex items-center gap-3 px-3 py-2.5 text-sm font-bold text-white bg-white/10 rounded-lg">
-                    <i class="text-[#DCC8A3]"></i>
-                    <span>Edukasi</span>
+
+                <!-- Edukasi (Aktif) -->
+                <a href="{{ url('/edukasi') }}"
+                    class="flex items-center gap-3 px-3 py-2.5 text-sm font-bold text-white bg-white/10 rounded-lg">
+                    <i class="fa-solid fa-book-open text-xs text-[#DCC8A3]"></i>
+                    <span>Edukasi & Media</span>
                 </a>
             </div>
         </div>
+
+        
     </header>
 
     <!-- MAIN CONTENT HALAMAN EDUKASI -->
-    <main class="flex-grow py-12 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto w-full space-y-16">
+    <main
+        id="edukasi-page"
+        class="flex-grow py-8 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto w-full space-y-8"
+    >
         
         <!-- HEADER HALAMAN -->
         <div class="text-center max-w-2xl mx-auto">
@@ -146,14 +169,161 @@
             <p class="text-sm text-[#5A4A3A] mt-2">Tingkatkan kepedulian lingkungan melalui video edukatif interaktif dan artikel panduan pemilahan sampah di Kota Jambi.</p>
         </div>
 
+        @php
+            $kategoriEdukasi = [
+                'Lingkungan Hidup & Pengelolaan Sampah',
+                'Kesehatan & Sanitasi',
+                'Kebijakan & Layanan Publik',
+                'Aksi Sosial & Komunitas',
+                'Tips & Gaya Hidup',
+            ];
+        @endphp
+
+        <!-- PENCARIAN DAN FILTER -->
+        <div class="flex flex-col sm:flex-row items-center justify-end gap-2.5">
+
+            <!-- Pencarian -->
+            <div class="relative flex-1 w-full sm:max-w-sm">
+                <div class="flex items-center bg-white border border-[#5A4A3A]/20 rounded-xl px-4 focus-within:ring-2 focus-within:ring-[#6B7F4E]/30 focus-within:border-[#6B7F4E] transition-all">
+
+                    <i class="fa-solid fa-magnifying-glass text-[#5A4A3A]/50 text-sm shrink-0"></i>
+
+                    <input
+                        id="edukasi-search"
+                        type="text"
+                        placeholder="Cari judul, artikel, atau video..."
+                        class="w-full min-w-0 px-4 py-3 bg-transparent text-sm text-[#5A4A3A] placeholder:text-[#5A4A3A]/50 focus:outline-none"
+                    >
+
+                    <button
+                        id="clear-search"
+                        type="button"
+                        class="hidden text-[#5A4A3A]/50 hover:text-[#1F3D2E] shrink-0 cursor-pointer"
+                        title="Hapus pencarian"
+                    >
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+
+                </div>
+            </div>
+
+            <!-- Dropdown Filter -->
+            <div class="relative w-full sm:w-auto" id="filter-wrapper">
+
+                <button
+                    id="filter-toggle"
+                    type="button"
+                    class="w-full sm:w-auto flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl border border-[#6B7F4E] bg-white text-[#1F3D2E] text-sm font-semibold hover:bg-[#1F3D2E]/5 transition"
+                >
+                    <i class="fa-solid fa-sliders"></i>
+                    Filter
+                    <i class="fa-solid fa-chevron-down text-xs transition-transform" id="filter-chevron"></i>
+                </button>
+
+                <div
+                    id="filter-panel"
+                    class="hidden absolute right-0 top-full mt-2 w-72 max-w-[calc(100vw-2rem)] bg-white rounded-xl shadow-xl border border-[#5A4A3A]/10 p-4 z-50"
+                >
+                    <div class="flex justify-between items-center mb-3">
+                        <h3 class="font-bold text-sm text-[#1F3D2E]">Filter Konten</h3>
+                        <button id="filter-close" type="button" class="text-[#5A4A3A]/50 hover:text-[#1F3D2E]">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                    </div>
+
+                    <!-- Jenis -->
+                    <div class="mb-4">
+                        <p class="text-[10px] font-bold uppercase tracking-wider text-[#5A4A3A]/60 mb-2">
+                            Jenis Konten
+                        </p>
+
+                        <div class="space-y-1" id="type-options">
+                            <button type="button" data-type="semua" class="filter-option active">Semua Konten</button>
+                            <button type="button" data-type="artikel" class="filter-option">Artikel</button>
+                            <button type="button" data-type="video" class="filter-option">Video</button>
+                        </div>
+                    </div>
+
+                    <div class="border-t border-[#5A4A3A]/10 my-3"></div>
+
+                    <!-- Kategori -->
+                    <div>
+                        <p class="text-[10px] font-bold uppercase tracking-wider text-[#5A4A3A]/60 mb-2">
+                            Kategori
+                        </p>
+
+                        <div class="space-y-1 max-h-48 overflow-y-auto" id="category-options">
+                            <button type="button" data-category="semua" class="filter-option active">
+                                Semua Kategori
+                            </button>
+
+                            @foreach ($kategoriEdukasi as $kategori)
+                                <button
+                                    type="button"
+                                    data-category="{{ $kategori }}"
+                                    class="filter-option"
+                                >
+                                    {{ $kategori }}
+                                </button>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    <div class="border-t border-[#5A4A3A]/10 mt-4 pt-3">
+                        <button
+                            id="reset-filter"
+                            type="button"
+                            class="w-full py-2 rounded-lg border border-[#5A4A3A]/20 text-sm font-semibold text-[#1F3D2E] hover:bg-[#DCC8A3]/30 transition"
+                        >
+                            <i class="fa-solid fa-rotate-left mr-1"></i>
+                            Reset Filter
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <style>
+            .filter-option {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                width: 100%;
+                padding: 9px 11px;
+                border-radius: 8px;
+                text-align: left;
+                font-size: 13px;
+                color: #5A4A3A;
+                transition: background .2s;
+            }
+
+            .filter-option:hover {
+                background: rgba(220, 200, 163, .3);
+            }
+
+            .filter-option.active {
+                background: rgba(31, 61, 46, .09);
+                color: #1F3D2E;
+                font-weight: 600;
+            }
+
+            .filter-option.active::after {
+                content: '\f00c';
+                font-family: 'Font Awesome 6 Free';
+                font-weight: 900;
+                color: #6B7F4E;
+                font-size: 11px;
+            }
+        </style>
+
         <!-- ==========================================
              SECTION 1: VIDEO EDUKASI (SCROLL KESAMPING)
              ========================================== -->
-        <section class="space-y-4">
+        <section id="video-section" class="space-y-4">
             <div class="flex items-center justify-between">
                 <div>
                     <h2 class="text-xl font-extrabold text-[#1F3D2E] flex items-center gap-2">
-                        <i class="fa-solid fa-[#6B7F4E] fa-circle-play text-[#6B7F4E]"></i> Video Pembelajaran
+                        <i class="fa-solid fa-circle-play text-[#6B7F4E]"></i> Video Pembelajaran
                     </h2>
                     <p class="text-xs text-[#5A4A3A]/80 mt-0.5">Geser ke samping untuk melihat koleksi video edukasi</p>
                 </div>
@@ -173,17 +343,22 @@
             <div id="video-container" class="flex gap-5 overflow-x-auto pb-4 scroll-smooth no-scrollbar snap-x snap-mandatory">
 
                 @forelse ($videos as $video)
-                    <div class="min-w-[280px] sm:min-w-[320px] max-w-[320px] bg-white rounded-3xl border border-[#5A4A3A]/15 shadow-md overflow-hidden snap-start shrink-0 group">
+                    <div
+                        data-filter-card
+                        data-type="video"
+                        data-category="{{ $video->kategori }}"
+                        data-search="{{ $video->judul }} {{ $video->ringkasan }} {{ $video->kategori }}"
+                        class="min-w-[280px] sm:min-w-[320px] max-w-[320px] bg-white rounded-3xl border border-[#5A4A3A]/15 shadow-md overflow-hidden snap-start shrink-0 group"
+                    >
 
-                        <div class="relative overflow-hidden aspect-video bg-black/80">
-                            @if ($video->url_video)
-                                <a href="{{ $video->url_video }}" target="_blank" rel="noopener noreferrer">
-                            @endif
+                        <div class="relative overflow-hidden aspect-video bg-black/80 group">
+                            <a href="{{ route('edukasi.show', $video->slug) }}"
+                                class="block relative overflow-hidden aspect-video">
 
                                 <img
-                                    src="{{ $video->gambar ? asset('storage/' . $video->gambar) : 'https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?w=600&auto=format&fit=crop&q=80' }}"
+                                    src="{{ $video->thumbnail_url }}"
                                     alt="{{ $video->judul }}"
-                                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 opacity-90"
+                                    class="w-full h-full object-cover"
                                 >
 
                                 @if ($video->durasi)
@@ -198,9 +373,7 @@
                                     </div>
                                 </div>
 
-                            @if ($video->url_video)
-                                </a>
-                            @endif
+                            </a>
                         </div>
 
                         <div class="p-5">
@@ -229,7 +402,7 @@
         <!-- ==========================================
              SECTION 2: ARTIKEL EDUKASI (SCROLL KEBAWAH)
              ========================================== -->
-        <section class="space-y-6 pt-6 border-t border-[#5A4A3A]/10">
+        <section id="article-section" class="space-y-6 pt-6 border-t border-[#5A4A3A]/10">
             <div>
                 <h2 class="text-xl font-extrabold text-[#1F3D2E] flex items-center gap-2">
                     <i class="fa-solid fa-newspaper text-[#4C6A73]"></i> Artikel & Panduan Lingkungan
@@ -241,7 +414,13 @@
             <div class="space-y-4">
 
                 @forelse ($artikels as $artikel)
-                    <article class="bg-white rounded-3xl p-5 sm:p-6 border border-[#5A4A3A]/15 shadow-md hover:shadow-lg transition-all flex flex-col sm:flex-row gap-5 items-start">
+                    <article
+                        data-filter-card
+                        data-type="artikel"
+                        data-category="{{ $artikel->kategori }}"
+                        data-search="{{ $artikel->judul }} {{ $artikel->ringkasan }} {{ $artikel->kategori }}"
+                        class="bg-white rounded-3xl p-5 sm:p-6 border border-[#5A4A3A]/15 shadow-md hover:shadow-lg transition-all flex flex-col sm:flex-row gap-5 items-start"
+                    >
 
                         <img
                             src="{{ $artikel->gambar ? asset('storage/' . $artikel->gambar) : 'https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?w=400&auto=format&fit=crop&q=80' }}"
@@ -252,14 +431,14 @@
                         <div class="flex-grow space-y-2">
 
                             <div class="flex items-center gap-3 text-xs text-[#5A4A3A]/70">
-                                <span class="bg-[#1F3D2E]/10 text-[#1F3D2E] font-bold px-2.5 py-0.5 rounded-md">
+                                <span class="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2.5 py-0.5 rounded-md">
                                     {{ $artikel->kategori }}
                                 </span>
 
-                                <span class="text-xs text-[#5A4A3A]/70">
-                                    <i class="fa-regular fa-calendar mr-1"></i>
-                                    {{ $artikel->created_at->translatedFormat('d F Y') }}
-                                </span>
+                            <span class="text-xs text-[#5A4A3A]/70">
+                                <i class="fa-regular fa-calendar mr-1"></i>
+                                {{ ($artikel->published_at ?? $artikel->created_at)->translatedFormat('d F Y, H:i') }}
+                            </span>
                             </div>
 
                             <h3 class="text-base sm:text-lg font-bold text-[#1F3D2E] hover:text-[#4C6A73] transition-colors">
@@ -270,7 +449,7 @@
                                 {{ $artikel->ringkasan }}
                             </p>
 
-                            <a href="{{ url('/edukasi/' . $artikel->slug) }}"
+                            <a href="{{ route('edukasi.show', $artikel->slug) }}"
                             class="inline-flex items-center gap-1.5 text-xs font-bold text-[#1F3D2E] hover:text-[#6B7F4E] pt-1">
                                 <span>Baca Selengkapnya</span>
                                 <i class="fa-solid fa-arrow-right text-[10px]"></i>
@@ -295,13 +474,18 @@
             <div class="flex flex-col md:flex-row items-center justify-between gap-6">
                 
                 <!-- Branding Left -->
-                <div class="flex items-center gap-3">
-                    <div class="w-8 h-8 rounded-lg bg-[#6B7F4E] flex items-center justify-center text-white font-bold text-sm">
-                        <i class="fa-solid fa-leaf"></i>
-                    </div>
+                <div class="flex items-center gap-1">
+                    <img
+                        src="{{ asset('images/logo-jambibersih.png') }}"
+                        alt="Logo JambiBersih"
+                        class="w-14 h-14 object-contain"
+                    >
+
                     <div>
                         <span class="font-bold text-base text-white">Sistem Pelaporan TPS Liar</span>
-                        <p class="text-xs text-[#DCC8A3]">Layanan Resmi Pengaduan & Informasi Kebersihan Lingkungan</p>
+                        <p class="text-xs text-[#DCC8A3]">
+                            Layanan Resmi Pengaduan & Informasi Kebersihan Lingkungan
+                        </p>
                     </div>
                 </div>
 
@@ -353,6 +537,131 @@
             const dropdown = document.getElementById(id);
             dropdown.classList.toggle('hidden');
         }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const searchInput = document.getElementById('edukasi-search');
+        const clearButton = document.getElementById('clear-search');
+        const filterToggle = document.getElementById('filter-toggle');
+        const filterPanel = document.getElementById('filter-panel');
+        const filterChevron = document.getElementById('filter-chevron');
+        const filterClose = document.getElementById('filter-close');
+        const resetButton = document.getElementById('reset-filter');
+
+        const cards = document.querySelectorAll('[data-filter-card]');
+        const typeButtons = document.querySelectorAll('#type-options [data-type]');
+        const categoryButtons = document.querySelectorAll('#category-options [data-category]');
+
+        let selectedType = 'semua';
+        let selectedCategory = 'semua';
+
+        function updateFilter() {
+            const keyword = searchInput.value.toLowerCase().trim();
+
+            let visibleVideo = 0;
+            let visibleArticle = 0;
+
+            cards.forEach(card => {
+                const content = (card.dataset.search || '').toLowerCase();
+                const type = card.dataset.type;
+                const category = card.dataset.category;
+
+                const matchSearch = !keyword || content.includes(keyword);
+                const matchType = selectedType === 'semua' || selectedType === type;
+                const matchCategory = selectedCategory === 'semua' || selectedCategory === category;
+
+                const visible = matchSearch && matchType && matchCategory;
+
+                card.hidden = !visible;
+
+                if (visible && type === 'video') visibleVideo++;
+                if (visible && type === 'artikel') visibleArticle++;
+            });
+
+            // Tampilkan atau sembunyikan section video
+            document.getElementById('video-section').hidden = visibleVideo === 0;
+
+            // Tampilkan atau sembunyikan section artikel
+            document.getElementById('article-section').hidden = visibleArticle === 0;
+
+            // Tampilkan tombol X jika kolom pencarian terisi
+            clearButton.classList.toggle('hidden', keyword.length === 0);
+
+            // Pesan ketika tidak ada hasil
+            const noResults = document.getElementById('no-filter-results');
+
+            if (noResults) {
+                noResults.classList.toggle(
+                    'hidden',
+                    visibleVideo + visibleArticle > 0
+                );
+            }
+        }
+
+        function updateActiveButtons(buttons, attribute, value) {
+            buttons.forEach(button => {
+                button.classList.toggle('active', button.dataset[attribute] === value);
+            });
+        }
+
+        searchInput.addEventListener('input', updateFilter);
+
+        clearButton.addEventListener('click', function () {
+            searchInput.value = '';
+            updateFilter();
+            searchInput.focus();
+        });
+
+        filterToggle.addEventListener('click', () => {
+            filterPanel.classList.toggle('hidden');
+            filterChevron.classList.toggle('rotate-180');
+        });
+
+        filterClose.addEventListener('click', () => {
+            filterPanel.classList.add('hidden');
+            filterChevron.classList.remove('rotate-180');
+        });
+
+        document.addEventListener('click', event => {
+            if (!document.getElementById('filter-wrapper').contains(event.target)) {
+                filterPanel.classList.add('hidden');
+                filterChevron.classList.remove('rotate-180');
+            }
+        });
+
+        typeButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                selectedType = button.dataset.type;
+                updateActiveButtons(typeButtons, 'type', selectedType);
+                updateFilter();
+            });
+        });
+
+        categoryButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                selectedCategory = button.dataset.category;
+                updateActiveButtons(categoryButtons, 'category', selectedCategory);
+                updateFilter();
+            });
+        });
+
+        resetButton.addEventListener('click', () => {
+            searchInput.value = '';
+            selectedType = 'semua';
+            selectedCategory = 'semua';
+
+            updateActiveButtons(typeButtons, 'type', selectedType);
+            updateActiveButtons(categoryButtons, 'category', selectedCategory);
+
+            updateFilter();
+        });
+
+        clearButton.classList.toggle(
+            'hidden',
+            searchInput.value.trim().length === 0
+        );
+        
+        updateFilter();
+    });
     </script>
 </body>
 </html>

@@ -17,11 +17,11 @@ class JadwalPenjemputanResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-calendar-days';
 
-    protected static ?string $navigationLabel = 'Jadwal OPBM';
+    protected static ?string $navigationLabel = 'Kelola Jadwal OPBM';
 
-    protected static ?string $navigationGroup = 'Konten Publik';
+    protected static ?string $navigationGroup = 'Informasi & Edukasi';
 
-    protected static ?int $navigationSort = 3;
+    protected static ?int $navigationSort = 1;
 
     protected static ?string $modelLabel = 'Jadwal Penjemputan';
 
@@ -121,43 +121,61 @@ class JadwalPenjemputanResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('urutan')
                     ->label('Urutan')
-                    ->sortable(),
+                    ->sortable()
+                    ->alignment('center'),
 
                 Tables\Columns\TextColumn::make('kelurahan')
                     ->label('Kelurahan')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->extraHeaderAttributes(['class' => 'text-center'])
+                    ->extraAttributes(['class' => 'text-left']),
 
                 Tables\Columns\TextColumn::make('kecamatan')
                     ->label('Kecamatan')
-                    ->searchable(),
+                    ->searchable()
+                    ->extraHeaderAttributes(['class' => 'text-center'])
+                    ->extraAttributes(['class' => 'text-left']),
 
                 Tables\Columns\TextColumn::make('cakupan_rt')
-                    ->label('Cakupan RT'),
+                    ->label('Cakupan RT')
+                    ->alignment('center'),
 
                 Tables\Columns\TextColumn::make('hari_penjemputan')
                     ->label('Hari Penjemputan')
-                    ->formatStateUsing(function ($state) {
-                        $hari = json_decode($state, true);
+                    ->formatStateUsing(function ($state, $record) {
+                        $hari = $record->hari_penjemputan;
 
-                        return is_array($hari) ? implode(', ', $hari) : $state;
-                    }),
+                        if (is_string($hari)) {
+                            $hari = json_decode($hari, true);
+                        }
+
+                        if (!is_array($hari)) {
+                            return '-';
+                        }
+
+                        return implode(', ', $hari);
+                    })
+                    ->alignment('center'),
 
                 Tables\Columns\TextColumn::make('jam_mulai')
                     ->label('Jam Mulai')
                     ->formatStateUsing(fn ($state) => $state
                         ? \Carbon\Carbon::parse($state)->format('H.i')
-                        : '-'),
+                        : '-')
+                    ->alignment('center'),
 
                 Tables\Columns\TextColumn::make('jam_selesai')
                     ->label('Jam Selesai')
                     ->formatStateUsing(fn ($state) => $state
                         ? \Carbon\Carbon::parse($state)->format('H.i')
-                        : '-'),
+                        : '-')
+                    ->alignment('center'),
 
                 Tables\Columns\IconColumn::make('status')
                     ->label('Status')
-                    ->boolean(),
+                    ->boolean()
+                    ->alignment('center'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

@@ -14,7 +14,7 @@ class ListInformasis extends ListRecords
     {
         return [
             Actions\CreateAction::make()
-                ->label('Tambah Informasi'),
+                ->label('Buat Informasi'),
         ];
     }
 }

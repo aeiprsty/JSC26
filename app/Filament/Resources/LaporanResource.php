@@ -86,7 +86,8 @@ class LaporanResource extends Resource
                 Tables\Columns\TextColumn::make('kode_tiket')
                     ->label('Kode Tiket')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->alignment('center'),
 
                 Tables\Columns\ImageColumn::make('foto')
                     ->label('Foto')
@@ -106,7 +107,8 @@ class LaporanResource extends Resource
                                     'record' => $record,
                                 ])
                             )
-                    ),
+                    )
+                    ->alignment('center'),
 
                 Tables\Columns\TextColumn::make('deskripsi')
                     ->label('Deskripsi')
@@ -132,11 +134,13 @@ class LaporanResource extends Resource
                         'ditolak' => 'danger',
                         default => 'gray',
                     })
-                    ->sortable(),
+                    ->sortable()
+                    ->alignment('center'),
 
                 Tables\Columns\TextColumn::make('klaster_id')
                     ->label('ID Klaster')
-                    ->placeholder('Belum masuk klaster'),
+                    ->placeholder('Tidak masuk klaster')
+                    ->alignment('center'),
 
                 Tables\Columns\TextColumn::make('lat')
                     ->label('Latitude')
@@ -148,8 +152,9 @@ class LaporanResource extends Resource
 
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Waktu Laporan')
-                    ->dateTime('d M Y H:i')
-                    ->sortable(),
+                    ->dateTime('d M Y, H:i')
+                    ->sortable()
+                    ->alignment('center'),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('status')

@@ -60,7 +60,7 @@
             <div class="overflow-x-auto">
                 <table class="w-full text-sm">
                     <thead>
-                        <tr class="border-b dark:border-gray-700 text-left">
+                        <tr class="border-b dark:border-gray-700 text-center">
                             <th class="p-3">Kode Tiket</th>
                             <th class="p-3">Deskripsi</th>
                             <th class="p-3">Status</th>
@@ -71,18 +71,53 @@
                     <tbody>
                         @forelse ($reports as $report)
                             <tr class="border-b dark:border-gray-800">
-                                <td class="p-3 font-medium">
+                                <td class="p-3 font-medium text-center">
                                     {{ $report->kode_tiket }}
                                 </td>
-                                <td class="p-3">
+
+                                <td class="p-3 text-left">
                                     {{ \Illuminate\Support\Str::limit($report->deskripsi ?? '-', 45) }}
                                 </td>
-                                <td class="p-3">
-                                    <span class="capitalize">
-                                        {{ str_replace('_', ' ', $report->status) }}
+
+                                <td class="p-3 text-center">
+                                    @php
+                                        $statusConfig = match ($report->status) {
+                                            'menunggu' => [
+                                                'label' => 'Menunggu',
+                                                'style' => 'background-color: #FEF3C7; color: #92400E;',
+                                            ],
+                                            'terverifikasi' => [
+                                                'label' => 'Terverifikasi',
+                                                'style' => 'background-color: #DBEAFE; color: #1E40AF;',
+                                            ],
+                                            'dalam_proses' => [
+                                                'label' => 'Dalam Proses',
+                                                'style' => 'background-color: #E0E7FF; color: #3730A3;',
+                                            ],
+                                            'selesai' => [
+                                                'label' => 'Selesai',
+                                                'style' => 'background-color: #DCFCE7; color: #166534;',
+                                            ],
+                                            'ditolak' => [
+                                                'label' => 'Ditolak',
+                                                'style' => 'background-color: #FEE2E2; color: #991B1B;',
+                                            ],
+                                            default => [
+                                                'label' => ucfirst(str_replace('_', ' ', $report->status)),
+                                                'style' => 'background-color: #F3F4F6; color: #374151;',
+                                            ],
+                                        };
+                                    @endphp
+
+                                    <span
+                                        style="{{ $statusConfig['style'] }}"
+                                        class="inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold"
+                                    >
+                                        {{ $statusConfig['label'] }}
                                     </span>
                                 </td>
-                                <td class="p-3 whitespace-nowrap">
+
+                                <td class="p-3 whitespace-nowrap text-center">
                                     {{ $report->created_at->format('d M Y H:i') }}
                                 </td>
                             </tr>

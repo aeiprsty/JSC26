@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JambiBersih</title>
+    <link rel="icon" type="image/png" href="{{ asset('images/logo-angsa.png') }}">
     
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -50,19 +51,25 @@
          NAVBAR / HEADER UTAMA
          ========================================== -->
 
-    <header id="main-header" class="fixed top-0 left-0 w-full z-50 bg-[#1F3D2E] md:bg-transparent text-white transition-all duration-300">
+    <header id="main-header" class="fixed top-0 left-0 w-full z-50 bg-transparent text-white transition-all duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-20">
 
                 <!-- Logo & Branding -->
-                <a href="{{ url('/') }}" class="flex items-center gap-3 group">
-                    <div class="w-10 h-10 rounded-xl bg-[#6B7F4E] flex items-center justify-center text-white shadow-lg group-hover:bg-[#4C6A73] transition-colors duration-200">
-                        <i class="fa-solid font-bold fa-leaf text-xl"></i>
-                    </div>
-                    <div class="flex flex-col">
-                        <span class="font-extrabold text-lg tracking-tight leading-none text-white group-hover:text-[#DCC8A3] transition-colors">JambiBersih</span>
-                        <span class="text-[10px] text-[#DCC8A3] font-medium tracking-wider uppercase">Dinas Lingkungan Hidup Kota Jambi</span>
-                    </div>
+                <a href="{{ url('/') }}" class="flex items-center gap-1 group">
+                    <!-- Logo simbol -->
+                    <img
+                        src="{{ asset('images/logo-angsa.png') }}"
+                        alt="Logo JambiBersih"
+                        class="w-10 h-10 object-contain"
+                    >
+
+                    <!-- Tulisan JambiBersih -->
+                    <img
+                        src="{{ asset('images/font-angsa.png') }}"
+                        alt="JambiBersih"
+                        class="h-11 w-auto object-contain"
+                    >
                 </a>
 
                 <!-- Desktop Navigation Menu -->
@@ -141,18 +148,26 @@
 
             <!-- Mobile Submenu Accordion -->
             <div class="pt-2 border-t border-white/10">
-                <div class="px-3 py-1 text-xs font-semibold text-[#DCC8A3] uppercase tracking-wider">Informasi & Edukasi</div>
-                <a href="{{ url('/jadwal') }}" class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-emerald-100 hover:text-white hover:bg-white/10 rounded-lg">
-                    <i class="text-[#6B7F4E]"></i>
+                <div class="px-3 py-1 text-xs font-semibold text-[#DCC8A3] uppercase tracking-wider">
+                    Informasi & Edukasi
+                </div>
+
+                <a href="{{ url('/jadwal') }}"
+                    class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-emerald-100 hover:text-white hover:bg-white/10 rounded-lg">
+                    <i class="fa-solid fa-calendar-alt text-xs"></i>
                     <span>Jadwal OPBM</span>
                 </a>
-                <a href="{{ url('/transparansi') }}" class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-emerald-100 hover:text-white hover:bg-white/10 rounded-lg">
-                    <i class="ext-[#4C6A73]"></i>
-                    <span>Transparansi Alokasi Dana</span>
+
+                <a href="{{ url('/transparansi') }}"
+                    class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-emerald-100 hover:text-white hover:bg-white/10 rounded-lg">
+                    <i class="fa-solid fa-chart-pie text-xs"></i>
+                    <span>Transparansi Dana</span>
                 </a>
-                <a href="{{ url('/edukasi') }}" class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-emerald-100 hover:text-white hover:bg-white/10 rounded-lg">
-                    <i class="text-[#DCC8A3]"></i>
-                    <span>Edukasi</span>
+
+                <a href="{{ url('/edukasi') }}"
+                    class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-emerald-100 hover:text-white hover:bg-white/10 rounded-lg">
+                    <i class="fa-solid fa-book-open text-xs"></i>
+                    <span>Edukasi & Media</span>
                 </a>
             </div>
         </div>
@@ -183,7 +198,6 @@
                 <div class="max-w-xl space-y-6 reveal opacity-0 translate-y-10 transition-all duration-700 ease-out">
 
                     <span class="inline-flex items-center gap-2 bg-[#6B7F4E]/30 text-[#DCC8A3] border border-[#6B7F4E]/50 text-xs font-bold px-3.5 py-1.5 rounded-full uppercase tracking-wider backdrop-blur-sm">
-                        <i class="fa-solid fa-leaf text-[#6B7F4E]"></i>
                         <span>Sistem Pelaporan TPS Liar</span>
                     </span>
 
@@ -254,7 +268,7 @@
                 <div class="relative w-full aspect-[12/4] min-h-[450px] md:min-h-[380px]">
 
                     <!-- 1. SVG JALAN RAYA BERGELOMBANG & ANIMASI TRUK -->
-                    <div class="absolute inset-0 w-full h-full pointer-events-none hidden md:block z-0">
+                    <div class="absolute inset-0 w-full h-full pointer-events-none hidden md:block z-30">
                         <svg viewBox="0 0 1200 350" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
                             <!-- Aspal Jalan -->
                             <path d="M 50 100 C 200 100, 250 280, 400 280 C 550 280, 600 70, 750 70 C 900 70, 950 280, 1150 280"
@@ -266,7 +280,11 @@
 
                             <!-- ANIMASI TRUK SAMPAH (TERKUNCI DI DALAM SVG & OTOMATIS MIRING) -->
                             <g>
-                                <image href="{{ asset('images/truk-hijau.png') }}" x="-120" y="-90" width="240" height="144" />
+                                <image href="{{ asset('images/truk-dlh.png') }}"
+                                    x="-100"
+                                    y="-100"
+                                    width="200"
+                                    height="120" />
                                 <animateMotion
                                     path="M 50 100 C 200 100, 250 280, 400 280 C 550 280, 600 70, 750 70 C 900 70, 950 280, 1150 280"
                                     dur="12s"
@@ -276,7 +294,7 @@
                         </svg>
                     </div>
 
-                    <!-- 2. TITIK-TITIK ALUR (KEMBALI KE POSISI ASLI REFA YANG RAPI) -->
+                    <!-- 2. TITIK-TITIK ALUR (KEMBALI KE POSISI) -->
                     <!-- 2. TITIK-TITIK ALUR (DENGAN ANIMASI SCROLL BERURUTAN DESKTOP) -->
                     <div class="hidden md:block absolute inset-0 z-20">
 
@@ -444,7 +462,7 @@
 
                                             <td class="py-4 px-6 text-center">
                                                 <div class="font-bold text-[#1F3D2E]">
-                                                    {{ implode(', ', json_decode($jadwal->hari_penjemputan, true) ?? []) }}
+                                                    {{ implode(', ', $jadwal->hari_penjemputan ?? []) }}
                                                 </div>
                                             </td>
 
@@ -507,7 +525,7 @@
                                             Hari Penjemputan
                                         </p>
                                         <p class="text-xs font-semibold text-[#1F3D2E]">
-                                            {{ implode(', ', json_decode($jadwal->hari_penjemputan, true) ?? []) }}
+                                            {{ implode(', ', $jadwal->hari_penjemputan ?? []) }}
                                         </p>
                                     </div>
 
@@ -756,13 +774,18 @@
             <div class="flex flex-col md:flex-row items-center justify-between gap-6">
 
                 <!-- Branding Left -->
-                <div class="flex items-center gap-3">
-                    <div class="w-8 h-8 rounded-lg bg-[#6B7F4E] flex items-center justify-center text-white font-bold text-sm">
-                        <i class="fa-solid fa-leaf"></i>
-                    </div>
+                <div class="flex items-center gap-1">
+                    <img
+                        src="{{ asset('images/logo-jambibersih.png') }}"
+                        alt="Logo JambiBersih"
+                        class="w-14 h-14 object-contain"
+                    >
+
                     <div>
                         <span class="font-bold text-base text-white">Sistem Pelaporan TPS Liar</span>
-                        <p class="text-xs text-[#DCC8A3]">Layanan Resmi Pengaduan & Informasi Kebersihan Lingkungan</p>
+                        <p class="text-xs text-[#DCC8A3]">
+                            Layanan Resmi Pengaduan & Informasi Kebersihan Lingkungan
+                        </p>
                     </div>
                 </div>
 
@@ -903,17 +926,17 @@
             document.querySelectorAll('.reveal').forEach(el => scrollObserver.observe(el));
         });
 
-        // Efek Navbar Transparan -> Berwarna saat di-scroll (Hanya Desktop)
+        // Efek Navbar Transparan -> Berwarna saat di-scroll (Desktop & Mobile)
         window.addEventListener('scroll', function() {
             const header = document.getElementById('main-header');
-            
-            if (header && window.innerWidth >= 768) { // 768px = breakpoint desktop md: di Tailwind
+
+            if (header) {
                 if (window.scrollY > 50) {
-                    header.classList.add('md:bg-[#1F3D2E]', 'shadow-md');
-                    header.classList.remove('md:bg-transparent');
+                    header.classList.remove('bg-transparent');
+                    header.classList.add('bg-[#1F3D2E]', 'shadow-md');
                 } else {
-                    header.classList.remove('md:bg-[#1F3D2E]', 'shadow-md');
-                    header.classList.add('md:bg-transparent');
+                    header.classList.remove('bg-[#1F3D2E]', 'shadow-md');
+                    header.classList.add('bg-transparent');
                 }
             }
         });

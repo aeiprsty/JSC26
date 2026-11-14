@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use Filament\Support\Assets\Css;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -29,17 +30,29 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
-            ->brandName('JambiBersih')
+            ->brandName(' ')
+            ->brandLogo(asset('images/font-angsa.png'))
+            ->brandLogoHeight('2.5rem')
             ->login()
             ->sidebarFullyCollapsibleOnDesktop()
+            ->renderHook(
+                PanelsRenderHook::HEAD_START,
+                fn (): string => '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">'
+            )
             ->renderHook(
                 PanelsRenderHook::TOPBAR_START,
                 fn (): string => Blade::render("@include('filament.components.internal-header')")
             )
             ->colors([
-                'primary' => Color::Amber,
+                'primary' => Color::Green,
             ])
             ->theme(asset('css/filament/admin/theme.css'))
+            ->assets([
+                Css::make(
+                    'font-awesome',
+                    'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css'
+                ),
+            ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
