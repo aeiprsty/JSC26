@@ -84,7 +84,7 @@
                                 </div>
                                 <div>
                                     <div class="font-bold">Jadwal OPBM</div>
-                                    <div class="text-[11px] text-[#5A4A3A]/70">Layanana Kebersihan Wilayah</div>
+                                    <div class="text-[11px] text-[#5A4A3A]/70">Layanan Kebersihan Wilayah</div>
                                 </div>
                             </a>
                             <a href="{{ url('/transparansi') }}" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium hover:bg-[#DCC8A3]/30 hover:text-[#1F3D2E] transition-colors">
@@ -165,7 +165,7 @@
         <!-- HEADER HALAMAN -->
         <div class="text-center max-w-2xl mx-auto mb-10">
             <span class="bg-[#6B7F4E]/20 text-[#1F3D2E] text-xs font-bold px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-flex items-center gap-1.5">
-                <i class="fa-solid fa-truck-ramp-box text-[#6B7F4E]"></i> Layanana Kebersihan Wilayah
+                <i class="fa-solid fa-truck-ramp-box text-[#6B7F4E]"></i> Layanan Kebersihan Wilayah
             </span>
             <h1 class="text-3xl sm:text-4xl font-extrabold text-[#1F3D2E] mt-3">Jadwal Penjemputan Sampah OPBM</h1>
             <p class="text-sm text-[#5A4A3A] mt-2">Pantau jadwal rutin penjemputan sampah lingkungan oleh armada gerobak motor hijau di wilayah tempat tinggalmu.</p>

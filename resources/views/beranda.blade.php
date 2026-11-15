@@ -109,7 +109,7 @@
                                 </div>
                                 <div>
                                     <div class="font-semibold">Jadwal OPBM</div>
-                                    <div class="text-[11px] text-[#5A4A3A]/70">Layanana Kebersihan Wilayah</div>
+                                    <div class="text-[11px] text-[#5A4A3A]/70">Layanan Kebersihan Wilayah</div>
                                 </div>
                             </a>
                             <a href="{{ url('/transparansi') }}" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium hover:bg-[#DCC8A3]/30 hover:text-[#1F3D2E] transition-colors">
@@ -422,7 +422,7 @@
                 <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4 reveal opacity-0 translate-y-10 transition-all duration-700 ease-out">
                     <div>
                         <span class="bg-[#6B7F4E]/20 text-[#1F3D2E] text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider inline-flex items-center gap-1.5">
-                            <i class="fa-solid fa-calendar-alt text-[#6B7F4E]"></i> Layanana Kebersihan Wilayah
+                            <i class="fa-solid fa-calendar-alt text-[#6B7F4E]"></i> Layanan Kebersihan Wilayah
                         </span>
                         <h2 class="text-2xl sm:text-3xl font-extrabold text-[#1F3D2E] mt-3">Jadwal Penjemputan OPBM Terdekat</h2>
                         <p class="text-sm text-[#5A4A3A] mt-1">Pantau hari dan jam keliling armada pembersihan sampah di wilayahmu.</p>
@@ -787,7 +787,7 @@
                             <i class="fa-solid fa-arrow-right-long text-sm"></i>
                         </a>
                         <span class="text-[11px] text-emerald-200/80 mt-2 text-center md:text-right">
-                            *Laporan publik diperbarui secara berkala
+                            *Diperbarui secara berkala
                         </span>
                     </div>
 

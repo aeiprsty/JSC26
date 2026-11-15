@@ -81,7 +81,7 @@
                                 </div>
                                 <div>
                                     <div class="font-bold">Jadwal OPBM</div>
-                                    <div class="text-[11px] text-[#5A4A3A]/70">Layanana Kebersihan Wilayah</div>
+                                    <div class="text-[11px] text-[#5A4A3A]/70">Layanan Kebersihan Wilayah</div>
                                 </div>
                             </a>
                             <a href="{{ url('/transparansi') }}" class="flex items-center gap-3 px-4 py-2.5 text-sm font-bold bg-[#DCC8A3]/30 text-[#1F3D2E] transition-colors">
@@ -219,19 +219,6 @@
 
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 
-                <div class="text-center max-w-2xl mx-auto mb-12">
-                    <span class="bg-[#6B7F4E]/20 text-[#1F3D2E] text-xs font-bold px-3.5 py-1.5 rounded-full uppercase tracking-wider">
-                        Operasional OPBM RT/RW
-                    </span>
-                    <h2 class="text-2xl sm:text-3xl font-extrabold text-[#1F3D2E] mt-3">
-                        Daftar Peruntukan Iuran OPBM
-                    </h2>
-                    <p class="text-sm text-[#5A4A3A] mt-2">
-                        Rincian kualitatif alokasi iuran swakelola warga untuk kelancaran penjemputan sampah harian di lingkungan tempat tinggal.
-                    </p>
-                </div>
-
-
                 <!-- GRID KARTU KOMPONEN IURAN OPBM -->
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 
@@ -247,9 +234,9 @@
                                     {{ $informasi->judul }}
                                 </h3>
 
-                                <p class="text-xs text-[#5A4A3A] mt-2 leading-relaxed">
-                                    {{ $informasi->deskripsi }}
-                                </p>
+                                <div class="text-xs text-[#5A4A3A] mt-2 leading-relaxed prose prose-sm max-w-none">
+                                    {!! $informasi->deskripsi !!}
+                                </div>
                             </div>
 
                             @if (!empty($informasi->rincian))

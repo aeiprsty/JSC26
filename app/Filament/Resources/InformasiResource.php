@@ -60,10 +60,19 @@ class InformasiResource extends Resource
                     ->maxLength(255)
                     ->columnSpanFull(),
 
-                Forms\Components\Textarea::make('deskripsi')
+                Forms\Components\RichEditor::make('deskripsi')
                     ->label('Deskripsi')
                     ->required()
-                    ->rows(3)
+                    ->toolbarButtons([
+                        'bold',
+                        'italic',
+                        'underline',
+                        'bulletList',
+                        'orderedList',
+                        'link',
+                        'undo',
+                        'redo',
+                    ])
                     ->columnSpanFull(),
 
                 Forms\Components\TagsInput::make('rincian')

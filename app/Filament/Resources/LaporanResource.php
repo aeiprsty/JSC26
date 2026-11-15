@@ -110,6 +110,14 @@ class LaporanResource extends Resource
                             )
                     )
                     ->alignment('center'),
+                
+                Tables\Columns\ImageColumn::make('klaster.foto_bukti')
+                    ->label('Foto Setelah Dibersihkan')
+                    ->disk('supabase')
+                    ->square()
+                    ->placeholder('Belum ada bukti')
+                    ->visible(fn () => self::isOperator())
+                    ->alignment('center'),
 
                 Tables\Columns\TextColumn::make('deskripsi')
                     ->label('Deskripsi')
