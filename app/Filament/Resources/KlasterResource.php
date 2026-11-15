@@ -283,7 +283,8 @@ class KlasterResource extends Resource
                         ->send();
                 }),
 
-            ]);
+            ])
+            ->defaultSort('created_at', 'desc');
     }
 
     public static function getRelations(): array
