@@ -275,7 +275,7 @@
             </div>
 
             <div class="flex flex-col gap-3">
-                <a href="{{ url('/lacak#cari-tiket') }}" class="w-full bg-[#1F3D2E] hover:bg-[#4C6A73] text-white font-bold py-3.5 rounded-2xl text-xs transition-colors shadow-md">
+                <a id="btn-lacak" href="{{ route('lacak.index') }}" class="w-full bg-[#1F3D2E] hover:bg-[#4C6A73] text-white font-bold py-3.5 rounded-2xl text-xs transition-colors shadow-md">
                     Lacak Status Penanganan
                 </a>
                 <button type="button" onclick="closeSuccessModal()" class="w-full bg-gray-100 hover:bg-gray-200 text-[#5A4A3A] font-bold py-3.5 rounded-2xl text-xs transition-colors">
@@ -453,10 +453,14 @@
                     throw new Error(errors);
                 }
 
-                document.getElementById('output-kode-tiket').innerText =
-                    result.data.kode_tiket;
+                    const kodeTiket = result.data.kode_tiket;
 
-                document.getElementById('modal-sukses').classList.remove('hidden');
+                    document.getElementById('output-kode-tiket').innerText = kodeTiket;
+
+                    document.getElementById('btn-lacak').href =
+                        `{{ route('lacak.index') }}?kode_tiket=${encodeURIComponent(kodeTiket)}`;
+
+                    document.getElementById('modal-sukses').classList.remove('hidden');
             } catch (error) {
                 alert(error.message || 'Terjadi kesalahan saat mengirim laporan. Silakan coba lagi.');
             } finally {

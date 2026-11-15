@@ -18,7 +18,7 @@ class KlasterRiwayatResource extends Resource
 
     protected static ?string $navigationLabel = 'Riwayat Aktivitas';
 
-    protected static ?string $navigationGroup = 'Manajemen Klaster';
+    protected static ?string $navigationGroup = 'Manajemen Log Aktivitas';
 
     protected static ?int $navigationSort = 4;
 
