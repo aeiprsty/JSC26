@@ -67,7 +67,7 @@ class Edukasi extends Model
         return $videoId;
     }
 
-    // Mengambil thumbnail otomatis dari YouTube
+    // Mengambil thumbnail otomatis dari YouTube atau Supabase
     public function getThumbnailUrlAttribute(): ?string
     {
         if ($this->jenis === 'video') {
@@ -77,7 +77,7 @@ class Edukasi extends Model
         }
 
         return $this->gambar
-            ? asset('storage/' . $this->gambar)
+            ? \Illuminate\Support\Facades\Storage::disk('supabase')->url($this->gambar)
             : null;
     }
 

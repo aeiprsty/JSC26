@@ -10,10 +10,16 @@ class EdukasiController extends Controller
 
     public function index(): View
     {
-        $sort = request()->query('sort', 'desc');
+        $sortJudul = request()->query('sort_judul', 'asc');
+        $sortDibuat = request()->query('sort_dibuat', 'desc');
 
-        // Batasi pilihan hanya ASC atau DESC.
-        $sort = in_array($sort, ['asc', 'desc']) ? $sort : 'desc';
+        $sortJudul = in_array($sortJudul, ['asc', 'desc'])
+            ? $sortJudul
+            : 'asc';
+
+        $sortDibuat = in_array($sortDibuat, ['asc', 'desc'])
+            ? $sortDibuat
+            : 'desc';
 
         $videos = Edukasi::query()
             ->where('jenis', 'video')
@@ -22,7 +28,8 @@ class EdukasiController extends Controller
                 $query->whereNull('published_at')
                     ->orWhere('published_at', '<=', now());
             })
-            ->orderBy('created_at', $sort)
+            ->orderBy('judul', $sortJudul)
+            ->orderBy('created_at', $sortDibuat)
             ->get();
 
         $artikels = Edukasi::query()
@@ -32,10 +39,16 @@ class EdukasiController extends Controller
                 $query->whereNull('published_at')
                     ->orWhere('published_at', '<=', now());
             })
-            ->orderBy('created_at', $sort)
+            ->orderBy('judul', $sortJudul)
+            ->orderBy('created_at', $sortDibuat)
             ->get();
 
-        return view('edukasi', compact('videos', 'artikels', 'sort'));
+        return view('edukasi', compact(
+            'videos',
+            'artikels',
+            'sortJudul',
+            'sortDibuat'
+        ));
     }
 
     public function show(string $slug): View
