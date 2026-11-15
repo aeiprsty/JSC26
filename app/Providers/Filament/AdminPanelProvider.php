@@ -30,7 +30,7 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
-            ->brandName(' ')
+            ->brandName('JambiBersih')
             ->brandLogo(asset('images/font-angsa-internal.png'))
             ->brandLogoHeight('2.5rem')
             ->login()

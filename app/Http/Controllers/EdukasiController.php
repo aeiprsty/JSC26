@@ -7,8 +7,14 @@ use Illuminate\View\View;
 
 class EdukasiController extends Controller
 {
+
     public function index(): View
     {
+        $sort = request()->query('sort', 'desc');
+
+        // Batasi pilihan hanya ASC atau DESC.
+        $sort = in_array($sort, ['asc', 'desc']) ? $sort : 'desc';
+
         $videos = Edukasi::query()
             ->where('jenis', 'video')
             ->where('status', 'published')
@@ -16,7 +22,7 @@ class EdukasiController extends Controller
                 $query->whereNull('published_at')
                     ->orWhere('published_at', '<=', now());
             })
-            ->latest('created_at')
+            ->orderBy('created_at', $sort)
             ->get();
 
         $artikels = Edukasi::query()
@@ -26,10 +32,10 @@ class EdukasiController extends Controller
                 $query->whereNull('published_at')
                     ->orWhere('published_at', '<=', now());
             })
-            ->latest('created_at')
+            ->orderBy('created_at', $sort)
             ->get();
 
-        return view('edukasi', compact('videos', 'artikels'));
+        return view('edukasi', compact('videos', 'artikels', 'sort'));
     }
 
     public function show(string $slug): View
