@@ -20,6 +20,7 @@ use Filament\Infolists\Infolist;
 use Filament\Infolists\Components\Section;
 use Filament\Infolists\Components\Grid;
 use Filament\Infolists\Components\TextEntry;
+use App\Services\KlasterRiwayatService;
 
 class KlasterResource extends Resource
 {
@@ -40,32 +41,29 @@ class KlasterResource extends Resource
                     ->disabled(),
 
                 Forms\Components\Select::make('status')
-                ->label('Status Klaster')
-                ->options(fn (): array => match (auth()->user()?->role) {
-                    'kabid' => [
-                        StatusKlaster::Terverifikasi->value => 'Terverifikasi',
-                        StatusKlaster::Disposisi->value => 'Disposisi',
-                    ],
+                    ->label('Status Klaster')
+                    ->options(fn (): array => match (auth()->user()?->role) {
+                        'kabid' => [
+                            StatusKlaster::Disposisi->value => 'Disposisi',
+                        ],
 
-                    'subkoordinator' => [
-                        StatusKlaster::Disposisi->value => 'Disposisi',
-                        StatusKlaster::Ditugaskan->value => 'Ditugaskan',
-                    ],
+                        'subkoordinator' => [
+                            StatusKlaster::Ditugaskan->value => 'Ditugaskan',
+                        ],
 
-                    'komando_lapangan' => [
-                        StatusKlaster::Ditugaskan->value => 'Ditugaskan',
-                        StatusKlaster::DalamProses->value => 'Dalam Proses',
-                        StatusKlaster::Selesai->value => 'Selesai',
-                    ],
+                        'komando_lapangan' => [
+                            StatusKlaster::DalamProses->value => 'Dalam Proses',
+                            StatusKlaster::Selesai->value => 'Selesai',
+                        ],
 
-                    default => [],
-                })
-                ->visible(fn (): bool => in_array(
-                    auth()->user()?->role,
-                    ['kabid', 'subkoordinator', 'komando_lapangan'],
-                    true
-                ))
-                ->required(),
+                        default => [],
+                    })
+                    ->visible(fn (): bool => in_array(auth()->user()?->role, [
+                        'kabid',
+                        'subkoordinator',
+                        'komando_lapangan',
+                    ], true))
+                    ->required(),
 
                 Forms\Components\Select::make('assigned_to')
                     ->label('Pilih Petugas Komando Lapangan')
@@ -173,12 +171,30 @@ class KlasterResource extends Resource
                 ->icon('heroicon-o-eye')
                 ->color('info'),
             
-            Tables\Actions\EditAction::make()
-            ->label('Kelola Klaster')
-            ->icon('heroicon-o-pencil-square')
-            ->visible(fn (Klaster $record): bool =>
-                self::canEdit($record)
-            ),
+            Tables\Actions\Action::make('kelola_klaster')
+                ->label('Kelola Klaster')
+                ->icon('heroicon-o-pencil-square')
+                ->color('warning')
+                ->visible(fn (Klaster $record): bool =>
+                    match (auth()->user()?->role) {
+                        'operator' => in_array($record->status, [
+                            StatusKlaster::MenungguVerifikasi,
+                            StatusKlaster::Terverifikasi,
+                        ], true),
+                        'kabid' => $record->status === StatusKlaster::Terverifikasi,
+                        'subkoordinator' => $record->status === StatusKlaster::Disposisi,
+                        'komando_lapangan' =>
+                            (int) $record->assigned_to === (int) auth()->id()
+                            && in_array($record->status, [
+                                StatusKlaster::Ditugaskan,
+                                StatusKlaster::DalamProses,
+                            ], true),
+                        default => false,
+                    }
+                )
+                ->url(fn (Klaster $record): string =>
+                    Pages\KelolaKlaster::getUrl(['record' => $record])
+                ),
 
             Tables\Actions\Action::make('verifikasi')
                 ->label('Verifikasi Klaster')
@@ -234,9 +250,20 @@ class KlasterResource extends Resource
                             return false;
                         }
 
+                        $statusSebelum = $record->status;
+                        $petugasSebelum = $record->assigned_to;
+
                         $record->update([
                             'status' => StatusKlaster::Terverifikasi,
                         ]);
+
+                        KlasterRiwayatService::catat(
+                            klaster: $record,
+                            statusSebelum: $statusSebelum,
+                            statusSesudah: $record->status,
+                            petugasSebelum: $petugasSebelum,
+                            petugasSesudah: $record->assigned_to,
+                        );
 
                         return true;
                     });
@@ -271,6 +298,7 @@ class KlasterResource extends Resource
         return [
             'index' => Pages\ListKlasters::route('/'),
             'view' => Pages\ViewKlaster::route('/{record}'),
+            'kelola' => Pages\KelolaKlaster::route('/{record}/kelola'),
             'edit' => Pages\EditKlaster::route('/{record}/edit'),
         ];
     }
@@ -377,6 +405,11 @@ class KlasterResource extends Resource
         }
 
         return match ($user->role) {
+            'operator' => in_array($record->status, [
+                StatusKlaster::MenungguVerifikasi,
+                StatusKlaster::Terverifikasi,
+            ], true),
+
             'kabid' => $record->status === StatusKlaster::Terverifikasi,
 
             'subkoordinator' => $record->status === StatusKlaster::Disposisi,

@@ -118,7 +118,7 @@
                                 </td>
 
                                 <td class="p-3 whitespace-nowrap text-center">
-                                    {{ $report->created_at->format('d M Y H:i') }}
+                                    {{ $report->created_at->format('d M Y, H:i') }}
                                 </td>
                             </tr>
                         @empty

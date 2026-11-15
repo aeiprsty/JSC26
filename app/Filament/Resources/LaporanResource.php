@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Filament\Notifications\Notification;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use App\Services\KlasterRiwayatService;
 
 class LaporanResource extends Resource
 {
@@ -181,9 +182,17 @@ class LaporanResource extends Resource
                         abort_unless(self::isOperator(), 403);
                         abort_unless($record->status === 'menunggu', 409);
 
+                        $statusSebelum = $record->status;
+
                         $record->update([
                             'status' => 'terverifikasi',
                         ]);
+
+                        KlasterRiwayatService::catatLaporan(
+                            laporan: $record,
+                            statusSebelum: $statusSebelum,
+                            statusSesudah: 'terverifikasi',
+                        );
                     }),
 
                 Tables\Actions\Action::make('tolak')
@@ -218,11 +227,22 @@ class LaporanResource extends Resource
 
                             abort_unless($laporan->status === 'menunggu', 409);
 
+                            $statusSebelum = $laporan->status;
+                            $klasterIdSebelum = $laporan->klaster_id;
+
                             $laporan->update([
                                 'status' => 'ditolak',
                                 'alasan_tolak' => $alasan,
                                 'klaster_id' => null,
                             ]);
+
+                            KlasterRiwayatService::catatLaporan(
+                                laporan: $laporan,
+                                statusSebelum: $statusSebelum,
+                                statusSesudah: 'ditolak',
+                                keterangan: $alasan,
+                                klasterId: $klasterIdSebelum,
+                            );
                         });
 
                         Notification::make()

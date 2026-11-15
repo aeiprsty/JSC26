@@ -85,7 +85,7 @@
                                 </div>
                                 <div>
                                     <div class="font-semibold">Jadwal OPBM</div>
-                                    <div class="text-[11px] text-[#5A4A3A]/70">Operasi Pembersihan Bersama</div>
+                                    <div class="text-[11px] text-[#5A4A3A]/70">Layanana Kebersihan Wilayah</div>
                                 </div>
                             </a>
                             <a href="{{ url('/transparansi') }}" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium hover:bg-[#DCC8A3]/30 hover:text-[#1F3D2E] transition-colors">

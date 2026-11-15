@@ -49,7 +49,23 @@ class LaporanRelationManager extends RelationManager
 
                 Tables\Columns\TextColumn::make('status')
                     ->label('Status Laporan')
-                    ->badge(),
+                    ->formatStateUsing(fn ($state): string => match ($state?->value ?? $state) {
+                        'menunggu' => 'Menunggu',
+                        'terverifikasi' => 'Terverifikasi',
+                        'ditolak' => 'Ditolak',
+                        'selesai' => 'Selesai',
+                        'dalam_proses' => 'Dalam Proses',
+                        default => ucfirst(str_replace('_', ' ', $state?->value ?? $state ?? '-')),
+                    })
+                    ->badge()
+                    ->color(fn ($state): string => match ($state?->value ?? $state) {
+                        'menunggu' => 'warning',
+                        'terverifikasi' => 'info',
+                        'ditolak' => 'danger',
+                        'selesai' => 'success',
+                        'dalam_proses' => 'primary',
+                        default => 'gray',
+                    }),
 
                 Tables\Columns\TextColumn::make('lat')
                     ->label('Latitude')
@@ -76,7 +92,7 @@ class LaporanRelationManager extends RelationManager
 
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Waktu Laporan')
-                    ->dateTime('d M Y H:i')
+                    ->dateTime('d M Y, H:i')
                     ->sortable(),
             ])
             ->headerActions([])

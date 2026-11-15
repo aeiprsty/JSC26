@@ -12,10 +12,15 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 use App\Models\User;
 use Illuminate\Support\Arr;
+use App\Services\KlasterRiwayatService;
 
 class EditKlaster extends EditRecord
 {
     protected static string $resource = KlasterResource::class;
+
+    protected mixed $statusSebelum = null;
+
+    protected mixed $petugasSebelum = null;
 
     protected function getHeaderActions(): array
     {
@@ -24,6 +29,8 @@ class EditKlaster extends EditRecord
 
     protected function beforeSave(): void
     {
+        $this->statusSebelum = $this->record->status;
+        $this->petugasSebelum = $this->record->assigned_to;
         $role = auth()->user()?->role;
 
         $statusLama = $this->record->status instanceof StatusKlaster
@@ -105,22 +112,38 @@ class EditKlaster extends EditRecord
 
     protected function afterSave(): void
     {
-        if ($this->record->status !== StatusKlaster::Selesai) {
-            return;
+        $this->record->refresh();
+
+        $statusSaatIni = $this->record->status instanceof StatusKlaster
+            ? $this->record->status->value
+            : $this->record->status;
+
+        // Jika klaster selesai, perbarui seluruh laporan di dalamnya.
+        if ($statusSaatIni === StatusKlaster::Selesai->value) {
+            $jumlahLaporan = DB::transaction(function (): int {
+                return Laporan::query()
+                    ->where('klaster_id', $this->record->getKey())
+                    ->where('status', '!=', 'ditolak')
+                    ->update([
+                        'status' => 'selesai',
+                    ]);
+            });
+
+            Notification::make()
+                ->title('Klaster berhasil diselesaikan')
+                ->body("{$jumlahLaporan} laporan berhasil diperbarui menjadi Selesai.")
+                ->success()
+                ->send();
         }
 
-        DB::transaction(function (): void {
-            Laporan::query()
-                ->where('klaster_id', $this->record->id)
-                ->where('status', '!=', 'ditolak')
-                ->update(['status' => 'selesai']);
-        });
-
-        Notification::make()
-            ->title('Klaster berhasil disimpan')
-            ->body('Status laporan yang valid dalam klaster ini telah diperbarui.')
-            ->success()
-            ->send();
+        // Catat riwayat setelah pembaruan laporan.
+        KlasterRiwayatService::catat(
+            klaster: $this->record,
+            statusSebelum: $this->statusSebelum,
+            statusSesudah: $this->record->status,
+            petugasSebelum: $this->petugasSebelum,
+            petugasSesudah: $this->record->assigned_to,
+        );
     }
 
     protected function mutateFormDataBeforeSave(array $data): array
@@ -146,7 +169,7 @@ class EditKlaster extends EditRecord
 
     protected function getRedirectUrl(): string
     {
-        return $this->getResource()::getUrl('index');
+        return KlasterResource::getUrl('index');
     }
 
     protected function mutateFormDataBeforeFill(array $data): array
