@@ -174,6 +174,7 @@ class EdukasiResource extends Resource
             ->columns([
                 Tables\Columns\ImageColumn::make('thumbnail_url')
                     ->label('Gambar')
+                    ->getStateUsing(fn (Edukasi $record) => $record->thumbnail_url)
                     ->height(60)
                     ->width(100)
                     ->extraImgAttributes([
@@ -241,8 +242,7 @@ class EdukasiResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        return parent::getEloquentQuery()
-            ->latest();
+        return parent::getEloquentQuery();
     }
 
     public static function getPages(): array
