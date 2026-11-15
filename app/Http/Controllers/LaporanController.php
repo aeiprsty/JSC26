@@ -156,7 +156,7 @@ class LaporanController extends Controller
                 'lat' => $laporan->lat,
                 'lng' => $laporan->lng,
                 'foto' => $laporan->foto
-                    ? asset('storage/' . $laporan->foto)
+                    ? Storage::disk('supabase')->url($laporan->foto)
                     : null,
                 'created_at' => $laporan->created_at?->toIso8601String(),
                 'alasan_tolak' => $laporan->alasan_tolak,
@@ -164,7 +164,7 @@ class LaporanController extends Controller
                     $status === 'selesai' &&
                     $laporan->klaster?->foto_bukti
                 )
-                    ? asset('storage/' . $laporan->klaster->foto_bukti)
+                    ? Storage::disk('supabase')->url($laporan->klaster->foto_bukti)
                     : null,
             ],
         ]);
