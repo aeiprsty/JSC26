@@ -103,10 +103,18 @@ class KelolaKlaster extends EditKlaster
 
     protected function authorizeAccess(): void
     {
-        abort_unless(
-            auth()->user()?->role === 'operator'
-            || static::getResource()::canEdit($this->getRecord()),
-            403
-        );
+        $user = auth()->user();
+        $record = $this->getRecord();
+
+        $bolehAkses =
+            $user?->role === 'operator'
+            || static::getResource()::canEdit($record)
+            || (
+                $user?->role === 'komando_lapangan'
+                && (int) $record->assigned_to === (int) $user->id
+                && $record->status === StatusKlaster::Selesai
+            );
+
+        abort_unless($bolehAkses, 403);
     }
 }
