@@ -340,7 +340,7 @@
                                     <i class="fa-solid fa-people-carry-box"></i>
                                 </div>
                                 <div class="absolute top-[115%] w-52 text-center bg-white/90 backdrop-blur-sm p-3 rounded-2xl border border-slate-200 shadow-md">
-                                    <h3 class="font-bold text-[#1F3D2E] text-sm">3. Pembersihan OPBM</h3>
+                                    <h3 class="font-bold text-[#1F3D2E] text-sm">3. Pembersihan TPS Liar</h3>
                                     <p class="text-[11px] text-[#5A4A3A] mt-0.5 leading-snug">Armada bentor/truk dan tim bergerak membersihkan lokasi.</p>
                                 </div>
                             </div>
